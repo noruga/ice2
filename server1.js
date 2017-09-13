@@ -39,8 +39,10 @@ var express = require('express');
 var app = express();
 
 
-app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname + '/client/index.html'));
+app.use('/', express.static(__dirname + '/client'));
+
+app.get('/',function(req,res){
+  res.sendFile('index.html');
 });
 
 // Make a new HTTP server from Express. This doesn't get used itself either, unless you want to do stuff with it.
