@@ -1,0 +1,17 @@
+{
+  "name": "basic-networked-multiplayer-game",
+  "version": "0.0.1",
+  "description": "A basic networked multiplayer game example/template, with lots of explanations.",
+  "dependencies": {
+    "express": "^4.15.2",
+    "socket.io": "^1.7.3",
+    "path": "^0.12.7"
+  },
+  "scripts": {
+    "start": "node server1.js"
+  },
+  "engines": {
+    "node": "6.9.1",
+    "npm": "3.8.x"
+  }
+}
