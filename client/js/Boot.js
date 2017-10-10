@@ -7,7 +7,7 @@ var _this;
 var host = true;
 
 // Connect to the Socket.io server that is running on the IP address 127.0.0.1 and at port number 3512.
-var socket = io();
+var socket = io("http://127.0.0.1:3512");
 
 // This connects to 127.0.0.1 which is localhost (this computer), which is also where the server is running.
 // If the server was running somewhere else, like on a cloud service, then change the IP address to the
@@ -135,15 +135,22 @@ socket.on('player_update', function(data){
                         if((data[i].puckX != undefined) && (data[i].puckX != null)){
                             _this.puck.body.x += (_this.puck.target_x - _this.puck.body.x) / divisor;
                             _this.puck.body.y += (_this.puck.target_y - _this.puck.body.y) / divisor;
+                            _this.target.body.x += (_this.puck.target_x - _this.target.body.x) / divisor;
+                            _this.target.body.y += (_this.puck.target_y - _this.target.body.y) / divisor;
+                            _this.target.visible = true;
+                            _this.puck.visible = false;
                             //puck.body.x += (data[i].puckX + puck.body.x) / 3;
                             //puck.body.y += (data[i].puckY + puck.body.y) / 3;
                         //console.log(_this.puck.body.y);
                         }
                     }
                 }
-                else
+                else{
                     _this.host = true;
-
+                    //_this.puck.collides = false;
+                    _this.target.visible = false;
+                    _this.puck.visible = true;
+                }
 
                     //if (_this.playerSprites[data[i].id][0].host === true){
                     //socket.in('game-room').emit('puckPos', {x: data.x, y: data.y});
@@ -239,6 +246,16 @@ console.log(_this.host)
 
 var firstUpd = false; //true;
 
+socket.on('goalScored2', function (){
+    updateScore2();
+})
+
+socket.on('goalScored1', function (){
+    updateScore1();
+})
+
+
+
 socket.on('state_update', function (data) {
 
     if(_this.playerSprites !== undefined){
@@ -302,22 +319,24 @@ socket.on('state_update', function (data) {
                     host = false;
                     //_this.playerSprites[data[i].id] =  new Player(_this, data[i].x, data[i].y, 'ball1m');
                     _this.playerSprites[data[i].id] = {};
-                    _this.playerSprites[data[i].id][0] =  new Player(_this, 150, 300, 'ball1m');
-                    _this.playerSprites[data[i].id][1] =  new Player(_this, 350, 300, 'ball1m');
-                    _this.playerSprites[data[i].id].host = true;
+                    _this.playerSprites[data[i].id][0] =  new Player(_this, 150, 300, 'ball1m', true);
+                    _this.playerSprites[data[i].id][1] =  new Player(_this, 350, 300, 'ball1m', true);
+                    //_this.playerSprites[data[i].id].host = true;
 
                     _this.playerSprites[data[i].id][0].controlPlayer = false;
                     _this.playerSprites[data[i].id][0].body.rotation = Math.PI / 2;
                     _this.playerSprites[data[i].id][1].body.rotation = Math.PI / 2;
                     //_this.playerSprites[data[i].id].host = true;
-                    _this.puck = new Puck(_this, 450, 300);
+                    _this.puck = new Puck(_this, 450, 300, true);
+                    _this.target = new Puck(_this, 450, 300, false);
                     //_this.playerSprites[data[i].id].body.angle = Math.PI;
                 }
                 else{
                     _this.playerSprites[data[i].id] = {}
-                    _this.playerSprites[data[i].id][0] =  new Player(_this, 750, 300, 'ball');
-                    _this.playerSprites[data[i].id][1] =  new Player(_this, 550, 300, 'ball');
-                    _this.playerSprites[data[i].id].host = false;
+                    _this.playerSprites[data[i].id][0] =  new Player(_this, 750, 300, 'ball', false);
+                    _this.playerSprites[data[i].id][1] =  new Player(_this, 550, 300, 'ball', false);
+                    //_this.playerSprites[data[i].id].host = false;
+
                     _this.playerSprites[data[i].id][0].controlPlayer = false;
                     _this.playerSprites[data[i].id][0].body.rotation = - Math.PI  / 2.4;
                     _this.playerSprites[data[i].id][1].body.rotation = - Math.PI  / 2.4;
