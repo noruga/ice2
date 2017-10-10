@@ -27,8 +27,10 @@
  * */
 
 // Strict mode helps to prevent the use of weird things that you might do in javascript by accident.
-"use strict";
-
+//"use strict";
+/*
+import PIXI from 'pixi';
+import P2 from 'p2';*/
 
 var path = require('path');
 
@@ -38,13 +40,21 @@ var express = require('express');
 // used much, unless you want to serve files with it, but that is not recommended.
 var app = express();
 
+/*
+app.use(express.static('public'));
 
-app.use('/', express.static(__dirname + '/client'));
+var favicon = require('serve-favicon');
 
-app.get('/',function(req,res){
-  res.sendFile('index.html');
+app.use(favicon(__dirname + 'public/favicon.ico'));*/
+
+
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname + '/client/index.html'));
 });
-
+/*
+app.get("/", function(req, res){
+    res.render("index");
+})*/
 // Make a new HTTP server from Express. This doesn't get used itself either, unless you want to do stuff with it.
 //var server = require('http').Server(app);
 // This is where Socket.io is set up. Socket takes in the HTTP server created above, and basically adds it's own
@@ -57,9 +67,14 @@ var path    = require('path');
 //var myModule = require('./p2.js');
 //var vel = myModule.Object.create(p2.Body.prototype);
 
-var port = process.env.PORT || 3000
+var port = process.env.PORT || 3512
 
 var env = process.env.NODE_ENV || 'production';
+
+/**
+var lobbyManager = new (require('./js/LobbyManager.js'))(io);
+var roomManager = new (require('./js/RoomManager.js'))(io);
+var gameManager = new (require('./js/GameManager.js'))(io, roomManager);*/
 
 // What port and IP address to bind the server to. The port number can be any valid public port number (Google it if not sure).
 // The port is used to direct network traffic arriving at your computer to a particular service, in this case
@@ -84,6 +99,7 @@ var io = require('socket.io').listen(server);
 // after you understand everything else and are done with the basics.
 var players = {};
 
+//var numOfPlayers = 0;
 /** *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *
  *  *   *   * Some useful stuff you can do with Socket.io   *   *   *   *
  *  *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *
@@ -105,6 +121,88 @@ var players = {};
 // on io (the Socket.io server object), and it runs the 'connection' callback function (the 'function(socket){ ... }' part).
 // The socket object for the client that connected is sent to the callback, and this allows us to do stuff with that
 // socket, such as adding event listeners to that socket, which is what is done below.
+//                            v The socket object is passed in automatically by io when a connection is made.
+ //   myModule = (
+ /*       myModule.SETTINGS = {
+
+            SHOOT : 100,
+            FORWARD : 22,
+            FORWARD_2 : 5,
+            BACKWARD : 3,
+            CONTROL_DISTANCE : 0.25,
+            ROTATE : 5,
+            BRAKE : 0.1,            // 10 % of the speed every frame
+            PLAYER_DAMP : 0.4,
+            //PLAYER_FRICTON : 0.01,
+            PUCK_FRICTION : 0.005,
+            PUCK_MASS : 0.00001,
+            ACC1_LIMIT : 1.80,
+        };
+
+
+        myModule.goalSeconds = 0;
+
+        myModule.PUCK = Math.pow(2,1)
+        myModule.STICK =  Math.pow(2,2)
+        myModule.SCENERY = Math.pow(2,3)
+        myModule.PLAYER = Math.pow(2,0)
+
+        myModule.goalscored = false;
+        myModule.frameCounter = 0;
+        myModule.n_hit = false;
+        
+        myModule.currentScore = [];
+        myModule.currentScore[0] = 0;
+        myModule.currentScore[1] = 0;
+
+        myModule.Player = function ( x, y, id) {
+            var playerShape = new p2.Circle({ radius: 0.15 });
+            p2.Body.call(this,{
+                position:[x, y],
+                mass: 1 ,
+            });
+
+            playerShape.collisionGroup = PLAYER;
+            playerShape.collisionMask = PLAYER | SCENERY | PUCK;
+
+            this.addShape(playerShape);
+            this.controlPlayer = false;
+
+            this.stick = new Stick(x, y-0.3);
+            this.stick.collisionResponse = 0;
+            world.addBody(this.stick);
+
+            this.constraint = new p2.LockConstraint(this, this.stick);
+            world.addConstraint(this.constraint);
+
+            this.stick1 = new Stick(x, y+0.3);
+
+            this.stick1.collisionGroup = STICK;
+            this.stick1.collisionMask = PUCK;
+            world.addBody(this.stick1);
+
+            this.constraint = new p2.LockConstraint(this, this.stick1);
+            world.addConstraint(this.constraint);
+        }
+        console.log("hei");
+        myModule.Player.prototype = Object.create(myModule.Body.prototype);
+        myModule.Player.prototype.constructor = myModule.Player;
+
+        myModule.Stick = function(x, y){
+            var stickShape = new p2.Box({ width: 0.15, height: 0.27 });
+            stickShape.collisionGroup = STICK;
+            stickShape.collisionMask = PUCK;
+            p2.Body.call(this,{
+                position:[x, y],
+                mass: 1 ,
+            });
+            this.addShape(stickShape);
+        }
+        myModule.Stick.prototype = Object.create(myModule.Body.prototype);
+        myModule.Stick.prototype.constructor = myModule.Stick;
+   */ 
+//console.log(myModule)
+
 
 io.on('connection', function (socket) {
     console.log("* * * A new connection has been made.");
@@ -173,7 +271,7 @@ io.on('connection', function (socket) {
             // This player is now in a game.
             // Add a basic object that tracks player position to the list of players, using
             // the ID of this socket as the key for convenience, as each socket ID is unique.
-            players[socket.id] = {
+            players[socket.id] = { 
   /*              y: 300,
                 angle: Math.PI,
                 puckX: 450,
@@ -214,7 +312,64 @@ io.on('connection', function (socket) {
 
 
     })
+    socket.on('goalScored1', function(){
+        io.in('game-room').emit('goalScored1');
+        console.log("goal scored 1 event recieved");
+    })
 
+    socket.on('goalScored2', function(){
+        io.in('game-room').emit('goalScored2');
+        console.log("goal scored 2 event recieved");
+    })
+/*
+/*
+    socket.on('puckPos', function(data){
+        io.in('game-room').emit('puckPos', {x: data.x, y: data.y});
+        var keys = Object.keys(players);
+    // Loop though the list of players and get the position of each player.
+        keys.forEach(function (key) {
+            players[key].puckX = data.x;
+            players[key].puckY = data.y;
+        });*/
+        /*puck.target_x = data.x;
+        puck.target_y = data.y;*/
+        //io.in('game-room').emit('puckPos', {x: data.x, y: data.y});
+        //console.log("puckPos : ", data.x, " , ", data.y);
+        //console.log("puckPos : ", data.x, " , ", data.y);
+    //})
+
+/*
+    socket.on('key_pressed', function(data){
+        io.in('game-room').emit('key_pressed', {playerId: socket.id, key: data.key ,state:'down', host: data.host});
+        console.log("key press received: ", data.key);
+
+
+        //console.log([socket.id]);
+
+    })*/
+/*
+    socket.on('key_up', function(data){
+        io.in('game-room').emit('key_pressed', {playerId: socket.id, key: data.key, state:'up', host: data.host});
+        //console.log("key up received: ", data.key);
+    })*/
+
+/*
+
+    socket.on('move_player', function (data) {
+        // Access the object in the list of players that has the key of this socket ID.
+        // 'data.axis' is the axis to move in, x or y.
+        // 'data.force' is which direction on the given axis to move, 1 or -1.
+        // So if the axis is 'y', and the force is -1, then the player would move up.
+        // Change the * 2 multiplier to change the movement speed.
+
+        players[socket.id][data.axis] += data.force * 2;
+
+        //console.log(players[socket.id][data.axis]);
+    });*/
+/*
+    socket.on('thrust', function(data){
+         players[socket.id].x++;
+    })*/
 
     // When a client socket disconnects (closes the page, refreshes, timeout etc.),
     // then this event will automatically be triggered.
