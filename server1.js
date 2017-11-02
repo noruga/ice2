@@ -99,6 +99,8 @@ var io = require('socket.io').listen(server);
 // after you understand everything else and are done with the basics.
 var players = {};
 
+var countHost = 0;
+var lastHost = true;
 //var numOfPlayers = 0;
 /** *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *
  *  *   *   * Some useful stuff you can do with Socket.io   *   *   *   *
@@ -235,6 +237,7 @@ io.on('connection', function (socket) {
     socket.score = 0;
     socket.isInGame = false;
 
+
     // Event listeners can be added to this socket. Every time the client sends
     // an event to this server, the server will look to see if the name of that event
     // matches any events that this socket is listening for.
@@ -278,6 +281,8 @@ io.on('connection', function (socket) {
                 puckY: 300*/
 
             };
+            players[socket.id].hostCounter = 0;
+            console.log(players[socket.id].hostCounter)
             if (Object.keys(players).length === 1)
                 players[socket.id].x = 150;
             else
@@ -292,26 +297,59 @@ io.on('connection', function (socket) {
             //numOfPlayers++;
 
             if (Object.keys(players).length === 2) {
+                players[socket.id].host = false;
                 console.log("two players connection and clicked Join Game");
 
                 // Tell the clients that they successfully joined the game.
                 io.sockets.emit('join_game_success');
             }
+            else
+                players[socket.id].host = true;
             console.log("* " + socket.username + " joined a game.");
         }
         else {
             console.log("* " + socket.username + " is already in a game.");
         }
-    });
+    });/*
+    socket.on('conte', function(m_count){
+        console.log("M count is : ", m_count);
+    })*/
 
     socket.on('player_update', function(data){
-        //console.log(data);
+        var sendData = data;
+        var playerId = data[0].id;
+        if (data[0].host)
+            players[playerId].hostCounter++;
+        countHost++;
 
-        io.in('game-room').emit('player_update', data);//{id: data.id, x: data.x, y: data.y, angle: data.angle, x1: data.x1, y1: data.y1, angle1: data.angle1});
-        //console.log(data);
-
-
+        if(countHost > 2){
+            countHost = 0;
+            var keys = Object.keys(players);
+            
+            var maxHostCounter = players[playerId].hostCounter;
+            var tmpLastHost = players[playerId].host;
+          
+            keys.forEach(function (key) {
+                if (playerId != key){
+                    if(players[playerId].hostCounter != players[key].hostCounter){
+                        if( players[playerId].hostCounter < players[key].hostCounter){
+                            lastHost = players[key].host;
+                            maxHostCounter = players[key].hostCounter;                         
+                        }
+                        else
+                            lastHost = players[playerId].host;
+                    }
+                    players[key].hostCounter = 0;
+                }
+            });
+            players[playerId].hostCounter = 0;
+            sendData[0].host = lastHost// = tmpLastHost;
+            console.log("Player ", playerId, " ", sendData[0].host)
+            console.log(" hc1 : ", players[playerId].hostCounter, " hc2 : ", maxHostCounter)  
+        io.in('game-room').emit('player_update', sendData);
+        }
     })
+
     socket.on('goalScored1', function(){
         io.in('game-room').emit('goalScored1');
         console.log("goal scored 1 event recieved");
@@ -391,7 +429,7 @@ io.on('connection', function (socket) {
 
 // How often to send game updates. Faster paced games will require a lower value for emitRate,
 // so that updates are sent more often. Do some research and test what works for your game.
-var emitRate = 8000;
+var emitRate = 2000;
 
 setInterval(function () {
 
