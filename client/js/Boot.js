@@ -5,10 +5,11 @@
 var _this;
 
 var host = true;
+var angle, dir;
 
 // Connect to the Socket.io server that is running on the IP address 127.0.0.1 and at port number 3512.
-//var socket = io("http://127.0.0.1:3512");
-var socket = io();
+var socket = io("http://127.0.0.1:3512");
+//var socket = io();
 
 // This connects to 127.0.0.1 which is localhost (this computer), which is also where the server is running.
 // If the server was running somewhere else, like on a cloud service, then change the IP address to the
@@ -72,13 +73,12 @@ socket.on('puckPos', function(data){
     puck.target_y = data.y;*/
     //console.log(puck.target_y)
 });
-var emitRate = 10;
+var emitRate = 1000/180;
 var divisor = 3;
 
 socket.on('player_update', function(data){
     //console.log("receiving client data from", data[0].id);
-
-    if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
+if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
 
         // The 'playerSprites' object exists.
         for(let i= 0; i<2; i+=1){
@@ -86,6 +86,7 @@ socket.on('player_update', function(data){
              /*   puck.x = data[i].puckX;
                 puck.y = data[i].puckY;*/
                 //console.log(this.id);
+
             if(data[i].id != this.id){
                 //console.log("puck.x ", puck.x  )
                 _this.playerSprites[data[i].id][0].target_x         = data[i].x; // Update target, not actual position, so we can interpolate
@@ -98,7 +99,6 @@ socket.on('player_update', function(data){
                 _this.playerSprites[data[i].id][1].target_y         = data[i].y1;
                 _this.playerSprites[data[i].id][1].target_rotation  = data[i].angle1;
 /*
-
                 console.log(_this.playerSprites[data[i].id][0].target_rotation );
                 console.log(_this.playerSprites[data[i].id][1].target_rotation );*/
 
@@ -106,8 +106,8 @@ socket.on('player_update', function(data){
                     _this.playerSprites[data[i].id][0].body.x += (_this.playerSprites[data[i].id][0].target_x - _this.playerSprites[data[i].id][0].body.x) / divisor;
                     _this.playerSprites[data[i].id][0].body.y += (_this.playerSprites[data[i].id][0].target_y - _this.playerSprites[data[i].id][0].body.y) / divisor;
                     // Interpolate angle while avoiding the positive/negative issue 
-                    var angle = _this.playerSprites[data[i].id][0].target_rotation;
-                    var dir = (angle - _this.playerSprites[data[i].id][0].body.rotation) / (Math.PI * 2);
+                    angle = _this.playerSprites[data[i].id][0].target_rotation;
+                    dir = (angle - _this.playerSprites[data[i].id][0].body.rotation) / (Math.PI * 2);
                     dir -= Math.round(dir);
                     dir = dir * Math.PI * 2;
                     _this.playerSprites[data[i].id][0].body.rotation += dir / divisor;
@@ -119,8 +119,8 @@ socket.on('player_update', function(data){
                     _this.playerSprites[data[i].id][1].body.x += (_this.playerSprites[data[i].id][1].target_x - _this.playerSprites[data[i].id][1].body.x) / divisor;
                     _this.playerSprites[data[i].id][1].body.y += (_this.playerSprites[data[i].id][1].target_y - _this.playerSprites[data[i].id][1].body.y) / divisor;
                     // Interpolate angle while avoiding the positive/negative issue 
-                    var angle = _this.playerSprites[data[i].id][1].target_rotation;
-                    var dir = (angle - _this.playerSprites[data[i].id][1].body.rotation) / (Math.PI * 2);
+                    angle = _this.playerSprites[data[i].id][1].target_rotation;
+                    dir = (angle - _this.playerSprites[data[i].id][1].body.rotation) / (Math.PI * 2);
                     dir -= Math.round(dir);
                     dir = dir * Math.PI * 2;
                     _this.playerSprites[data[i].id][1].body.rotation += dir / divisor;
@@ -128,30 +128,39 @@ socket.on('player_update', function(data){
                 }
 
 
-
-                if( (data[i].host === true) ){// && (this.host === false)){
-                    _this.host = false;
-                    //console.log(this.host);
-                    if([data[i].id] != this.id){
-                        if((data[i].puckX != undefined) && (data[i].puckX != null)){
-                            _this.puck.body.x += (_this.puck.target_x - _this.puck.body.x) / divisor;
-                            _this.puck.body.y += (_this.puck.target_y - _this.puck.body.y) / divisor;
-                            _this.target.body.x += (_this.puck.target_x - _this.target.body.x) / divisor;
-                            _this.target.body.y += (_this.puck.target_y - _this.target.body.y) / divisor;
+// && (this.host === false)){
+                    _this.target.body.x += (_this.puck.target_x - _this.target.body.x) / divisor;
+                    _this.target.body.y += (_this.puck.target_y - _this.target.body.y) / divisor;
+            
+                    //console.log(_this.host);
+                    //_this.host = false;
+                    //console.log("grey horse ", _this.playerSprites[data[i].id].host);
+                    if(_this.playerSprites[data[i].id].host === data[i].host){
+                        //if((data[i].puckX != undefined) && (data[i].puckX != null)){
+                            //_this.puck.body.x += (_this.puck.target_x - _this.puck.body.x) / divisor;
+                            //_this.puck.body.y += (_this.puck.target_y - _this.puck.body.y) / divisor;
+                            _this.puck.body.x = _this.target.body.x;
+                            _this.puck.body.y = _this.target.body.y;
                             _this.target.visible = true;
                             _this.puck.visible = false;
+                            _this.puck.collides = false;
                             //puck.body.x += (data[i].puckX + puck.body.x) / 3;
                             //puck.body.y += (data[i].puckY + puck.body.y) / 3;
                         //console.log(_this.puck.body.y);
-                        }
+                        //}
                     }
-                }
-                else{
-                    _this.host = true;
-                    //_this.puck.collides = false;
-                    _this.target.visible = false;
-                    _this.puck.visible = true;
-                }
+                
+                    else{
+                        //_this.host = true;
+                    //_this.puck.body.x = _this.target.body.x;
+                    //_this.puck.body.y = _this.target.body.y;
+
+
+                        _this.puck.collides = true;
+                        _this.target.visible = false;
+                        _this.puck.visible = true;
+                    }
+            }  
 
                     //if (_this.playerSprites[data[i].id][0].host === true){
                     //socket.in('game-room').emit('puckPos', {x: data.x, y: data.y});
@@ -164,7 +173,6 @@ socket.on('player_update', function(data){
                         _this.puck.body.y = data[i].puckX;*/
 
 
-                //}
    /*             console.log(data[i].puckX)
                 _this.puck.target_x = (data[i].puckX + _this.puck.body.position.x) / 2;
                 _this.puck.target_y = (data[i].puckY + _this.puck.body.position.y) / 2;
@@ -188,19 +196,74 @@ socket.on('player_update', function(data){
                 if(_this.playerSprites[data.id].host === false){
                     _this.puck.x = data[0].puckX;
                     _this.puck.y = data[0].puckY;
-
                 }*/
-            }/*
+            
+            /*
             else{
                 if (_this.host === false){
                     if (checkOverlap(_this.playerSprites[data[i].id][i], _this.puck)){
                         _this.host = true;
-
                     }
                 }
             }*/
         }
     }
+
+
+/*
+    if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
+        for(let i= 0, len = data.length; i<len; i+=1){
+
+            if(_this.playerSprites[data[i].id]){
+        // The 'playerSprites' object exists.
+        //for(let i= 0; i<2; i+=1){
+        //if(_this.playerSprites[data.id]){
+                    for (var j = 0; j < 2; j++){
+                        if (_this.playerSprites[data[i].id][j].controlPlayer === true){
+                            if (data[i].left === true){
+                                //left = true;
+                                _this.playerSprites[data[i].id][j].isDownA = true;
+                            }
+                            else
+                                _this.playerSprites[data[i].id][j].isDownA = false;
+                            if (data[i].right === true){
+                                //right = true;
+                                _this.playerSprites[data[i].id][j].isDownD = true;
+                            }
+                            else
+                                _this.playerSprites[data[i].id][j].isDownD = false;
+
+                            if (data[i].down === true){
+                                //down = true;
+                                _this.playerSprites[data[i].id][j].isDownS = true;
+                            }
+                            else
+                                _this.playerSprites[data[i].id][j].isDownS = false;
+                            if (data[i].up === true){
+                                //up = true;
+                                _this.playerSprites[data[i].id][j].isDownW = true;
+                            }
+                            else
+                                _this.playerSprites[data[i].id][j].isDownW = false;
+                            if (data[i].brake === true){
+                                //brake = true;
+                                _this.playerSprites[data[i].id][j].isDownV = true;
+                            }
+                            else
+                                _this.playerSprites[data[i].id][j].isDownV = false;
+                            if (data[i].shoot === true){
+                                //shoot = true;
+                                _this.playerSprites[data[i].id][j].isDownB = true;
+                            }
+                            else
+                                _this.playerSprites[data[i].id][j].isDownB = false;
+                        }
+                    }
+            
+            }
+  
+        }
+    }*/
 
 })
 
@@ -208,6 +271,7 @@ socket.on('player_update', function(data){
 setInterval(function () {
 
     var dataToSend = preparePlayersDataToSend();
+    //console.log("shoot: ", shoot);
 
     socket.emit('player_update', dataToSend);
     //socket.emit('player_update', "this is a string")
@@ -217,11 +281,13 @@ setInterval(function () {
 
 function preparePlayersDataToSend() {  
     var dataToSend = [];
-
-    dataToSend.push({id: socket.id, x: _this.playerSprites[socket.id][0].x, y: _this.playerSprites[socket.id][0].y, 
-            angle: _this.playerSprites[socket.id][0].body.rotation, puckX: _this.puck.x, puckY: _this.puck.y, host: _this.host,
+   /* dataToSend.push({id: socket.id, left: left, right: right, down: down, up: up, brake: brake, shoot: shoot, go_home: go_home, 
+        controlPlayer0: _this.playerSprites[socket.id][0].controlPlayer, puckX: _this.puck.x, puckY: _this.puck.y, host: host});*/
+//console.log("JOHOOO ", Math.abs(_this.playerSprites[socket.id][0].x));
+    dataToSend.push({id: socket.id, x: Math.abs(_this.playerSprites[socket.id][0].x), y: _this.playerSprites[socket.id][0].y, 
+            angle: _this.playerSprites[socket.id][0].body.rotation, puckX: _this.puck.x, puckY: _this.puck.y, host: (_this.playerSprites[socket.id][0].withinPuck || _this.playerSprites[socket.id][1].withinPuck),
             x1: _this.playerSprites[socket.id][1].x, y1: _this.playerSprites[socket.id][1].y, angle1: _this.playerSprites[socket.id][1].body.rotation});
-console.log(_this.host)
+//console.log(_this.host)
     return dataToSend;
 }
     
@@ -325,9 +391,9 @@ socket.on('state_update', function (data) {
                     //_this.playerSprites[data[i].id].host = true;
 
                     _this.playerSprites[data[i].id][0].controlPlayer = false;
-                    _this.playerSprites[data[i].id][0].body.rotation = Math.PI / 2;
-                    _this.playerSprites[data[i].id][1].body.rotation = Math.PI / 2;
-                    //_this.playerSprites[data[i].id].host = true;
+                    _this.playerSprites[data[i].id][0].body.rotation = Math.PI / 2.7;
+                    _this.playerSprites[data[i].id][1].body.rotation = Math.PI / 2.7;
+                    _this.playerSprites[data[i].id].host = true;
                     _this.puck = new Puck(_this, 450, 300, true);
                     _this.target = new Puck(_this, 450, 300, false);
                     //_this.playerSprites[data[i].id].body.angle = Math.PI;
@@ -336,11 +402,11 @@ socket.on('state_update', function (data) {
                     _this.playerSprites[data[i].id] = {}
                     _this.playerSprites[data[i].id][0] =  new Player(_this, 750, 300, 'ball', false);
                     _this.playerSprites[data[i].id][1] =  new Player(_this, 550, 300, 'ball', false);
-                    //_this.playerSprites[data[i].id].host = false;
+                    _this.playerSprites[data[i].id].host = false;
 
                     _this.playerSprites[data[i].id][0].controlPlayer = false;
-                    _this.playerSprites[data[i].id][0].body.rotation = - Math.PI  / 2.4;
-                    _this.playerSprites[data[i].id][1].body.rotation = - Math.PI  / 2.4;
+                    _this.playerSprites[data[i].id][0].body.rotation = - Math.PI  / 2.7;
+                    _this.playerSprites[data[i].id][1].body.rotation = - Math.PI  / 2.7;
 
 
                     //_this.playerSprites[data[i].id][2] =  new Circle(_this, 450, 20);

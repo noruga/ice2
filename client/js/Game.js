@@ -35,6 +35,14 @@ var goalscored = false;
 var waitTwoSec = false;
 
 var accelerateRemote = true;
+/*
+var left = false,
+    right = false,
+    up = false,
+    down = false,
+    brake = false,
+    shoot = false,
+    go_home = false;*/
 
 
 FunkyMultiplayerGame.Game = function () {
@@ -59,7 +67,7 @@ FunkyMultiplayerGame.Game.prototype = {
             align: 'center'
         });
         this.physics.startSystem(Phaser.Physics.P2JS);
-        //game.physics.startSystem(Phaser.Physics.ARCADE);
+        this.physics.startSystem(Phaser.Physics.ARCADE);
         this.physics.p2.restitution = 0.1;
 
         stickCollisionGroup = _this.physics.p2.createCollisionGroup();
@@ -210,6 +218,7 @@ FunkyMultiplayerGame.Game.prototype = {
     },
 
     update: function () {
+
         if (waitTwoSec == true){
             waitSecs++;
             if (waitSecs == 180){
@@ -224,32 +233,14 @@ FunkyMultiplayerGame.Game.prototype = {
                 scoreText2.text = (600, 400, " ");      //Erases the 'GOAL!!!'
             }
 
-        };
+        };/*
+        if (checkOverlap(_this.puck, goalsensor1)){
+            socket.emit('goalScored2');
+        }*/
 
-    if (_this.host){
-    if (goalscored == false){                   //to register goal only once
-        //if(puck.prevx < )
-        if (checkOverlap(_this.puck, goalsensor1))
-        {
-            /*
-                updateScore2();*/
-                goalscored = true;
-                socket.emit('goalScored2');
-                _this.puck.body.velocity.x = _this.puck.body.velocity.x * 0.01;
-                _this.puck.body.velocity.y = _this.puck.body.velocity.y * 0.01;
-    
-        };
-
-        if (checkOverlap(_this.puck, goalsensor2))
-        {
-
-                //updateScore1();
-                goalscored = true;
-                socket.emit('goalScored1');
-                _this.puck.body.velocity.x = _this.puck.body.velocity.x * 0.01;
-                _this.puck.body.velocity.y = _this.puck.body.velocity.y * 0.01;
-        };
-    };
+/*
+    if (checkOverlap(puck, goalsensor1)){
+        socket.emit('goalScored2');
     }
     /*
         if(this.input.keyboard.isDown(Phaser.Keyboard.LEFT)){
@@ -301,22 +292,30 @@ FunkyMultiplayerGame.Game.prototype = {
                     for (var j = 0; j < 2; j++){
                         if (_this.playerSprites[socket.id][j].controlPlayer === true){
                             if (keyName === 'left'){
+                                //left = true;
                                 _this.playerSprites[socket.id][j].isDownA = true;
                             }
                             if (keyName === 'right'){
+                                //right = true;
+                                console.log("clicked right")
                                 _this.playerSprites[socket.id][j].isDownD = true;
                             }
 
                             if (keyName === 'down'){
+                                //down = true;
                                 _this.playerSprites[socket.id][j].isDownS = true;
                             }
                             if (keyName === 'up'){
+                                //up = true;
+                                //console.log("up: ", up)
                                 _this.playerSprites[socket.id][j].isDownW = true;
                             }
                             if (keyName === 'brake'){
+                                //brake = true;
                                 _this.playerSprites[socket.id][j].isDownV = true;
                             }
                             if (keyName === 'shoot'){
+                                //shoot = true;
                                 _this.playerSprites[socket.id][j].isDownB = true;
                             }
                             if (keyName === 'swap'  && n_count === 0){
@@ -353,24 +352,30 @@ FunkyMultiplayerGame.Game.prototype = {
 
 
                     for (var j = 0; j < 2; j++){
-                        if (_this.playerSprites[socket.id][j].controlPlayer === true){
+                        //if (_this.playerSprites[socket.id][j].controlPlayer === true){
                             if (keyName === 'left'){
+                                //left = false;
                                 _this.playerSprites[socket.id][j].isDownA = false;
                             }
                             if (keyName === 'right'){
                                 _this.playerSprites[socket.id][j].isDownD = false;
+                                //right = false;
                             }
 
                             if (keyName === 'down'){
                                 _this.playerSprites[socket.id][j].isDownS = false;
+                                //down = false;
                             }
                             if (keyName === 'up'){
+                                //up = false;
                                 _this.playerSprites[socket.id][j].isDownW = false;
                             }
                             if (keyName === 'brake'){
+                                //brake = false;
                                 _this.playerSprites[socket.id][j].isDownV = false;
                             }
                             if (keyName === 'shoot'){
+                                //shoot = false;
                                 _this.playerSprites[socket.id][j].isDownB = false;
                             }
                             if (keyName === 'swap'){
@@ -386,27 +391,28 @@ FunkyMultiplayerGame.Game.prototype = {
                                     _this.playerSprites[socket.id][0].controlPlayer = true;
                                 }*/
                             if (keyName === 'M'){
-                                if (m_count > 0){
-                                    m_count = 0;
-                                //if (m_count > 0){
-                                    //if (m_count > 20){
-                                        //if (_this.playerSprites[socket.id][j].controlPlayer === true)
-                                        if (j === 1)
-                                            _this.playerSprites[socket.id][0].goHome = true;
-                                        else
-                                            _this.playerSprites[socket.id][1].goHome = true;
-                                            //_this.playerSprites[socket.id][1].goHome = true;
-
+                                if (m_count > 61){
+                                    if (_this.playerSprites[socket.id][0].controlPlayer)
+                                        _this.playerSprites[socket.id][1].goForw = true;
+                                    else
+                                        _this.playerSprites[socket.id][0].goForw = true;
                                 }
-                                //}
+                                else{
+                                    if (_this.playerSprites[socket.id][0].controlPlayer)
+                                         _this.playerSprites[socket.id][1].goHome = true;
+                                    else
+                                        _this.playerSprites[socket.id][0].goHome = true;
+                                }
+                                //socket.emit('conte', m_count);
+                                m_count = 0;
+                                
 
-                                //_this.playerSprites[socket.id][j].isDownM = false;
                             }
 
                         //socket.emit('key_pressed', {key: keyName});
                 
                         }
-                    }
+                    //}
                 });
             })(keyName)
 
@@ -422,14 +428,18 @@ Puck = function(game, x, y, authorative){
 
     var bmd1 = game.add.bitmapData(15, 15, 'rgb(0,200,0)');
     bmd1.circle(7, 7, 6, 0);
-    Phaser.Sprite.call(this, game, x, y, bmd1);
+    if(authorative)
+        Phaser.Sprite.call(this, game, x, y, bmd1);
+    else
+        Phaser.Sprite.call(this, game, x, y, "ball1m");
     
 
     game.physics.p2.enable(this);
+    this.authorative = authorative;
     this.body.setCircle(7);
     this.body.mass = 0.00001;
         //puck.visible = false;
-        //game.physics.enable(puck, Phaser.Physics.ARCADE);
+        game.physics.enable(this, Phaser.Physics.ARCADE);
 
 
     //this.body.collideWorldBounds = true;
@@ -442,7 +452,7 @@ Puck = function(game, x, y, authorative){
     this.target_y = 300;
 
     if (authorative){
-        this.visible = true;
+        //this.visible = true;
         this.body.setCollisionGroup(puckCollisionGroup);
         this.body.collides([stickCollisionGroup, puckCollisionGroup]);
     }
@@ -463,6 +473,31 @@ Puck.prototype.update = function () {
 
     this.body.velocity.x *= 0.995;
     this.body.velocity.y *= 0.995;
+    if (this.authorative === true){
+        if (goalscored === false){                   //to register goal only once
+            //if(puck.prevx < )
+            if (checkOverlap(this, goalsensor1))
+            {
+            /*
+                updateScore2();*/
+                goalscored = true;
+                socket.emit('goalScored2');
+                this.body.velocity.x = this.body.velocity.x * 0.01;
+                this.body.velocity.y = this.body.velocity.y * 0.01;
+    
+            };
+
+            if (checkOverlap(this, goalsensor2))
+            {
+
+                //updateScore1();
+                goalscored = true;
+                socket.emit('goalScored1');
+                this.body.velocity.x = this.body.velocity.x * 0.01;
+                this.body.velocity.y = this.body.velocity.y * 0.01;
+            };
+        };
+    }
 }
 
 Player = function (game, x, y, img, host) {
@@ -479,6 +514,8 @@ Player = function (game, x, y, img, host) {
 
     this.goForw = false;
     this.goHome = false;
+
+    this.withinPuck = false;
 
 
 
@@ -585,9 +622,13 @@ Player.prototype.update = function () {
         }
     }
     if (this.isDownV) {
+        this.body.velocity.x *= 0.9;
+        this.body.velocity.y *= 0.9;
+        if (distanceSq(_this.puck, this.stick1) < (25*25))
+            moveToObject(_this.puck, this.stick1, 70);
         //console.log("braking");
-        console.log(this.host);
-        brake(this, _this.puck);
+        //console.log(this.host);
+        //brake(this, _this.puck);
     }
 
     if (this.isDownB) {
@@ -614,20 +655,35 @@ Player.prototype.update = function () {
         }
 
     }
+    if (distanceSq(_this.puck, this) < 500){
+        this.withinPuck = true;
+
+    }
+    else
+        this.withinPuck = false;
+
+    //console.log("withing puck : ", this.withinPuck);
+
     if (this.controlPlayer){
         this.goHome = false;
         this.goForw = false;
     }
 
     if (this.goHome){
-        if (this.hostess)
+        if (this.host)
             accelerateToPoint(this, homePoint, 400);
         else
             accelerateToPoint(this, homePoint1, 400);
     }
+    else if (this.goForw)
+        if (this.host)
+            accelerateToPoint(this, forwPoint2, 400);
+        else
+            accelerateToPoint(this, forwPoint2, 400);
 };
 
 //module.exports = Player;
+
 
 
 function brake(player, puck) {
@@ -699,6 +755,14 @@ function checkOverlap(spriteA, spriteB) {
     return Phaser.Rectangle.intersects(boundsA, boundsB);
 
 }
+function distanceSq(object,target) {
+
+    var xDif = object.body.x - target.body.x;
+    var yDif = object.body.y - target.body.y;
+
+    return (xDif * xDif) + (yDif * yDif);
+
+};
 
 
 function updateScore1()
