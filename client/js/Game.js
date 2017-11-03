@@ -310,14 +310,15 @@ FunkyMultiplayerGame.Game.prototype = {
                                 //console.log("up: ", up)
                                 _this.playerSprites[socket.id][j].isDownW = true;
                             }
-                            if (keyName === 'brake'){
-                                //brake = true;
-                                _this.playerSprites[socket.id][j].isDownV = true;
-                            }
                             if (keyName === 'shoot'){
                                 //shoot = true;
                                 _this.playerSprites[socket.id][j].isDownB = true;
                             }
+                            else if (keyName === 'brake'){
+                                //brake = true;
+                                _this.playerSprites[socket.id][j].isDownV = true;
+                            }
+
                             if (keyName === 'swap'  && n_count === 0){
                                 n_count++;
                                 if (_this.playerSprites[socket.id][0].controlPlayer === true){
@@ -370,14 +371,15 @@ FunkyMultiplayerGame.Game.prototype = {
                                 //up = false;
                                 _this.playerSprites[socket.id][j].isDownW = false;
                             }
-                            if (keyName === 'brake'){
-                                //brake = false;
-                                _this.playerSprites[socket.id][j].isDownV = false;
-                            }
                             if (keyName === 'shoot'){
                                 //shoot = false;
                                 _this.playerSprites[socket.id][j].isDownB = false;
                             }
+                            else if (keyName === 'brake'){
+                                //brake = false;
+                                _this.playerSprites[socket.id][j].isDownV = false;
+                            }
+
                             if (keyName === 'swap'){
                                 n_count = 0;
                             }
@@ -428,10 +430,9 @@ Puck = function(game, x, y, authorative){
 
     var bmd1 = game.add.bitmapData(15, 15, 'rgb(0,200,0)');
     bmd1.circle(7, 7, 6, 0);
-    if(authorative)
+
         Phaser.Sprite.call(this, game, x, y, bmd1);
-    else
-        Phaser.Sprite.call(this, game, x, y, "ball1m");
+
     
 
     game.physics.p2.enable(this);
