@@ -21,7 +21,6 @@ var goalarea1, goalarea2;
 var areaSecs1  = 0;
 var areaSecs2  = 0;
 var n_count    = 0;
-var m_count    = 0;
 var fx;
 var controlled = true;
 var target;
@@ -33,6 +32,7 @@ var score1 = 0;
 var score2 = 0;
 var goalscored = false;
 var waitTwoSec = false;
+
 
 var accelerateRemote = true;
 /*
@@ -218,6 +218,8 @@ FunkyMultiplayerGame.Game.prototype = {
     },
 
     update: function () {
+        if (this.mdown)
+            this.m_count++;
 
         if (waitTwoSec == true){
             waitSecs++;
@@ -338,7 +340,8 @@ FunkyMultiplayerGame.Game.prototype = {
                                     _this.playerSprites[socket.id][j].isDownM = false;
                             }
                             if (keyName === 'M'){
-                                m_count++;
+                                _this.playerSprites[socket.id].m_count++;
+                                //m_count++;
                                 //_this.playerSprites[socket.id][j].goHome = true;
                             }
 
@@ -393,9 +396,9 @@ FunkyMultiplayerGame.Game.prototype = {
                                     _this.playerSprites[socket.id][0].controlPlayer = true;
                                 }*/
                             if (keyName === 'M'){
-                                if (m_count > 61){
+                                if (_this.playerSprites[socket.id].m_count > 20){
                                     if (_this.playerSprites[socket.id][0].controlPlayer)
-                                        _this.playerSprites[socket.id][1].goForw = true;
+                                        _this.playerSprites[socket.id][1].goForw = true;;
                                     else
                                         _this.playerSprites[socket.id][0].goForw = true;
                                 }
@@ -406,7 +409,7 @@ FunkyMultiplayerGame.Game.prototype = {
                                         _this.playerSprites[socket.id][0].goHome = true;
                                 }
                                 //socket.emit('conte', m_count);
-                                m_count = 0;
+                                _this.playerSprites[socket.id].m_count = 0;
                                 
 
                             }
@@ -529,6 +532,7 @@ Player = function (game, x, y, img, host) {
      this.body.collides([ puckCollisionGroup]) ;
      this.host = host;
      this.hostess = host;
+     this.m_count = 0;
 
     this.controlPlayer    = true;
     this.accelerateRemote = false;
@@ -669,18 +673,24 @@ Player.prototype.update = function () {
         this.goHome = false;
         this.goForw = false;
     }
+    if (this.m_count > 0)
+        this.m_count++;
 
     if (this.goHome){
+        this.goForw = false;
         if (this.host)
             accelerateToPoint(this, homePoint, 400);
         else
             accelerateToPoint(this, homePoint1, 400);
     }
-    else if (this.goForw)
+    else if (this.goForw){
+        this.goHome = false;
         if (this.host)
             accelerateToPoint(this, forwPoint2, 400);
         else
             accelerateToPoint(this, forwPoint2, 400);
+
+    }
 };
 
 //module.exports = Player;
