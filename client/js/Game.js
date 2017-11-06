@@ -340,7 +340,7 @@ FunkyMultiplayerGame.Game.prototype = {
                                     _this.playerSprites[socket.id][j].isDownM = false;
                             }
                             if (keyName === 'M'){
-                                _this.playerSprites[socket.id].m_count++;
+                                //_this.playerSprites[socket.id].m_count++;
                                 //m_count++;
                                 //_this.playerSprites[socket.id][j].goHome = true;
                             }
@@ -395,7 +395,7 @@ FunkyMultiplayerGame.Game.prototype = {
                                     _this.playerSprites[socket.id][1].controlPlayer = false;
                                     _this.playerSprites[socket.id][0].controlPlayer = true;
                                 }*/
-                            if (keyName === 'M'){
+                            if (keyName === 'M'){/*
                                 if (_this.playerSprites[socket.id].m_count > 20){
                                     if (_this.playerSprites[socket.id][0].controlPlayer)
                                         _this.playerSprites[socket.id][1].goForw = true;;
@@ -410,7 +410,7 @@ FunkyMultiplayerGame.Game.prototype = {
                                 }
                                 //socket.emit('conte', m_count);
                                 _this.playerSprites[socket.id].m_count = 0;
-                                
+                                */
 
                             }
 
@@ -541,9 +541,10 @@ Player = function (game, x, y, img, host) {
     // ####This stick is invisible, without collision###############
     
     this.stick            = game.add.sprite(x, y, null);
-
+    this.stick.anchor.setTo(-1.5, 0.5);
     // #####This stick1 is visible, collides with puck###################
     this.stick1 = game.add.sprite(x, y, 'stick');
+    this.stick1.anchor.setTo(1.5, 0.5);
 
     _this.physics.p2.enable(this.stick);
     _this.physics.p2.enable(this.stick1);

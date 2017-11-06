@@ -314,11 +314,11 @@ function preparePlayersDataToSend() {
 var firstUpd = false; //true;
 
 socket.on('goalScored2', function (){
-    updateScore2();
+    //updateScore2();
 })
 
 socket.on('goalScored1', function (){
-    updateScore1();
+    //updateScore1();
 })
 
 
