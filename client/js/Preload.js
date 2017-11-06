@@ -19,7 +19,7 @@ FunkyMultiplayerGame.Preload.prototype = {
         this.load.image('goalsensor', "assets/goalsensor.png");
         this.load.image('cornerRec', "assets/cornerRec.png");
         this.load.image('goalarea', "assets/goalarea.png");
-        this.load.audio('sfx', [ 'assets/goalsound.mp3', 'assets/goalsound.ogg' ]);
+        //this.load.audio('sfx', [ 'assets/goalsound.mp3', 'assets/goalsound.ogg' ]);
     
     },
 
