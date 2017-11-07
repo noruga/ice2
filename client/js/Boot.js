@@ -73,8 +73,8 @@ socket.on('puckPos', function(data){
     puck.target_y = data.y;*/
     //console.log(puck.target_y)
 });
-var emitRate = 1000/180;
-var divisor = 3;
+var emitRate = 1000/120;
+var divisor = 2;
 
 socket.on('player_update', function(data){
     //console.log("receiving client data from", data[0].id);
@@ -314,11 +314,11 @@ function preparePlayersDataToSend() {
 var firstUpd = false; //true;
 
 socket.on('goalScored2', function (){
-    //updateScore2();
+    updateScore2();
 })
 
 socket.on('goalScored1', function (){
-    //updateScore1();
+    updateScore1();
 })
 
 

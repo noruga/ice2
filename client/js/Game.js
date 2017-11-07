@@ -340,6 +340,10 @@ FunkyMultiplayerGame.Game.prototype = {
                                     _this.playerSprites[socket.id][j].isDownM = false;
                             }
                             if (keyName === 'M'){
+                                if(_this.playerSprites[socket.id][1].controlPlayer === false)
+                                    _this.playerSprites[socket.id][1].isDownM = true;
+                                else
+                                    _this.playerSprites[socket.id][0].isDownM = true;
                                 //_this.playerSprites[socket.id].m_count++;
                                 //m_count++;
                                 //_this.playerSprites[socket.id][j].goHome = true;
@@ -395,7 +399,13 @@ FunkyMultiplayerGame.Game.prototype = {
                                     _this.playerSprites[socket.id][1].controlPlayer = false;
                                     _this.playerSprites[socket.id][0].controlPlayer = true;
                                 }*/
-                            if (keyName === 'M'){/*
+                            if (keyName === 'M'){
+                                if(_this.playerSprites[socket.id][j].controlPlayer === false)
+                                    _this.playerSprites[socket.id][j].isDownM = false;
+
+
+
+                            /*
                                 if (_this.playerSprites[socket.id].m_count > 20){
                                     if (_this.playerSprites[socket.id][0].controlPlayer)
                                         _this.playerSprites[socket.id][1].goForw = true;;
@@ -541,10 +551,10 @@ Player = function (game, x, y, img, host) {
     // ####This stick is invisible, without collision###############
     
     this.stick            = game.add.sprite(x, y, null);
-    this.stick.anchor.setTo(-1.5, 0.5);
+    //this.stick.anchor.setTo(-1.5, 0.5);
     // #####This stick1 is visible, collides with puck###################
     this.stick1 = game.add.sprite(x, y, 'stick');
-    this.stick1.anchor.setTo(1.5, 0.5);
+    //this.stick1.anchor.setTo(1.5, 0.5);
 
     _this.physics.p2.enable(this.stick);
     _this.physics.p2.enable(this.stick1);
@@ -674,8 +684,20 @@ Player.prototype.update = function () {
         this.goHome = false;
         this.goForw = false;
     }
-    if (this.m_count > 0)
+    if(this.isDownM){
         this.m_count++;
+        this.goHome = false;
+        this.goforw = false;
+    }
+    else{
+        if (this.m_count > 0){
+            if (this.m_count < 21)
+                this.goHome = true;
+            else
+                this.goForw = true;
+        }
+        this.m_count = 0;
+    }
 
     if (this.goHome){
         this.goForw = false;
@@ -686,10 +708,18 @@ Player.prototype.update = function () {
     }
     else if (this.goForw){
         this.goHome = false;
-        if (this.host)
-            accelerateToPoint(this, forwPoint2, 400);
-        else
-            accelerateToPoint(this, forwPoint2, 400);
+        if (this.host){
+            if (this.body.y < 301)
+                accelerateToPoint(this, forwPoint1, 400);
+            else
+                accelerateToPoint(this, forwPoint2, 400);
+        }
+        else{
+            if (this.body.y < 301)
+                accelerateToPoint(this, forwPoint3, 400);
+            else
+                accelerateToPoint(this, forwPoint4, 400);
+        }
 
     }
 };
@@ -741,7 +771,6 @@ function accelerateToPoint(obj1, obj2, speed) {
 
     //var angle1 = Math.atan2(y1 - obj1.y, x1 - obj1.x);
     //obj1.rotation = angle + game.math.degToRad(90);
-
     if (checkOverlap(obj1, goalarea1)){
         obj1.body.rotation = -80;
         obj1.body.velocity.x *= 0.95;
@@ -752,7 +781,18 @@ function accelerateToPoint(obj1, obj2, speed) {
         obj1.body.velocity.x *= 0.95;
         obj1.body.velocity.y *= 0.95;
     }
-    else  if (_this.physics.arcade.distanceBetween(obj1, obj2) > 30)
+
+    else if (_this.physics.arcade.distanceBetween(obj1, obj2) < 40){
+        obj1.body.velocity.x *= 0.95;
+        obj1.body.velocity.y *= 0.95;
+        if (obj1.body.y > 301)
+            obj1.body.rotation = -160;
+        else
+            obj1.body.rotation = 160;
+    }
+
+    
+    else  if (_this.physics.arcade.distanceBetween(obj1, obj2) > 40)
         obj1.body.rotation = angle + _this.math.degToRad(90);
     obj1.body.force.x = Math.cos(angle) * speed;    // accelerateToObject 
     obj1.body.force.y = Math.sin(angle) * speed;
