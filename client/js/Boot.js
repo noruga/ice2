@@ -8,8 +8,8 @@ var host = true;
 var angle, dir;
 
 // Connect to the Socket.io server that is running on the IP address 127.0.0.1 and at port number 3512.
-var socket = io("http://127.0.0.1:3512");
-//var socket = io();
+//var socket = io("http://127.0.0.1:3512");
+var socket = io();
 
 // This connects to 127.0.0.1 which is localhost (this computer), which is also where the server is running.
 // If the server was running somewhere else, like on a cloud service, then change the IP address to the
