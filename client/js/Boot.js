@@ -8,8 +8,8 @@ var host = true;
 var angle, dir;
 
 // Connect to the Socket.io server that is running on the IP address 127.0.0.1 and at port number 3512.
-//var socket = io("http://127.0.0.1:3512");
-var socket = io();
+var socket = io("http://127.0.0.1:3512");
+//var socket = io();
 
 // This connects to 127.0.0.1 which is localhost (this computer), which is also where the server is running.
 // If the server was running somewhere else, like on a cloud service, then change the IP address to the
@@ -284,7 +284,7 @@ function preparePlayersDataToSend() {
    /* dataToSend.push({id: socket.id, left: left, right: right, down: down, up: up, brake: brake, shoot: shoot, go_home: go_home, 
         controlPlayer0: _this.playerSprites[socket.id][0].controlPlayer, puckX: _this.puck.x, puckY: _this.puck.y, host: host});*/
 //console.log("JOHOOO ", Math.abs(_this.playerSprites[socket.id][0].x));
-    dataToSend.push({id: socket.id, x: Math.abs(_this.playerSprites[socket.id][0].x), y: _this.playerSprites[socket.id][0].y, 
+    dataToSend.push({id: socket.id, x: (_this.playerSprites[socket.id][0].x), y: _this.playerSprites[socket.id][0].y, 
             angle: _this.playerSprites[socket.id][0].body.rotation, puckX: _this.puck.x, puckY: _this.puck.y, host: (_this.playerSprites[socket.id][0].withinPuck || _this.playerSprites[socket.id][1].withinPuck),
             x1: _this.playerSprites[socket.id][1].x, y1: _this.playerSprites[socket.id][1].y, angle1: _this.playerSprites[socket.id][1].body.rotation});
 //console.log(_this.host)
