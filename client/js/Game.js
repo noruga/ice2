@@ -292,6 +292,7 @@ FunkyMultiplayerGame.Game.prototype = {
 
 
                     for (var j = 0; j < 2; j++){
+                        if (_this.playerSprites[socket.id][j] != undefined){
                         if (_this.playerSprites[socket.id][j].controlPlayer === true){
                             if (keyName === 'left'){
                                 //left = true;
@@ -348,7 +349,7 @@ FunkyMultiplayerGame.Game.prototype = {
                                 //m_count++;
                                 //_this.playerSprites[socket.id][j].goHome = true;
                             }
-
+                        }
 
                         //socket.emit('key_pressed', {key: keyName});
                         //console.log("key pressed", _this.playerSprites[socket.id][1].isDownV, _this.playerSprites[socket.id][1].isDownB )
@@ -637,6 +638,10 @@ Player.prototype.update = function () {
             //console.log("thrusting");
         }
     }
+
+    if(this.isDownS){
+        this.body.reverse(500);
+    }
     if (this.isDownV) {
         this.body.velocity.x *= 0.9;
         this.body.velocity.y *= 0.9;
@@ -647,7 +652,7 @@ Player.prototype.update = function () {
         //brake(this, _this.puck);
     }
 
-    if (this.isDownB) {
+    else if (this.isDownB) {
         this.isDownV = false;
         if (this.isDownS) {
             //this.body.rotateLeft(1200);
