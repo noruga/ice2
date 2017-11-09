@@ -648,6 +648,7 @@ Player.prototype.update = function () {
     }
 
     if (this.isDownB) {
+        this.isDownV = false;
         if (this.isDownS) {
             //this.body.rotateLeft(1200);
             //if (controlPlayer1){
@@ -773,26 +774,24 @@ function accelerateToPoint(obj1, obj2, speed) {
     //obj1.rotation = angle + game.math.degToRad(90);
     if (checkOverlap(obj1, goalarea1)){
         obj1.body.rotation = -80;
-        obj1.body.velocity.x *= 0.95;
-        obj1.body.velocity.y *= 0.95;
+
     }
-    else if (checkOverlap(obj1, goalarea2)){
+    if (checkOverlap(obj1, goalarea2)){
         obj1.body.rotation = 80;
-        obj1.body.velocity.x *= 0.95;
-        obj1.body.velocity.y *= 0.95;
+
     }
 
-    else if (_this.physics.arcade.distanceBetween(obj1, obj2) < 40){
+    if (_this.physics.arcade.distanceBetween(obj1, obj2) < 45){
         obj1.body.velocity.x *= 0.95;
         obj1.body.velocity.y *= 0.95;
-        if (obj1.body.y > 301)
-            obj1.body.rotation = -160;
-        else
+        if (obj1.body.y > 400)
             obj1.body.rotation = 160;
+        else if (obj1.body.y < 200)
+            obj1.body.rotation = -160;
     }
 
     
-    else  if (_this.physics.arcade.distanceBetween(obj1, obj2) > 40)
+    else
         obj1.body.rotation = angle + _this.math.degToRad(90);
     obj1.body.force.x = Math.cos(angle) * speed;    // accelerateToObject 
     obj1.body.force.y = Math.sin(angle) * speed;
