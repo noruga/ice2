@@ -60,7 +60,8 @@ socket.on('remove_player', function (data) {
         // Check that the player sprite to remove is actually in the list of player sprites.
         if(_this.playerSprites[data]){
             // Destroy the player sprite for the player to remove.
-            _this.playerSprites[data].destroy();
+            _this.playerSprites[data][0].destroy();
+            _this.playerSprites[data][1].destroy();
             // Delete the property for that player.
             delete _this.playerSprites[data];
         }
