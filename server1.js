@@ -318,6 +318,7 @@ io.on('connection', function (socket) {
     socket.on('player_update', function(data){
         var sendData = data;
         var playerId = data[0].id;
+
         if (data[0].host)
             players[playerId].hostCounter++;
         countHost++;
@@ -332,11 +333,13 @@ io.on('connection', function (socket) {
             keys.forEach(function (key) {
                 if (playerId != key){
                     if(players[playerId].hostCounter != players[key].hostCounter){
-                        if( players[playerId].hostCounter < players[key].hostCounter){
-                            lastHost = players[key].host;
-                            maxHostCounter = players[key].hostCounter;                         
+                        if( players[playerId].hostCounter < players[key].hostCounter ){
+                            if (players[key].hostCounter > 1){
+                                lastHost = players[key].host;
+                                maxHostCounter = players[key].hostCounter;
+                            }                         
                         }
-                        else
+                        else if (players[playerId].hostCounter > 1)
                             lastHost = players[playerId].host;
                     }
                     players[key].hostCounter = 0;
@@ -445,12 +448,16 @@ setInterval(function () {
 function preparePlayersDataToSend() {
     // Prepare the positions of the players, ready to send to all players.
     var dataToSend = [];
+    var host = true;
     // 'players' is an object, so get a list of the keys.
     var keys = Object.keys(players);
-    // Loop though the list of players and get the position of each player.
+
     keys.forEach(function (key) {
         // Add the position (and ID, so the client knows who is where) to the data to send.
-        dataToSend.push({id: key, x: null, y: null, angle: null, puckX: null, puckY: null});
+        dataToSend.push({id: key, host});
+        console.log("ID : ", key, "HOST :", host)
+        host = false;
+
     });
     return dataToSend;
 }
