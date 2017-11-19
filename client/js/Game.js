@@ -32,6 +32,9 @@ var score1 = 0;
 var score2 = 0;
 var goalscored = false;
 var waitTwoSec = false;
+var tween;
+
+
 
 
 var accelerateRemote = true;
@@ -167,6 +170,7 @@ FunkyMultiplayerGame.Game.prototype = {
         //###### End Corners ############
 
 
+
         // #############The Goals#################
         goal6 = this.add.sprite(844, 297, 'goallong2');
         goal3 = this.add.sprite(56, 298, 'goallong1');
@@ -215,6 +219,7 @@ FunkyMultiplayerGame.Game.prototype = {
         this.physics.p2.updateBoundsCollisionGroup();
         this.game.stage.disableVisibilityChange = true;
         this.mapKeys();
+
     },
 
     update: function () {
@@ -292,7 +297,7 @@ FunkyMultiplayerGame.Game.prototype = {
 
 
                     for (var j = 0; j < 2; j++){
-                        if (_this.playerSprites[socket.id][j] != undefined){
+                        if (_this.playerSprites[socket.id][j]){
                         if (_this.playerSprites[socket.id][j].controlPlayer === true){
                             if (keyName === 'left'){
                                 //left = true;
@@ -453,6 +458,7 @@ Puck = function(game, x, y, authorative){
     this.authorative = authorative;
     this.body.setCircle(7);
     this.body.mass = 0.00001;
+    this.divisor = 3;
         //puck.visible = false;
         game.physics.enable(this, Phaser.Physics.ARCADE);
 
@@ -486,9 +492,10 @@ Puck.prototype.constructor = Puck;
 
 Puck.prototype.update = function () {
 
-    this.body.velocity.x *= 0.995;
-    this.body.velocity.y *= 0.995;
+
     if (this.authorative === true){
+        this.body.velocity.x *= 0.995;
+        this.body.velocity.y *= 0.995;
         if (goalscored === false){                   //to register goal only once
             //if(puck.prevx < )
             if (checkOverlap(this, goalsensor1))
@@ -513,10 +520,20 @@ Puck.prototype.update = function () {
             };
         };
     }
+    else{
+        this.body.x += (this.target_x - this.body.x) / this.divisor;
+        this.body.y += (this.target_y - this.body.y) / this.divisor;
+        this.divisor--;
+        if (this.divisor === 0)
+            this.divisor = 3;
+                    //_this.target.body.y += (_this.puck.target_y - _this.target.body.y) / divisor;
+    }
 }
 
-Player = function (game, x, y, img, host) {
+Player = function (game, x, y, img, host, hostStick) {
     Phaser.Sprite.call(this, game, x, y, img);
+
+    this.divisor = 3;
 
     this.isDownA = false;
     this.isDownS = false;
@@ -532,6 +549,10 @@ Player = function (game, x, y, img, host) {
 
     this.withinPuck = false;
 
+    this.target_y ;
+    this.target_x ;
+    this.divisor = 3;
+
 
 
     game.physics.p2.enable(this);
@@ -544,13 +565,15 @@ Player = function (game, x, y, img, host) {
      this.host = host;
      this.hostess = host;
      this.m_count = 0;
+     this.hostStick = hostStick;
 
     this.controlPlayer    = true;
     this.accelerateRemote = false;
     this.target_x;
-    this.target_y;
+    this.target_y = 0;
+    this.target_rotation;
     // ####This stick is invisible, without collision###############
-    
+  if (hostStick){  
     this.stick            = game.add.sprite(x, y, null);
     //this.stick.anchor.setTo(-1.5, 0.5);
     // #####This stick1 is visible, collides with puck###################
@@ -566,7 +589,31 @@ Player = function (game, x, y, img, host) {
 
     var constraint  = game.physics.p2.createLockConstraint(this, this.stick, [-30, 0], 0);
     var constraint1 = game.physics.p2.createLockConstraint(this, this.stick1, [30, 0], 0);
+  }
+  
+  else{
+    this.stick2 = (game.add.sprite(x - 30, y, 'stick'));
+    
+    game.physics.p2.enable(this.stick2);
+    this.stick2.body.clearCollision(true);
+    this.stick2.body.collideWorldBounds = false;
+    this.stick2.body.setCollisionGroup(stickCollisionGroup);
+    this.stick2.body.collides(puckCollisionGroup);
 
+    //this.stick2.anchor.setTo(1.5, 0.5);
+    if (this.host)
+        this.stick2.body.rotation = this.body.rotation + Math.PI / 2.7;
+    else
+        this.stick2.body.rotation = this.body.rotation - Math.PI / 2.7;
+    //this.stick2.mass = 0;
+    //this.addChild(this.stick2);
+    /*this.stick2.visible = false;
+    this.sticky = _this.add.sprite(30, 30, 'stick');
+    game.physics.p2.enable(this.sticky);
+    this.sticky.body.collideWorldBounds = false;
+    this.sticky.body.setCollisionGroup(stickCollisionGroup);
+    this.sticky.body.collides(puckCollisionGroup);*/
+  }
 
     game.add.existing(this);
     console.log("player created")
@@ -677,7 +724,7 @@ Player.prototype.update = function () {
         }
 
     }
-    if (distanceSq(_this.puck, this) < 500){
+    if (distanceSq(_this.puck, this) < 1500){
         this.withinPuck = true;
 
     }
@@ -727,6 +774,29 @@ Player.prototype.update = function () {
                 accelerateToPoint(this, forwPoint4, 400);
         }
 
+    }
+    
+    if (this.hostStick === false){
+        if (this.target_y != 0){
+            this.body.y += (this.target_y - this.body.y) / this.divisor;
+            this.body.x += (this.target_x - this.body.x) / this.divisor;
+        let angle = this.target_rotation;
+        let dir = (angle - this.body.rotation) / (Math.PI * 2);
+        dir -= Math.round(dir);
+        dir = dir * Math.PI * 2;
+        this.body.rotation += dir / this.divisor;
+        this.stick2.body.rotation += dir / this.divisor;
+        this.stick2.body.x += (this.target_x - this.stick2.body.x) / this.divisor - Math.cos(this.stick2.body.rotation) * (10);
+        this.stick2.body.y += (this.target_y - this.stick2.body.y) / this.divisor - Math.sin(this.stick2.body.rotation) * (10);
+        this.divisior--;
+        if (this.divisior === 0)
+            this.divisor = 3;
+        }
+
+        /*
+        this.stick2.body.x = this.body.x;
+        this.stick2.body.y = this.body.y;*/
+        //this.sticky2.body.rotation = this.body.rotation;
     }
 };
 
@@ -837,7 +907,7 @@ function updateScore1()
     player1.body.velocity.x = 0;
     player3.body.velocity.x = 0;
     player2.body.velocity.x = 0;+*/
-    //fx.play();
+    fx.play();
     //sound.play();
 }
 
@@ -859,6 +929,6 @@ function updateScore2()
 */
 
     //fx.play('sfx');
-    //fx.play();
+    fx.play();
     //sound.play();
 }
