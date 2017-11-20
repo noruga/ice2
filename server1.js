@@ -343,13 +343,16 @@ io.on('connection', function (socket) {
                             lastHost = players[playerId].host;
                     }
                     players[key].hostCounter = 0;
+                    sendData[0].host = lastHost
+                    socket.broadcast.to(key).emit('player_update', sendData);
                 }
             });
-            players[playerId].hostCounter = 0;
+            players[playerId].hostCounter = 0;/*
             sendData[0].host = lastHost// = tmpLastHost;
-            console.log("Player ", playerId, " ", sendData[0].host)
-            console.log(" hc1 : ", players[playerId].hostCounter, " hc2 : ", maxHostCounter)  
+           // console.log("Player ", playerId, " ", sendData[0].host)
+            //console.log(" hc1 : ", players[playerId].hostCounter, " hc2 : ", maxHostCounter)  
         io.in('game-room').emit('player_update', sendData);
+        console.log(sendData);*/
         }
     })
 
