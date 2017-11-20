@@ -88,7 +88,7 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                 puck.y = data[i].puckY;*/
                 //console.log(this.id);
 
-            if(data[i].id != this.id){
+            //if(data[i].id != this.id){
                 //console.log("puck.x ", puck.x  )
                 _this.playerSprites[data[i].id][0].target_x         = data[i].x; // Update target, not actual position, so we can interpolate
                 _this.playerSprites[data[i].id][0].target_y         = data[i].y;
@@ -160,7 +160,7 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                         _this.target.visible = false;
                         _this.puck.visible = true;
                     }
-            }  
+            //}  
 
                     //if (_this.playerSprites[data[i].id][0].host === true){
                     //socket.in('game-room').emit('puckPos', {x: data.x, y: data.y});
