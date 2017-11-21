@@ -1,37 +1,3 @@
-/** Simple, easy, networked multiplayer game template using Socket.io and Phaser.io, with lots of explanations.
- * By Johnathan Fisher http://www.waywardworlds.com @waywardworlds
- *
- *  *   *   *   *   *   *   *   *   *   *   *   *   *   *
- *  *   *   *   How to set up the project   *   *   *   *
- *  *   *   *   *   *   *   *   *   *   *   *   *   *   *
- *
- * First, you need to have NodeJS and NPM installed. That should be fairly easy to do.
- * Open a command-line user interface (CLI), and enter 'node -v', then 'npm -v', which
- * should show the versions of Node and NPM if they are set up correctly, which should
- * output something like 'v5.10.0' and '4.4.4', or whatever version you installed.
- *
- * This project uses the Express.js and Socket.io libraries.
- * Everything that is required should be included in the package.json file. Just navigate to
- * the parent directory of your game, i.e. 'C:\path\to\basic-multiplayer-template' in a CLI
- * and enter 'npm install'.
- * This should go through everything listed in the package.json file and install them from NPM.
- *
- * There should now be a folder in your game directory called 'node_modules'.
- * It will be huge and full of junk and looks like a mess, but that's just how NPM is...
- *
- * This file is Server.js, which is what you should run with Node.
- * Assuming you are still in the directory of your game in the command line, enter
- * 'node server'. That will run this javascript file and set everything up that is in here.
- *
- * Below is the code and how it works.
- * */
-
-// Strict mode helps to prevent the use of weird things that you might do in javascript by accident.
-//"use strict";
-/*
-import PIXI from 'pixi';
-import P2 from 'p2';*/
-
 var path = require('path');
 
 // Gathering dependencies. The require(...) bit imports the stuff that was installed through npm.
@@ -42,9 +8,7 @@ var app = express();
 
 /*
 app.use(express.static('public'));
-
 var favicon = require('serve-favicon');
-
 app.use(favicon(__dirname + 'public/favicon.ico'));*/
 
 app.use('/', express.static(__dirname + '/client'));
@@ -101,6 +65,12 @@ var players = {};
 
 var countHost = 0;
 var lastHost = true;
+
+
+let disconnection = {
+    sid : null, //socket id
+    delay : null //timeout id
+};
 //var numOfPlayers = 0;
 /** *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *
  *  *   *   * Some useful stuff you can do with Socket.io   *   *   *   *
@@ -126,7 +96,6 @@ var lastHost = true;
 //                            v The socket object is passed in automatically by io when a connection is made.
  //   myModule = (
  /*       myModule.SETTINGS = {
-
             SHOOT : 100,
             FORWARD : 22,
             FORWARD_2 : 5,
@@ -140,15 +109,11 @@ var lastHost = true;
             PUCK_MASS : 0.00001,
             ACC1_LIMIT : 1.80,
         };
-
-
         myModule.goalSeconds = 0;
-
         myModule.PUCK = Math.pow(2,1)
         myModule.STICK =  Math.pow(2,2)
         myModule.SCENERY = Math.pow(2,3)
         myModule.PLAYER = Math.pow(2,0)
-
         myModule.goalscored = false;
         myModule.frameCounter = 0;
         myModule.n_hit = false;
@@ -156,40 +121,31 @@ var lastHost = true;
         myModule.currentScore = [];
         myModule.currentScore[0] = 0;
         myModule.currentScore[1] = 0;
-
         myModule.Player = function ( x, y, id) {
             var playerShape = new p2.Circle({ radius: 0.15 });
             p2.Body.call(this,{
                 position:[x, y],
                 mass: 1 ,
             });
-
             playerShape.collisionGroup = PLAYER;
             playerShape.collisionMask = PLAYER | SCENERY | PUCK;
-
             this.addShape(playerShape);
             this.controlPlayer = false;
-
             this.stick = new Stick(x, y-0.3);
             this.stick.collisionResponse = 0;
             world.addBody(this.stick);
-
             this.constraint = new p2.LockConstraint(this, this.stick);
             world.addConstraint(this.constraint);
-
             this.stick1 = new Stick(x, y+0.3);
-
             this.stick1.collisionGroup = STICK;
             this.stick1.collisionMask = PUCK;
             world.addBody(this.stick1);
-
             this.constraint = new p2.LockConstraint(this, this.stick1);
             world.addConstraint(this.constraint);
         }
         console.log("hei");
         myModule.Player.prototype = Object.create(myModule.Body.prototype);
         myModule.Player.prototype.constructor = myModule.Player;
-
         myModule.Stick = function(x, y){
             var stickShape = new p2.Box({ width: 0.15, height: 0.27 });
             stickShape.collisionGroup = STICK;
@@ -207,6 +163,12 @@ var lastHost = true;
 
 
 io.on('connection', function (socket) {
+
+    if (disconnection.delay && disconnection.sid == socket.request.sessionID) {
+        clearTimeout(disconnection.delay);
+        disconnection.sid = null;
+    }
+
     console.log("* * * A new connection has been made.");
     // Each socket object (one for each connected client) has an 'id' property,
     // which can be used to uniquely identify each socket connection.
@@ -282,11 +244,16 @@ io.on('connection', function (socket) {
 
             };
             players[socket.id].hostCounter = 0;
-            console.log(players[socket.id].hostCounter)
+            players[socket.id].hostArray = [false, false, false, false, false, false, false, false, false, false, false, false,
+            false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+            false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false];
+
+            //console.log(players[socket.id].hostCounter)
+            /*
             if (Object.keys(players).length === 1)
                 players[socket.id].x = 150;
             else
-                players[socket.id].x = 750;
+                players[socket.id].x = 750;*/
 
 
             firstUpdate++;
@@ -323,6 +290,13 @@ io.on('connection', function (socket) {
             players[playerId].hostCounter++;
         countHost++;
 
+        players[playerId].hostArray.push(data[0].host);
+        if (players[playerId].hostArray[0])
+            players[playerId].hostCounter--;
+        players[playerId].hostArray.shift();
+
+
+
         if(countHost > 2){
             countHost = 0;
             var keys = Object.keys(players);
@@ -339,21 +313,22 @@ io.on('connection', function (socket) {
                                 maxHostCounter = players[key].hostCounter;
                             }                         
                         }
-                        else if (players[playerId].hostCounter > 1)
+                        else if (players[playerId].hostArray[47])
                             lastHost = players[playerId].host;
                     }
-                    players[key].hostCounter = 0;
+                    //players[key].hostCounter = 0;
                     sendData[0].host = lastHost
                     socket.broadcast.to(key).emit('player_update', sendData);
                 }
-            });
-            players[playerId].hostCounter = 0;/*
+            });/*
+            players[playerId].hostCounter = 0;
             sendData[0].host = lastHost// = tmpLastHost;
            // console.log("Player ", playerId, " ", sendData[0].host)
             //console.log(" hc1 : ", players[playerId].hostCounter, " hc2 : ", maxHostCounter)  
         io.in('game-room').emit('player_update', sendData);
         console.log(sendData);*/
         }
+        console.log(playerId, " hc :  ", players[playerId].hostCounter)
     })
 
     socket.on('goalScored1', function(){
@@ -386,10 +361,7 @@ io.on('connection', function (socket) {
     socket.on('key_pressed', function(data){
         io.in('game-room').emit('key_pressed', {playerId: socket.id, key: data.key ,state:'down', host: data.host});
         console.log("key press received: ", data.key);
-
-
         //console.log([socket.id]);
-
     })*/
 /*
     socket.on('key_up', function(data){
@@ -398,16 +370,13 @@ io.on('connection', function (socket) {
     })*/
 
 /*
-
     socket.on('move_player', function (data) {
         // Access the object in the list of players that has the key of this socket ID.
         // 'data.axis' is the axis to move in, x or y.
         // 'data.force' is which direction on the given axis to move, 1 or -1.
         // So if the axis is 'y', and the force is -1, then the player would move up.
         // Change the * 2 multiplier to change the movement speed.
-
         players[socket.id][data.axis] += data.force * 2;
-
         //console.log(players[socket.id][data.axis]);
     });*/
 /*
@@ -417,6 +386,20 @@ io.on('connection', function (socket) {
 
     // When a client socket disconnects (closes the page, refreshes, timeout etc.),
     // then this event will automatically be triggered.
+    socket.on('disconnecting', function () {
+        disconnection.sid = socket.request.sessionID; //grab session id
+        disconnection.delay = setTimeout(() => {
+            if(socket.isInGame === true){
+                delete players[socket.id];
+            }
+        //set timeout to variable, in case of reconnection
+
+            io.in('game-room').emit('remove_player', socket.id);
+        //emit the disconnection event
+        }, 5000);
+    });
+
+/*
     socket.on('disconnecting', function () {
         // Check if this player was in a game before they disconnected.
         if(socket.isInGame === true){
@@ -428,7 +411,7 @@ io.on('connection', function (socket) {
             // to that room, sending with it the key of the property to remove.
             io.in('game-room').emit('remove_player', socket.id);
         }
-    });
+    });*/
 
 });
 
