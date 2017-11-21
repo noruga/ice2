@@ -163,12 +163,6 @@ let disconnection = {
 
 
 io.on('connection', function (socket) {
-
-    if (disconnection.delay && disconnection.sid == socket.request.sessionID) {
-        clearTimeout(disconnection.delay);
-        disconnection.sid = null;
-    }
-
     console.log("* * * A new connection has been made.");
     // Each socket object (one for each connected client) has an 'id' property,
     // which can be used to uniquely identify each socket connection.
@@ -313,7 +307,7 @@ io.on('connection', function (socket) {
                                 maxHostCounter = players[key].hostCounter;
                             }                         
                         }
-                        else if (players[playerId].hostArray[47])
+                        else if (players[playerId].hostArray[45])
                             lastHost = players[playerId].host;
                     }
                     //players[key].hostCounter = 0;
