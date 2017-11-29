@@ -238,9 +238,8 @@ io.on('connection', function (socket) {
 
             };
             players[socket.id].hostCounter = 0;
-            players[socket.id].hostArray = [false, false, false, false, false, false, false, false, false, false, false, false];
-            /*,
-            false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+            players[socket.id].hostArray = [false, false, false, false, false, false, false, false, false, false, false, false,
+            false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false];/*,
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false];*/
 
             //console.log(players[socket.id].hostCounter)
@@ -308,7 +307,7 @@ io.on('connection', function (socket) {
                                 maxHostCounter = players[key].hostCounter;
                             }                         
                         }
-                        else if (players[playerId].hostArray[11])
+                        else if (players[playerId].hostArray[28])
                             lastHost = players[playerId].host;
                     }
                     //players[key].hostCounter = 0;
