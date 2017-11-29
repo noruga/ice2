@@ -666,8 +666,8 @@ Player.prototype             = Object.create(Phaser.Sprite.prototype);
 Player.prototype.constructor = Player;
 Player.prototype.update = function () {
 
-    this.body.velocity.x *= 0.99;
-    this.body.velocity.y *= 0.99;
+    this.body.velocity.x *= 0.97;
+    this.body.velocity.y *= 0.97;
     this.body.setZeroRotation();
     //this.body.angularVelocity = 0;
 
