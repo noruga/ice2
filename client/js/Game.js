@@ -56,7 +56,7 @@ FunkyMultiplayerGame.Game.prototype = {
     create: function () {
         // Create an external reference to this function context so we can access this game state from the socket callbacks.
         _this = this;
-        fx = _this.add.audio('sfx');
+        //fx = _this.add.audio('sfx');
 
         // Create an object to hold references to the player sprites.
         this.playerSprites = {};
