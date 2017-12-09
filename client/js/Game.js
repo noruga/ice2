@@ -56,7 +56,7 @@ FunkyMultiplayerGame.Game.prototype = {
     create: function () {
         // Create an external reference to this function context so we can access this game state from the socket callbacks.
         _this = this;
-
+        fx = _this.add.audio('sfx');
 
         // Create an object to hold references to the player sprites.
         this.playerSprites = {};
@@ -103,17 +103,12 @@ FunkyMultiplayerGame.Game.prototype = {
         puck.body.mass = 0.00001;
         //puck.visible = false;
         //game.physics.enable(puck, Phaser.Physics.ARCADE);
-
-
         puck.body.collideWorldBounds = true;
-
         puck.body.setCollisionGroup(puckCollisionGroup);
         puck.body.collides([stickCollisionGroup, puckCollisionGroup]);
-
         puck.target_x = 050;
         puck.target_y = 30;*/
 /*
-
         this.target = this.add.sprite(450, 300, bmd);
         this.physics.p2.enable(this.target);
         this.target.body.setCircle(7);
@@ -622,7 +617,6 @@ Player = function (game, x, y, img, host, hostStick) {
 /*
 Player = function (game, x, y, img) {
     Phaser.Sprite.call(this, game, x, y, img);
-
     this.isDownA = false;
     this.isDownS = false;
     this.isDownD = false;
@@ -631,7 +625,6 @@ Player = function (game, x, y, img) {
     this.isDownB = false;
     this.isDownN = false;
     this.isDownM = false;
-
     _this.physics.p2.enable(this);
     this.body.setCircle(12);
     this.anchor.setTo(0.5, 0.5);
@@ -643,23 +636,17 @@ Player = function (game, x, y, img) {
     this.accelerateRemote = false;
     // ####This stick is invisible, without collision###############
     this.stick            = game.add.sprite(x, y, null);
-
     // #####This stick1 is visible, collides with puck###################
     this.stick1 = game.add.sprite(x, y, 'stick');
-
     _this.physics.p2.enable(this.stick);
     _this.physics.p2.enable(this.stick1);
     this.stick.body.clearCollision(true);
     this.stick1.body.collideWorldBounds = false;
     //stick1.body.setCollisionGroup(stickCollisionGroup);
     //stick1.body.collides(puckCollisionGroup);
-
     var constraint  = game.physics.p2.createLockConstraint(this, this.stick, [-30, 0], 0);
     var constraint1 = game.physics.p2.createLockConstraint(this, this.stick1, [30, 0], 0);
-
-
     game.add.existing(this);
-
 };*/
 
 Player.prototype             = Object.create(Phaser.Sprite.prototype);
