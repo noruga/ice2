@@ -21,7 +21,7 @@ var goalarea1, goalarea2;
 var areaSecs1  = 0;
 var areaSecs2  = 0;
 var n_count    = 0;
-var fx;
+var fx, fx1;
 var controlled = true;
 var target;
 var homePoint, homePoint1, forwPoint1, forwPoint2, forwPoint3, forwPoint4;
@@ -57,6 +57,7 @@ FunkyMultiplayerGame.Game.prototype = {
         // Create an external reference to this function context so we can access this game state from the socket callbacks.
         _this = this;
         fx = _this.add.audio('sfx');
+        fx1 = _this.add.audio('hit')
 
         // Create an object to hold references to the player sprites.
         this.playerSprites = {};
@@ -688,6 +689,8 @@ Player.prototype.update = function () {
 
     else if (this.isDownB) {
         this.isDownV = false;
+        if (checkOverlap(this.stick1, _this.puck))
+            fx1.play();
         if (this.isDownS) {
             //this.body.rotateLeft(1200);
             //if (controlPlayer1){
