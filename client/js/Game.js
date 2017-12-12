@@ -882,7 +882,6 @@ function distanceSq(object,target) {
 
 function updateScore1()
 {
-    goalscored = true;
     if (waitTwoSec === false){
     score1++;
     scoreText.text = 'Score : ' + score1 + " : " + score2;
@@ -905,7 +904,6 @@ function updateScore1()
 
 function updateScore2()
 {
-    goalscored = true;
     if (waitTwoSec === false){
     score2++;
     scoreText.text = 'Score : ' + score1 + " : " + score2;
