@@ -30,8 +30,7 @@ var stickCollisionGroup
     , goalsensorGroup;
 var score1 = 0;
 var score2 = 0;
-var goalscored = false;
-var waitTwoSec = false;
+
 var tween;
 
 
@@ -883,6 +882,7 @@ function distanceSq(object,target) {
 
 function updateScore1()
 {
+    if (waitTwoSec === false){
     score1++;
     scoreText.text = 'Score : ' + score1 + " : " + score2;
     waitTwoSec = true;
@@ -899,10 +899,12 @@ function updateScore1()
     player2.body.velocity.x = 0;+*/
     fx.play();
     //sound.play();
+    }
 }
 
 function updateScore2()
 {
+    if (waitTwoSec === false){
     score2++;
     scoreText.text = 'Score : ' + score1 + " : " + score2;
     waitTwoSec = true;
@@ -920,5 +922,6 @@ function updateScore2()
 
     //fx.play('sfx');
     fx.play();
+    }
     //sound.play();
 }
