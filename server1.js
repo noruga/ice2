@@ -307,7 +307,7 @@ io.on('connection', function (socket) {
                                 maxHostCounter = players[key].hostCounter;
                             }                         
                         }
-                        else if (players[playerId].hostArray[28])
+                        else if (players[playerId].hostArray[26] && players[playerId].hostArray[27])
                             lastHost = players[playerId].host;
                     }
                     //players[key].hostCounter = 0;
@@ -322,7 +322,7 @@ io.on('connection', function (socket) {
         io.in('game-room').emit('player_update', sendData);
         console.log(sendData);*/
         }
-        console.log(playerId, " hc :  ", players[playerId].hostCounter)
+        //console.log(playerId, " hc :  ", players[playerId].hostCounter)
     })
 
     socket.on('goalScored1', function(){
