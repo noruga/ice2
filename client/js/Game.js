@@ -21,7 +21,7 @@ var goalarea1, goalarea2;
 var areaSecs1  = 0;
 var areaSecs2  = 0;
 var n_count    = 0;
-var fx, fx1;
+var fx;
 var controlled = true;
 var target;
 var homePoint, homePoint1, forwPoint1, forwPoint2, forwPoint3, forwPoint4;
@@ -30,7 +30,8 @@ var stickCollisionGroup
     , goalsensorGroup;
 var score1 = 0;
 var score2 = 0;
-
+var goalscored = false;
+var waitTwoSec = false;
 var tween;
 
 
@@ -56,7 +57,7 @@ FunkyMultiplayerGame.Game.prototype = {
         // Create an external reference to this function context so we can access this game state from the socket callbacks.
         _this = this;
         fx = _this.add.audio('sfx');
-        fx1 = _this.add.audio('hit')
+        var fx1 = _this.add.audio('hit')
 
         // Create an object to hold references to the player sprites.
         this.playerSprites = {};
@@ -679,7 +680,7 @@ Player.prototype.update = function () {
     if (this.isDownV) {
         this.body.velocity.x *= 0.9;
         this.body.velocity.y *= 0.9;
-        if (distanceSq(_this.puck, this.stick1) < (25*25))
+        if (distanceSq(_this.puck, this.stick1) < (23*23))
             moveToObject(_this.puck, this.stick1, 70);
         //console.log("braking");
         //console.log(this.host);
@@ -713,7 +714,7 @@ Player.prototype.update = function () {
         }
 
     }
-    if (distanceSq(_this.puck, this) < 1500){
+    if (distanceSq(_this.puck, this) < 1900){
         this.withinPuck = true;
 
     }
@@ -882,7 +883,6 @@ function distanceSq(object,target) {
 
 function updateScore1()
 {
-    if (waitTwoSec === false){
     score1++;
     scoreText.text = 'Score : ' + score1 + " : " + score2;
     waitTwoSec = true;
@@ -899,12 +899,10 @@ function updateScore1()
     player2.body.velocity.x = 0;+*/
     fx.play();
     //sound.play();
-    }
 }
 
 function updateScore2()
 {
-    if (waitTwoSec === false){
     score2++;
     scoreText.text = 'Score : ' + score1 + " : " + score2;
     waitTwoSec = true;
@@ -922,6 +920,5 @@ function updateScore2()
 
     //fx.play('sfx');
     fx.play();
-    }
     //sound.play();
 }
