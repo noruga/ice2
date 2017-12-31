@@ -291,7 +291,7 @@ io.on('connection', function (socket) {
 
 
 
-        if(countHost > 2){
+        if(countHost > 4){
             countHost = 0;
             var keys = Object.keys(players);
             
@@ -307,7 +307,7 @@ io.on('connection', function (socket) {
                                 maxHostCounter = players[key].hostCounter;
                             }                         
                         }
-                        else if (players[playerId].hostArray[26] && players[playerId].hostArray[44])
+                        else if (players[playerId].hostArray[42] && players[playerId].hostArray[44])
                             lastHost = players[playerId].host;
                     }
                     //players[key].hostCounter = 0;
