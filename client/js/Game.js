@@ -33,6 +33,7 @@ var score2 = 0;
 var goalscored = false;
 var waitTwoSec = false;
 var tween;
+var fx1;
 
 
 
@@ -57,7 +58,7 @@ FunkyMultiplayerGame.Game.prototype = {
         // Create an external reference to this function context so we can access this game state from the socket callbacks.
         _this = this;
         fx = _this.add.audio('sfx');
-        var fx1 = _this.add.audio('hit')
+        fx1 = _this.add.audio('hit')
 
         // Create an object to hold references to the player sprites.
         this.playerSprites = {};
@@ -714,7 +715,7 @@ Player.prototype.update = function () {
         }
 
     }
-    if (distanceSq(_this.puck, this) < 1900){
+    if (distanceSq(_this.puck, this) < 2500){
         this.withinPuck = true;
 
     }
