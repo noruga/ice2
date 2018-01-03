@@ -302,12 +302,13 @@ io.on('connection', function (socket) {
                 if (playerId != key){
                     if(players[playerId].hostCounter != players[key].hostCounter){
                         if( players[playerId].hostCounter < players[key].hostCounter ){
-                            if (players[key].hostCounter > 1){
+                            if (players[key].hostArray[45]){
+
                                 lastHost = players[key].host;
                                 maxHostCounter = players[key].hostCounter;
                             }                         
                         }
-                        else if (players[playerId].hostArray[42] && players[playerId].hostArray[44])
+                        else if (players[playerId].hostArray[45])
                             lastHost = players[playerId].host;
                     }
                     //players[key].hostCounter = 0;
