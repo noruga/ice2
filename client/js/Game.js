@@ -773,7 +773,7 @@ Player.prototype.update = function () {
             this.body.x += (this.target_x - this.body.x) / this.divisor;
         let angle = this.target_rotation;
         let dir = (angle - this.body.rotation) / (Math.PI * 2);
-        dir -= Math.round(dir);
+        //dir = Math.round(dir);
         dir = dir * Math.PI * 2;
         this.body.rotation += dir / this.divisor;
         this.stick2.body.rotation += dir / this.divisor;
@@ -884,10 +884,12 @@ function distanceSq(object,target) {
 
 function updateScore1()
 {
-    score1++;
-    scoreText.text = 'Score : ' + score1 + " : " + score2;
-    waitTwoSec = true;
-    scoreText2.text = (400, 400, "   GOAL!!!!");
+    if (waitTwoSec === false){
+        score1++;
+        scoreText.text = 'Score : ' + score1 + " : " + score2;
+        waitTwoSec = true;
+        scoreText2.text = (400, 400, "   GOAL!!!!");
+    }
 
 /*
     player.body.x = 150;
@@ -904,10 +906,12 @@ function updateScore1()
 
 function updateScore2()
 {
-    score2++;
-    scoreText.text = 'Score : ' + score1 + " : " + score2;
-    waitTwoSec = true;
-    scoreText2.text = (400, 400, "   GOAL!!!!");
+    if (waitTwoSec === false){
+        score2++;
+        scoreText.text = 'Score : ' + score1 + " : " + score2;
+        waitTwoSec = true;
+        scoreText2.text = (400, 400, "   GOAL!!!!");
+    }
 /*
     player.body.x = 150;
     player.body.y = 200;
