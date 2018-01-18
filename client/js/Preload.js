@@ -8,7 +8,7 @@ FunkyMultiplayerGame.Preload.prototype = {
         this.load.image("btn-join-game",    'assets/btn-join-game.png');
 
 
-		this.load.image('starfield' , "assets/rink old.png");
+		this.load.image('starfield' , "assets/rinknew.png");
 		this.load.image('ball', "assets/ball1.png");
         this.load.image('ball1m', "assets/ball1m.png");
 		this.load.image('stick', "assets/stick.png");
