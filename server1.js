@@ -66,6 +66,9 @@ var players = {};
 var countHost = 0;
 var lastHost = true;
 
+var lastPuckX = 540;
+var lastPuckY = 300;
+
 
 let disconnection = {
     sid : null, //socket id
@@ -301,6 +304,7 @@ io.on('connection', function (socket) {
             keys.forEach(function (key) {
                 if (playerId != key){
                     if(players[playerId].hostCounter != players[key].hostCounter){
+                        if ((Math.abs(lastPuckX - data[0].puckX) < 3) && (Math.abs(lastPuckX - data[0].puckX) < 3)){
                         if( players[playerId].hostCounter < players[key].hostCounter ){
                             if (players[key].hostArray[45]){
 
@@ -310,6 +314,7 @@ io.on('connection', function (socket) {
                         }
                         else if (players[playerId].hostArray[45])
                             lastHost = players[playerId].host;
+                        }
                     }
                     //players[key].hostCounter = 0;
                     sendData[0].host = lastHost
@@ -323,6 +328,10 @@ io.on('connection', function (socket) {
         io.in('game-room').emit('player_update', sendData);
         console.log(sendData);*/
         }
+         if (data[0].host){
+            lastPuckX = data[0].puckX;
+            lastPuckY = data[0].puckY;
+         }
         //console.log(playerId, " hc :  ", players[playerId].hostCounter)
     })
 
