@@ -3,10 +3,10 @@
 // Global reference to the active Phaser game state. This makes doing things with
 // a state possible without actually being in the state file itself.
 var _this;
+var sizer = 1.2;
 
 var host = true;
 var angle, dir;
-
 // Connect to the Socket.io server that is running on the IP address 127.0.0.1 and at port number 3512.
 //var socket = io("http://127.0.0.1:3512");
 var socket = io();
@@ -75,7 +75,7 @@ socket.on('puckPos', function(data){
     //console.log(puck.target_y)
 });
 var emitRate = 1000/180;
-var divisor = 1;
+var divisor = 3;
 
 socket.on('player_update', function(data){
     //console.log("receiving client data from", data[0].id);
@@ -93,8 +93,8 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                 _this.playerSprites[data[i].id][0].target_x         = data[i].x; // Update target, not actual position, so we can interpolate
                 _this.playerSprites[data[i].id][0].target_y         = data[i].y;
                 _this.playerSprites[data[i].id][0].target_rotation  = data[i].angle;
-                _this.target.target_x                                 = data[i].puckX;
-                _this.target.target_y                                 = data[i].puckY;
+                _this.target.target_x                               = data[i].puckX;
+                _this.target.target_y                               = data[i].puckY;
 
                 _this.playerSprites[data[i].id][1].target_x         = data[i].x1; // Update target, not actual position, so we can interpolate
                 _this.playerSprites[data[i].id][1].target_y         = data[i].y1;
@@ -141,6 +141,8 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                             //_this.puck.body.y += (_this.puck.target_y - _this.puck.body.y) / divisor;
                             _this.puck.body.x = _this.target.body.x;
                             _this.puck.body.y = _this.target.body.y;
+                            //_this.puck.body.velocity.x = _this.target.body.velocity.x;
+                            //_this.puck.body.velocity.y = _this.target.body.velocity.y;
                             _this.target.visible = true;
                             _this.puck.visible = false;
                             _this.puck.collides = false;
@@ -390,16 +392,16 @@ socket.on('state_update', function (data) {
                     host = false;
                     //_this.playerSprites[data[i].id] =  new Player(_this, data[i].x, data[i].y, 'ball1m');
                     _this.playerSprites[data[i].id] = {};
-                    _this.playerSprites[data[i].id][0] =  new Player(_this, 150, 300, 'ball1m', true, (data[i].id === this.id));//myXor(_this.host, data[i].host));
-                    _this.playerSprites[data[i].id][1] =  new Player(_this, 350, 300, 'ball1m', true, (data[i].id === this.id));
+                    _this.playerSprites[data[i].id][0] =  new Player(_this, 150*sizer, 300, 'ball1m', true, (data[i].id === this.id));//myXor(_this.host, data[i].host));
+                    _this.playerSprites[data[i].id][1] =  new Player(_this, 350*sizer, 300, 'ball1m', true, (data[i].id === this.id));
                     //_this.playerSprites[data[i].id].host = true;
 
                     _this.playerSprites[data[i].id][0].controlPlayer = false;
                     _this.playerSprites[data[i].id][0].body.rotation = Math.PI / 2.7;
                     _this.playerSprites[data[i].id][1].body.rotation = Math.PI / 2.7;
                     _this.playerSprites[data[i].id].host = true;
-                    _this.puck = new Puck(_this, 450, 300, true);
-                    _this.target = new Puck(_this, 450, 300, false);
+                    _this.puck = new Puck(_this, 450*sizer, 300, true);
+                    _this.target = new Puck(_this, 450*sizer, 300, false);
                     /*
                     if (_this.playerSprites[data[i].id][1].stick2){
                                                 _this.physics.p2.enable(_this.playerSprites[data[i].id][0].stick2);
@@ -418,8 +420,8 @@ socket.on('state_update', function (data) {
                     //console.log("_this.id : ", _this.id)
                     _this.playerSprites[data[i].id] = {}
                     _this.playerSprites[data[i].id].host = false;
-                    _this.playerSprites[data[i].id][0] =  new Player(_this, 750, 300, 'ball', false, (data[i].id === this.id));
-                    _this.playerSprites[data[i].id][1] =  new Player(_this, 550, 300, 'ball', false, (data[i].id === this.id));
+                    _this.playerSprites[data[i].id][0] =  new Player(_this, 750*sizer, 300, 'ball', false, (data[i].id === this.id));
+                    _this.playerSprites[data[i].id][1] =  new Player(_this, 550*sizer, 300, 'ball', false, (data[i].id === this.id));
                     
 
                     _this.playerSprites[data[i].id][0].controlPlayer = false;

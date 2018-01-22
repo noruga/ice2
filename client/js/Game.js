@@ -34,6 +34,7 @@ var goalscored = false;
 var waitTwoSec = false;
 var tween;
 var fx1;
+var sizer = 1.2;
 
 
 
@@ -80,19 +81,19 @@ FunkyMultiplayerGame.Game.prototype = {
         goalsensorGroup     = _this.physics.p2.createCollisionGroup();
 
 
-        rink = this.add.tileSprite(0, 0, 900, 600, 'starfield');
-        homePoint = this.add.sprite(112, 319, null);
-        homePoint1  = this.add.sprite(788, 281, null);
+        rink = this.add.tileSprite(0, 0, 1080, 600, 'starfield');
+        homePoint = this.add.sprite(112*sizer, 319, null);
+        homePoint1  = this.add.sprite(788*sizer, 281, null);
 
 
-        forwPoint1  = this.add.sprite(720, 100, null);
-        forwPoint2  = this.add.sprite(720, 500, null);
-        forwPoint3  = this.add.sprite(180, 100, null);
-        forwPoint4  = this.add.sprite(180, 500, null);
+        forwPoint1  = this.add.sprite(720*sizer, 100, null);
+        forwPoint2  = this.add.sprite(720*sizer, 500, null);
+        forwPoint3  = this.add.sprite(180*sizer, 100, null);
+        forwPoint4  = this.add.sprite(180*sizer, 500, null);
 
 
-        scoreText = _this.add.text(300, 10, 'Score : ' + score1 + " : " + score2, { font: '34px Arial', fill: '#bbf' });
-        scoreText2 = _this.add.text(200, 300, "" ,{ font: '100px Arial', fill: '#bbf' });
+        scoreText = _this.add.text(300*sizer, 10, 'Score : ' + score1 + " : " + score2, { font: '34px Arial', fill: '#bbf' });
+        scoreText2 = _this.add.text(200*sizer, 300, "" ,{ font: '100px Arial', fill: '#bbf' });
 
         //var puck1 = new Puck(game, 450, 350);
 
@@ -119,7 +120,7 @@ FunkyMultiplayerGame.Game.prototype = {
         //target.body.collideWorldBounds = true;*/
 
         //############ The Corners ##############
-        var cornerRec   = this.add.sprite(874, 595, 'cornerRec');
+        var cornerRec   = this.add.sprite(874*sizer, 595, 'cornerRec');
         cornerRec.angle = -45;
         this.physics.p2.enable(cornerRec);
         //cornerRec.angle = -45;
@@ -130,7 +131,7 @@ FunkyMultiplayerGame.Game.prototype = {
         cornerRec.body.collides([puckCollisionGroup]);
 
 
-        var cornerRec1   = this.add.sprite(874, 5, 'cornerRec');
+        var cornerRec1   = this.add.sprite(874*sizer, 5, 'cornerRec');
         cornerRec1.angle = 45;
         this.physics.p2.enable(cornerRec1);
         //cornerRec.angle = -45;
@@ -169,23 +170,23 @@ FunkyMultiplayerGame.Game.prototype = {
 
 
         // #############The Goals#################
-        goal6 = this.add.sprite(844, 297, 'goallong2');
-        goal3 = this.add.sprite(56, 298, 'goallong1');
+        goal6 = this.add.sprite(844*sizer, 297, 'goallong2');
+        goal3 = this.add.sprite(56*sizer, 298, 'goallong1');
 
-        goal1 = this.add.sprite(67, 247, 'goalshort');
-        goal2 = this.add.sprite(67, 350, 'goalshort');
+        goal1 = this.add.sprite(67*sizer, 247, 'goalshort');
+        goal2 = this.add.sprite(67*sizer, 350, 'goalshort');
 
-        goal4 = this.add.sprite(832, 247, 'goalshort');
-        goal5 = this.add.sprite(832, 350, 'goalshort');
+        goal4 = this.add.sprite(832*sizer, 247, 'goalshort');
+        goal5 = this.add.sprite(832*sizer, 350, 'goalshort');
 
 
-        goalsensor1         = this.add.sprite(60, 259, 'goalsensor');
-        goalsensor2         = this.add.sprite(837, 259, 'goalsensor');
+        goalsensor1         = this.add.sprite(60*sizer, 259, 'goalsensor');
+        goalsensor2         = this.add.sprite(837*sizer, 259, 'goalsensor');
         goalsensor1.visible = false;
         goalsensor2.visible = false;
 
-        goalarea1         = this.add.sprite(81, 241, 'goalarea');
-        goalarea2         = this.add.sprite(774, 241, 'goalarea');
+        goalarea1         = this.add.sprite(81*sizer, 241, 'goalarea');
+        goalarea2         = this.add.sprite(774*sizer, 241, 'goalarea');
         goalarea1.visible = false;
         goalarea2.visible = false;
         goalarea1.anchor.setTo(0.5, 0.5);
@@ -234,7 +235,7 @@ FunkyMultiplayerGame.Game.prototype = {
                 goalscored = false;                     //goals will again be counted
                 waitTwoSec = false;                     //the two secs are over
                 waitSecs = 0;
-                scoreText2.text = (600, 400, " ");      //Erases the 'GOAL!!!'
+                scoreText2.text = (600*sizer, 400, " ");      //Erases the 'GOAL!!!'
             }
 
         };/*
@@ -796,11 +797,11 @@ Player.prototype.update = function () {
 
 
 function brake(player, puck) {
-    player.body.velocity.x *= 0.9;                  //slows down by 10% every frame
-    player.body.velocity.y *= 0.9;
+    player.body.velocity.x *= 0.75;                  //slows down by 10% every frame
+    player.body.velocity.y *= 0.75;
 
     if (_this.physics.arcade.distanceBetween(puck, player.stick1) < 22) {
-        moveToObject(puck, player.stick1, 120);
+        moveToObject(puck, player.stick1, 80);
         _this.host = true;
     }
 };
@@ -888,7 +889,7 @@ function updateScore1()
         score1++;
         scoreText.text = 'Score : ' + score1 + " : " + score2;
         waitTwoSec = true;
-        scoreText2.text = (400, 400, "   GOAL!!!!");
+        scoreText2.text = (400*sizer, 400, "   GOAL!!!!");
     }
 
 /*
@@ -910,7 +911,7 @@ function updateScore2()
         score2++;
         scoreText.text = 'Score : ' + score1 + " : " + score2;
         waitTwoSec = true;
-        scoreText2.text = (400, 400, "   GOAL!!!!");
+        scoreText2.text = (400*sizer, 400, "   GOAL!!!!");
     }
 /*
     player.body.x = 150;
