@@ -304,7 +304,7 @@ io.on('connection', function (socket) {
             keys.forEach(function (key) {
                 if (playerId != key){
                     if(players[playerId].hostCounter != players[key].hostCounter){
-                        if ((Math.abs(lastPuckX - data[0].puckX) < 3) && (Math.abs(lastPuckX - data[0].puckX) < 3)){
+                        if (Math.abs((lastPuckX - data[0].puckX)*(lastPuckX - data[0].puckX)+((lastPuckX - data[0].puckX)*(lastPuckX - data[0].puckX))) < 2){
                         if( players[playerId].hostCounter < players[key].hostCounter ){
                             if (players[key].hostArray[45]){
 
