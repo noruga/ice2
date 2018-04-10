@@ -296,6 +296,8 @@ io.on('connection', function (socket) {
 
         if(countHost > 4){
             countHost = 0;
+
+
             var keys = Object.keys(players);
             
             var maxHostCounter = players[playerId].hostCounter;
@@ -304,7 +306,7 @@ io.on('connection', function (socket) {
             keys.forEach(function (key) {
                 if (playerId != key){
                     if(players[playerId].hostCounter != players[key].hostCounter){
-                        if (Math.abs((lastPuckX - data[0].puckX)*(lastPuckX - data[0].puckX)+((lastPuckX - data[0].puckX)*(lastPuckX - data[0].puckX))) < 3){
+                        if ((lastPuckX - data[0].puckX)*(lastPuckX - data[0].puckX)+((lastPuckX - data[0].puckX)*(lastPuckX - data[0].puckX)) < 3){
                         if( players[playerId].hostCounter < players[key].hostCounter ){
                             if (players[key].hostArray[45]){
 
