@@ -656,8 +656,14 @@ Player.prototype             = Object.create(Phaser.Sprite.prototype);
 Player.prototype.constructor = Player;
 Player.prototype.update = function () {
 
+if(!this.controlPlayer){
     this.body.velocity.x *= 0.99;
     this.body.velocity.y *= 0.99;
+}
+else{
+    this.body.velocity.x *= 0.96;
+    this.body.velocity.y *= 0.96;
+}
     this.body.setZeroRotation();
     //this.body.angularVelocity = 0;
 
@@ -669,9 +675,9 @@ Player.prototype.update = function () {
     }
     if (this.isDownW) {
         if ((this.body.velocity.x * this.body.velocity.x) + (this.body.velocity.y * this.body.velocity.y) > 25000)
-            this.body.thrust(500);
-        else {
             this.body.thrust(1200);
+        else {
+            this.body.thrust(3000);
             //console.log("thrusting");
         }
     }
