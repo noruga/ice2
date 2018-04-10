@@ -227,7 +227,7 @@ FunkyMultiplayerGame.Game.prototype = {
         if (waitTwoSec == true){
             waitSecs++;
             if (waitSecs == 180){
-                _this.puck.reset(450, 300);
+                _this.puck.reset(540, 300);
                 _this.puck.target_x = 450;
                 _this.puck.target_y = 300;
             }
