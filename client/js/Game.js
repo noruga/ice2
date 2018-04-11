@@ -803,11 +803,11 @@ else{
 
 
 function brake(player, puck) {
-    player.body.velocity.x *= 0.75;                  //slows down by 10% every frame
-    player.body.velocity.y *= 0.75;
+    player.body.velocity.x *= 0.9;                  //slows down by 10% every frame
+    player.body.velocity.y *= 0.9;
 
-    if (_this.physics.arcade.distanceBetween(puck, player.stick1) < 22) {
-        moveToObject(puck, player.stick1, 80);
+    if (_this.physics.arcade.distanceBetween(puck, player.stick1) < 22.15) {
+        moveToObject(puck, player.stick1, 100);
         _this.host = true;
     }
 };
