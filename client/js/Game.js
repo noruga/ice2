@@ -661,8 +661,8 @@ if(!this.controlPlayer){
     this.body.velocity.y *= 0.99;
 }
 else{
-    this.body.velocity.x *= 0.96;
-    this.body.velocity.y *= 0.96;
+    this.body.velocity.x *= 0.94;
+    this.body.velocity.y *= 0.94;
 }
     this.body.setZeroRotation();
     //this.body.angularVelocity = 0;
@@ -675,7 +675,7 @@ else{
     }
     if (this.isDownW) {
         if ((this.body.velocity.x * this.body.velocity.x) + (this.body.velocity.y * this.body.velocity.y) > 25000)
-            this.body.thrust(1200);
+            this.body.thrust(1500);
         else {
             this.body.thrust(3000);
             //console.log("thrusting");
