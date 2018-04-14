@@ -306,16 +306,16 @@ io.on('connection', function (socket) {
             keys.forEach(function (key) {
                 if (playerId != key){
                     if(players[playerId].hostCounter != players[key].hostCounter){
-                        if ((lastPuckX - data[0].puckX)*(lastPuckX - data[0].puckX)+((lastPuckX - data[0].puckX)*(lastPuckX - data[0].puckX)) < 3){
-                        if( players[playerId].hostCounter < players[key].hostCounter ){
-                            if (players[key].hostArray[45]){
+                        if ((lastPuckX - data[0].puckX)*(lastPuckX - data[0].puckX)+((lastPuckX - data[0].puckX)*(lastPuckX - data[0].puckX)) < 1){
+                            if( players[playerId].hostCounter < players[key].hostCounter ){
+                                if (players[key].hostArray[45]){
 
-                                lastHost = players[key].host;
-                                maxHostCounter = players[key].hostCounter;
-                            }                         
-                        }
-                        else if (players[playerId].hostArray[45])
-                            lastHost = players[playerId].host;
+                                    lastHost = players[key].host;
+                                    maxHostCounter = players[key].hostCounter;
+                                }                         
+                            }
+                            else if (players[playerId].hostArray[45])
+                                lastHost = players[playerId].host;
                         }
                     }
                     //players[key].hostCounter = 0;
