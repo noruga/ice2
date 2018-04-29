@@ -699,11 +699,11 @@ else{
         this.isDownV = false;
         if (checkOverlap(this.stick1, _this.puck))
             fx1.play();
-        if (this.isDownS) {
+        if (this.isDownA) {
             //this.body.rotateLeft(1200);
             //if (controlPlayer1){
             if (shotpause1 < 12) {
-                this.body.rotateLeft(1200);
+                this.body.rotateLeft(1075);
                 shotpause1++;
             }
 
