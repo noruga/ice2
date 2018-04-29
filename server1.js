@@ -69,6 +69,11 @@ var lastHost = true;
 var lastPuckX = 540;
 var lastPuckY = 300;
 
+var x1 = 0;
+var y1 = 0; 
+var x2 = 0; 
+var y2 = 0;
+
 
 let disconnection = {
     sid : null, //socket id
@@ -239,7 +244,7 @@ io.on('connection', function (socket) {
                 puckX: 450,
                 puckY: 300*/
 
-            };
+            };/*
             players[socket.id].hostCounter = 0;
             players[socket.id].hostArray = [false, false, false, false, false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
@@ -282,58 +287,63 @@ io.on('connection', function (socket) {
     socket.on('player_update', function(data){
         var sendData = data;
         var playerId = data[0].id;
-
-        if (data[0].host)
-            players[playerId].hostCounter++;
-        countHost++;
-
-        players[playerId].hostArray.push(data[0].host);
-        if (players[playerId].hostArray[0])
-            players[playerId].hostCounter--;
-        players[playerId].hostArray.shift();
+        var keys = Object.keys(players);
 
 
+        if (players[playerId].host === lastHost){
+            var adversoryDist = Math.min(((x1 - data[0].puckX)*(x1- data[0].puckX)+(y1 - data[0].puckY)*(y1 - data[0].puckY)),
+                ((x2 - data[0].puckX)*(x2- data[0].puckX)+(y2 - data[0].puckY)*(y2 - data[0].puckY)));
+            var myDist = Math.min(((data[0].x1 - data[0].puckX)*(data[0].x1- data[0].puckX)+(data[0].y1 - data[0].puckY)*(data[0].y1 - data[0].puckY)),
+                ((data[0].x - data[0].puckX)*(data[0].x- data[0].puckX)+(data[0].y - data[0].puckY)*(data[0].y - data[0].puckY)));
 
-        if(countHost > 4){
-            countHost = 0;
-
-
-            var keys = Object.keys(players);
-            
-            var maxHostCounter = players[playerId].hostCounter;
-            var tmpLastHost = players[playerId].host;
-          
+            if (adversoryDist < myDist){
+                countHost++;
+                if (countHost > 30){
+                    countHost = 0;
+                    lastHost = !players[playerId].host;
+/*
+                    if (lastHost === )
+                        lastHost = false;
+                    else
+                        lastHost = true;
+                    /*
+                    keys.forEach(function (key) {
+                        if (players[key].host){
+                            players[key].host = false;
+                        }
+                        else
+                            players[key].host = true;
+                    })*/
+                    console.log("first: ", adversoryDist, "second: ", myDist)
+                    console.log("swapping!")
+                    console.log("Boss : ", lastHost )
+                }
+            }
+            else{
+                countHost = 0;
+            }
+            sendData[0].host = lastHost;
             keys.forEach(function (key) {
                 if (playerId != key){
-                    if(players[playerId].hostCounter != players[key].hostCounter){
-                        if ((lastPuckX - data[0].puckX)*(lastPuckX - data[0].puckX)+((lastPuckX - data[0].puckX)*(lastPuckX - data[0].puckX)) < 1){
-                            if( players[playerId].hostCounter < players[key].hostCounter ){
-                                if (players[key].hostArray[45]){
-
-                                    lastHost = players[key].host;
-                                    maxHostCounter = players[key].hostCounter;
-                                }                         
-                            }
-                            else if (players[playerId].hostArray[45])
-                                lastHost = players[playerId].host;
-                        }
-                    }
-                    //players[key].hostCounter = 0;
-                    sendData[0].host = lastHost
                     socket.broadcast.to(key).emit('player_update', sendData);
                 }
-            });/*
-            players[playerId].hostCounter = 0;
-            sendData[0].host = lastHost// = tmpLastHost;
-           // console.log("Player ", playerId, " ", sendData[0].host)
-            //console.log(" hc1 : ", players[playerId].hostCounter, " hc2 : ", maxHostCounter)  
-        io.in('game-room').emit('player_update', sendData);
-        console.log(sendData);*/
+            })
+
         }
-         if (sendData[0].host){
-            lastPuckX = data[0].puckX;
-            lastPuckY = data[0].puckY;
-         }
+        else{
+            x1 = data[0].x1;
+            y1 = data[0].y1;
+            x2 = data[0].x;
+            y2 = data[0].y;
+            sendData[0].host = lastHost;
+            keys.forEach(function (key) {
+                if (playerId != key){
+                    socket.broadcast.to(key).emit('player_update', sendData);
+                }
+            })
+
+        }
+
         //console.log(playerId, " hc :  ", players[playerId].hostCounter)
     })
 
