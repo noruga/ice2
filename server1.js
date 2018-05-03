@@ -74,8 +74,8 @@ var x1 = 0;
 var y1 = 0; 
 var x2 = 0; 
 var y2 = 0;
-var puckX ;
-var puckY ;
+var puckX = 0;
+var puckY = 0;
 //var puckDist;
 
 
@@ -300,7 +300,7 @@ io.on('connection', function (socket) {
             var myDist = Math.min(((data[0].x1 - data[0].puckX)*(data[0].x1- data[0].puckX)+(data[0].y1 - data[0].puckY)*(data[0].y1 - data[0].puckY)),
                 ((data[0].x - data[0].puckX)*(data[0].x- data[0].puckX)+(data[0].y - data[0].puckY)*(data[0].y - data[0].puckY)));
             var puckDist = ((data[0].puckX - puckX)*(data[0].puckX - puckX) + (data[0].puckY - puckY)*(data[0].puckY - puckY));
-            if (puckDist < 3)
+            if (puckDist < 2)
                 puckSlowCount++;
             else
                 puckSlowCount = 0;
