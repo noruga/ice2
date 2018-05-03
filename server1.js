@@ -298,14 +298,14 @@ io.on('connection', function (socket) {
             var myDist = Math.min(((data[0].x1 - data[0].puckX)*(data[0].x1- data[0].puckX)+(data[0].y1 - data[0].puckY)*(data[0].y1 - data[0].puckY)),
                 ((data[0].x - data[0].puckX)*(data[0].x- data[0].puckX)+(data[0].y - data[0].puckY)*(data[0].y - data[0].puckY)));
             var puckDist = (data[0].puckX - puckX)*(data[0].puckX - puckX) + (data[0].puckY - puckY)*(data[0].puckY - puckY);
-            puckX = data[0].puckX;
-            puckY = data[0].puckY;
+
 
             if (adversoryDist < myDist){
                 countHost++;
-                if ((countHost > 30) && (puckDist < 0.01)){
+                if ((countHost > 30) && (puckDist < 2)){
                     countHost = 0;
                     lastHost = !players[playerId].host;
+
 /*
                     if (lastHost === )
                         lastHost = false;
@@ -320,6 +320,7 @@ io.on('connection', function (socket) {
                             players[key].host = true;
                     })*/
                     console.log("first: ", adversoryDist, "second: ", myDist)
+                    console.log("puckpace ", puckDist)
                     console.log("swapping!")
                     console.log("Boss : ", lastHost )
                 }
@@ -333,6 +334,8 @@ io.on('connection', function (socket) {
                     socket.broadcast.to(key).emit('player_update', sendData);
                 }
             })
+                        puckX = data[0].puckX;
+            puckY = data[0].puckY;
         }
         else{
             x1 = data[0].x1;
