@@ -63,6 +63,7 @@ var io = require('socket.io').listen(server);
 // after you understand everything else and are done with the basics.
 var players = {};
 
+var puckSlowCount = 0;
 var countHost = 0;
 var lastHost = true;
 
@@ -75,6 +76,7 @@ var x2 = 0;
 var y2 = 0;
 var puckX ;
 var puckY ;
+//var puckDist;
 
 
 let disconnection = {
@@ -297,13 +299,17 @@ io.on('connection', function (socket) {
                 ((x2 - data[0].puckX)*(x2- data[0].puckX)+(y2 - data[0].puckY)*(y2 - data[0].puckY)));
             var myDist = Math.min(((data[0].x1 - data[0].puckX)*(data[0].x1- data[0].puckX)+(data[0].y1 - data[0].puckY)*(data[0].y1 - data[0].puckY)),
                 ((data[0].x - data[0].puckX)*(data[0].x- data[0].puckX)+(data[0].y - data[0].puckY)*(data[0].y - data[0].puckY)));
-            var puckDist = (data[0].puckX - puckX)*(data[0].puckX - puckX) + (data[0].puckY - puckY)*(data[0].puckY - puckY);
-
+            var puckDist = ((data[0].puckX - puckX)*(data[0].puckX - puckX) + (data[0].puckY - puckY)*(data[0].puckY - puckY));
+            if (puckDist < 3)
+                puckSlowCount++;
+            else
+                puckSlowCount = 0;
 
             if (adversoryDist < myDist){
                 countHost++;
-                if ((countHost > 30) && (puckDist < 2)){
+                if ((countHost > 30) && (puckSlowCount > 3)){
                     countHost = 0;
+                    puckSlowCount = 0;
                     lastHost = !players[playerId].host;
 
 /*
@@ -334,7 +340,7 @@ io.on('connection', function (socket) {
                     socket.broadcast.to(key).emit('player_update', sendData);
                 }
             })
-                        puckX = data[0].puckX;
+            puckX = data[0].puckX;
             puckY = data[0].puckY;
         }
         else{
@@ -349,7 +355,9 @@ io.on('connection', function (socket) {
                     socket.broadcast.to(key).emit('player_update', sendData);
                 }
             })
-
+            //console.log("puckDist ", puckDist)
+            //console.log("puckY ", puckY, "sent x: ", data[0].puckX)
+            //console.log( "sent y: ", data[0].puckY)
         }
 
         //console.log(playerId, " hc :  ", players[playerId].hostCounter)
