@@ -157,8 +157,8 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                             /*_this.puck.body.velocity = Math.sqrt((_this.target.target_x - data[i].puckX)*(_this.target.target_x - data[i].puckX) + (_this.target.target_y - data[i].puckY)
                                * (_this.target.target_x - data[i].puckX) + (_this.target.target_y - data[i].puckY));*/
                             //_this.target.body.angle = _this.puck.angle;
-                            _this.puck.body.velocity.x = velX *22;//(data[i].puckX - _this.target.body.x) * 3;
-                            _this.puck.body.velocity.y = velY*22;//(data[i].puckY - _this.target.body.y) * 3;
+                            _this.puck.body.velocity.x = velX *12;//(data[i].puckX - _this.target.body.x) * 3;
+                            _this.puck.body.velocity.y = velY *12;//(data[i].puckY - _this.target.body.y) * 3;
                             //_this.target.body.velocity.x = (data[i].puckX - _this.target.target_x) / 3 ;
                             //_this.target.body.velocity.y = (data[i].puckY - _this.target.target_y) / 3 ;
                             //_this.target.body.velocity.x = data[i].puckX - _this.target.target_x ;
