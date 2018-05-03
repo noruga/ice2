@@ -73,8 +73,8 @@ var x1 = 0;
 var y1 = 0; 
 var x2 = 0; 
 var y2 = 0;
-var puckX = 0;
-var puckY = 0;
+var puckX ;
+var puckY ;
 
 
 let disconnection = {
