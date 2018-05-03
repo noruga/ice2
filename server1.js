@@ -331,8 +331,6 @@ io.on('connection', function (socket) {
                     socket.broadcast.to(key).emit('player_update', sendData);
                 }
             })
-            puckX = data[0].puckX;
-            puckY = data[0].puckY;
         }
         else{
             x1 = data[0].x1;
@@ -348,6 +346,8 @@ io.on('connection', function (socket) {
             })
 
         }
+        puckX = data[0].puckX;
+        puckY = data[0].puckY;
 
         //console.log(playerId, " hc :  ", players[playerId].hostCounter)
     })
