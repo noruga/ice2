@@ -1,15 +1,21 @@
  
+ 
 
 // Global reference to the active Phaser game state. This makes doing things with
 // a state possible without actually being in the state file itself.
 var _this;
+var sizer = 1.2;
 
 var host = true;
 var angle, dir;
-
+var isHost = true;
+var lastPuckX = 540;
+var lastPuckY = 300;
+var velX = 0;
+var velY = 0;
 // Connect to the Socket.io server that is running on the IP address 127.0.0.1 and at port number 3512.
-var socket = io("http://127.0.0.1:3512");
-//var socket = io();
+//var socket = io("http://127.0.0.1:3512");
+var socket = io();
 
 // This connects to 127.0.0.1 which is localhost (this computer), which is also where the server is running.
 // If the server was running somewhere else, like on a cloud service, then change the IP address to the
@@ -60,7 +66,8 @@ socket.on('remove_player', function (data) {
         // Check that the player sprite to remove is actually in the list of player sprites.
         if(_this.playerSprites[data]){
             // Destroy the player sprite for the player to remove.
-            _this.playerSprites[data].destroy();
+            _this.playerSprites[data][0].destroy();
+            _this.playerSprites[data][1].destroy();
             // Delete the property for that player.
             delete _this.playerSprites[data];
         }
@@ -81,40 +88,27 @@ socket.on('player_update', function(data){
 if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
 
         // The 'playerSprites' object exists.
-        for(let i= 0; i<2; i+=1){
+        for(let i= 0; i<1; i+=1){
             //console.log("receiving data from", data[i].id);
              /*   puck.x = data[i].puckX;
                 puck.y = data[i].puckY;*/
                 //console.log(this.id);
 
-            if(data[i].id != this.id){
+            //if(data[i].id != this.id){
                 //console.log("puck.x ", puck.x  )
-                _this.playerSprites[data[i].id][0].target_x         = data[i].x; // Update target, not actual position, so we can interpolate
-                _this.playerSprites[data[i].id][0].target_y         = data[i].y;
-                _this.playerSprites[data[i].id][0].target_rotation  = data[i].angle;
-                _this.puck.target_x                                 = data[i].puckX;
-                _this.puck.target_y                                 = data[i].puckY;
 
-                _this.playerSprites[data[i].id][1].target_x         = data[i].x1; // Update target, not actual position, so we can interpolate
-                _this.playerSprites[data[i].id][1].target_y         = data[i].y1;
-                _this.playerSprites[data[i].id][1].target_rotation  = data[i].angle1;
 /*
-                console.log(_this.playerSprites[data[i].id][0].target_rotation );
-                console.log(_this.playerSprites[data[i].id][1].target_rotation );*/
-
                 if(_this.playerSprites[data[i].id][0].target_x != undefined){
                     _this.playerSprites[data[i].id][0].body.x += (_this.playerSprites[data[i].id][0].target_x - _this.playerSprites[data[i].id][0].body.x) / divisor;
                     _this.playerSprites[data[i].id][0].body.y += (_this.playerSprites[data[i].id][0].target_y - _this.playerSprites[data[i].id][0].body.y) / divisor;
                     // Interpolate angle while avoiding the positive/negative issue 
+                    
                     angle = _this.playerSprites[data[i].id][0].target_rotation;
                     dir = (angle - _this.playerSprites[data[i].id][0].body.rotation) / (Math.PI * 2);
                     dir -= Math.round(dir);
                     dir = dir * Math.PI * 2;
                     _this.playerSprites[data[i].id][0].body.rotation += dir / divisor;
-                    //console.log(_this.playerSprites[data[i].id].target_x );*/
                 }
-
-
                 if(_this.playerSprites[data[i].id][1].target_x != undefined){
                     _this.playerSprites[data[i].id][1].body.x += (_this.playerSprites[data[i].id][1].target_x - _this.playerSprites[data[i].id][1].body.x) / divisor;
                     _this.playerSprites[data[i].id][1].body.y += (_this.playerSprites[data[i].id][1].target_y - _this.playerSprites[data[i].id][1].body.y) / divisor;
@@ -124,13 +118,13 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                     dir -= Math.round(dir);
                     dir = dir * Math.PI * 2;
                     _this.playerSprites[data[i].id][1].body.rotation += dir / divisor;
-                    //console.log(_this.playerSprites[data[i].id].target_x );*/
+                    //console.log(_this.playerSprites[data[i].id].target_x );
                 }
-
+*/
 
 // && (this.host === false)){
-                    _this.target.body.x += (_this.puck.target_x - _this.target.body.x) / divisor;
-                    _this.target.body.y += (_this.puck.target_y - _this.target.body.y) / divisor;
+                    /*_this.target.body.x += (_this.puck.target_x - _this.target.body.x) / divisor;
+                    _this.target.body.y += (_this.puck.target_y - _this.target.body.y) / divisor;*/
             
                     //console.log(_this.host);
                     //_this.host = false;
@@ -139,8 +133,10 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                         //if((data[i].puckX != undefined) && (data[i].puckX != null)){
                             //_this.puck.body.x += (_this.puck.target_x - _this.puck.body.x) / divisor;
                             //_this.puck.body.y += (_this.puck.target_y - _this.puck.body.y) / divisor;
+                            isHost = true;
                             _this.puck.body.x = _this.target.body.x;
                             _this.puck.body.y = _this.target.body.y;
+
                             _this.target.visible = true;
                             _this.puck.visible = false;
                             _this.puck.collides = false;
@@ -154,13 +150,42 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                         //_this.host = true;
                     //_this.puck.body.x = _this.target.body.x;
                     //_this.puck.body.y = _this.target.body.y;
+                        if (isHost){
+                            //_this.puck.body.velocity.x = _this.target.body.velocity.x * 3;
+                            //_this.puck.body.velocity.y = _this.target.body.velocity.y * 3;
+                            //_this.puck.angle = 0;//_game.physics.arcade.angleBetween(_this.target, _this.puck)
+                            /*_this.puck.body.velocity = Math.sqrt((_this.target.target_x - data[i].puckX)*(_this.target.target_x - data[i].puckX) + (_this.target.target_y - data[i].puckY)
+                               * (_this.target.target_x - data[i].puckX) + (_this.target.target_y - data[i].puckY));*/
+                            //_this.target.body.angle = _this.puck.angle;
+                            _this.puck.body.velocity.x = velX *20;//(data[i].puckX - _this.target.body.x) * 3;
+                            _this.puck.body.velocity.y = velY *20;//(data[i].puckY - _this.target.body.y) * 3;
+                            //_this.target.body.velocity.x = (data[i].puckX - _this.target.target_x) / 3 ;
+                            //_this.target.body.velocity.y = (data[i].puckY - _this.target.target_y) / 3 ;
+                            //_this.target.body.velocity.x = data[i].puckX - _this.target.target_x ;
+                            //_this.target.body.velocity.y = data[i].puckY - _this.target.target_y  ;
 
+                            //_this.target.body.velocity = _this.puck.body.velocity;
+                            console.log("velocity ")
+                            console.log(_this.target.velocity);
+                        }
 
                         _this.puck.collides = true;
                         _this.target.visible = false;
                         _this.puck.visible = true;
+                        isHost = false;
                     }
-            }  
+                _this.playerSprites[data[i].id][0].target_x         = data[i].x; // Update target, not actual position, so we can interpolate
+                _this.playerSprites[data[i].id][0].target_y         = data[i].y;
+                _this.playerSprites[data[i].id][0].target_rotation  = data[i].angle;
+                _this.target.target_x                               = data[i].puckX;
+                _this.target.target_y                               = data[i].puckY;
+
+                _this.playerSprites[data[i].id][1].target_x         = data[i].x1; // Update target, not actual position, so we can interpolate
+                _this.playerSprites[data[i].id][1].target_y         = data[i].y1;
+                _this.playerSprites[data[i].id][1].target_rotation  = data[i].angle1;
+                velX = _this.target.target_x - _this.target.body.x;
+                velY = _this.target.target_y - _this.target.body.y;
+            //}  
 
                     //if (_this.playerSprites[data[i].id][0].host === true){
                     //socket.in('game-room').emit('puckPos', {x: data.x, y: data.y});
@@ -213,7 +238,6 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
 /*
     if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
         for(let i= 0, len = data.length; i<len; i+=1){
-
             if(_this.playerSprites[data[i].id]){
         // The 'playerSprites' object exists.
         //for(let i= 0; i<2; i+=1){
@@ -232,7 +256,6 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                             }
                             else
                                 _this.playerSprites[data[i].id][j].isDownD = false;
-
                             if (data[i].down === true){
                                 //down = true;
                                 _this.playerSprites[data[i].id][j].isDownS = true;
@@ -284,9 +307,10 @@ function preparePlayersDataToSend() {
    /* dataToSend.push({id: socket.id, left: left, right: right, down: down, up: up, brake: brake, shoot: shoot, go_home: go_home, 
         controlPlayer0: _this.playerSprites[socket.id][0].controlPlayer, puckX: _this.puck.x, puckY: _this.puck.y, host: host});*/
 //console.log("JOHOOO ", Math.abs(_this.playerSprites[socket.id][0].x));
-    dataToSend.push({id: socket.id, x: Math.abs(_this.playerSprites[socket.id][0].x), y: _this.playerSprites[socket.id][0].y, 
-            angle: _this.playerSprites[socket.id][0].body.rotation, puckX: _this.puck.x, puckY: _this.puck.y, host: (_this.playerSprites[socket.id][0].withinPuck || _this.playerSprites[socket.id][1].withinPuck),
-            x1: _this.playerSprites[socket.id][1].x, y1: _this.playerSprites[socket.id][1].y, angle1: _this.playerSprites[socket.id][1].body.rotation});
+    dataToSend.push({id: socket.id, x: Math.round(_this.playerSprites[socket.id][0].x), y: Math.round(_this.playerSprites[socket.id][0].y), 
+            angle: Math.round(_this.playerSprites[socket.id][0].body.rotation* 100) / 100, puckX: Math.round(_this.puck.x), puckY: Math.round(_this.puck.y),
+            //host: (_this.playerSprites[socket.id][0].withinPuck || _this.playerSprites[socket.id][1].withinPuck),
+            x1: Math.round(_this.playerSprites[socket.id][1].x), y1: Math.round(_this.playerSprites[socket.id][1].y), angle1: Math.round(_this.playerSprites[socket.id][1].body.rotation* 100) / 100});
 //console.log(_this.host)
     return dataToSend;
 }
@@ -330,23 +354,18 @@ socket.on('state_update', function (data) {
         for(let i= 0, len = data.length; i<len; i+=1){
 
             if(_this.playerSprites[data[i].id]){
+            /*
                 //_this.playerSprites[socket.id].puckX = puck.x;
                 //_this.playerSprites[socket.id].puckY = puck.y;
-
                 _this.playerSprites[data[i].id][0].target_x        = data[i].x; // Update target, not actual position, so we can interpolate
                 _this.playerSprites[data[i].id][0].target_y        = data[i].y;
                 _this.playerSprites[data[i].id][0].target_rotation = data[i].angle;
-
-
                 _this.playerSprites[data[i].id][1].target_x        = data[i].x1; // Update target, not actual position, so we can interpolate
                 _this.playerSprites[data[i].id][1].target_y        = data[i].y1;
                 _this.playerSprites[data[i].id][1].target_rotation = data[i].angle1;
                 // This player's sprite exists. Update its position.
                 //_this.add.tween(_this.playerSprites[data[i].id]).to({x: data[i].x, y: data[i].y}, 1000/10, null, false); 
                 //_this.playerSprites[data[i].id].body.angle = data[i].angle;  
-
-
-
                 if(_this.playerSprites[data[i].id][0].target_x != undefined){
                     _this.playerSprites[data[i].id][0].body.x += (_this.playerSprites[data[i].id][0].target_x - _this.playerSprites[data[i].id][0].body.x) / 3;
                     _this.playerSprites[data[i].id][0].body.y += (_this.playerSprites[data[i].id][0].target_y - _this.playerSprites[data[i].id][0].body.y) / 3;
@@ -358,7 +377,6 @@ socket.on('state_update', function (data) {
                     _this.playerSprites[data[i].id][0].rotation += dir / 3;
                     //console.log(_this.playerSprites[data[i].id].target_x );
                 }
-
                 if(!_this.playerSprites[data[i].id].host){
                     //if(_this.playerSprites[data[i].id] != socket.id){
                         //_this.puck.x = data[i].puckX;
@@ -382,31 +400,63 @@ socket.on('state_update', function (data) {
                 
             // No property was found for the player that this socket ID belongs to. Add a sprite for them.
             else {
+                
                 if (host){
                     host = false;
                     //_this.playerSprites[data[i].id] =  new Player(_this, data[i].x, data[i].y, 'ball1m');
                     _this.playerSprites[data[i].id] = {};
-                    _this.playerSprites[data[i].id][0] =  new Player(_this, 150, 300, 'ball1m', true);
-                    _this.playerSprites[data[i].id][1] =  new Player(_this, 350, 300, 'ball1m', true);
+                    _this.playerSprites[data[i].id][0] =  new Player(_this, 150*sizer, 300, 'ball1m', true, (data[i].id === this.id));//myXor(_this.host, data[i].host));
+                    _this.playerSprites[data[i].id][1] =  new Player(_this, 350*sizer, 300, 'ball1m', true, (data[i].id === this.id));
                     //_this.playerSprites[data[i].id].host = true;
 
                     _this.playerSprites[data[i].id][0].controlPlayer = false;
                     _this.playerSprites[data[i].id][0].body.rotation = Math.PI / 2.7;
                     _this.playerSprites[data[i].id][1].body.rotation = Math.PI / 2.7;
                     _this.playerSprites[data[i].id].host = true;
-                    _this.puck = new Puck(_this, 450, 300, true);
-                    _this.target = new Puck(_this, 450, 300, false);
+                    _this.playerSprites[data[i].id].puckSlowCount = 0;
+                    _this.playerSprites[data[i].id].puckX = 540;
+                    _this.playerSprites[data[i].id].puckY = 300;
+                    _this.puck = new Puck(_this, 450*sizer, 300, true);
+                    _this.target = new Puck(_this, 450*sizer, 300, false);
+                    /*
+                    if (_this.playerSprites[data[i].id][1].stick2){
+                                                _this.physics.p2.enable(_this.playerSprites[data[i].id][0].stick2);
+                        _this.physics.p2.enable(_this.playerSprites[data[i].id][1].stick2);
+                        _this.playerSprites[data[i].id][0].stick2.body.collideWorldBounds = false;
+                        _this.playerSprites[data[i].id][0].stick2.body.setCollisionGroup(_this.stickCollisionGroup);
+                        _this.playerSprites[data[i].id][0].stick2.body.collides(_this.puckCollisionGroup);
+                        _this.playerSprites[data[i].id][1].stick2.body.collideWorldBounds = false;
+                        _this.playerSprites[data[i].id][1].stick2.body.setCollisionGroup(_this.stickCollisionGroup);
+                        _this.playerSprites[data[i].id][1].stick2.body.collides(_this.puckCollisionGroup);
                     //_this.playerSprites[data[i].id].body.angle = Math.PI;
+                    }*/
                 }
                 else{
+                    //console.log("_this.id : ", _this.id)
                     _this.playerSprites[data[i].id] = {}
-                    _this.playerSprites[data[i].id][0] =  new Player(_this, 750, 300, 'ball', false);
-                    _this.playerSprites[data[i].id][1] =  new Player(_this, 550, 300, 'ball', false);
                     _this.playerSprites[data[i].id].host = false;
+                    _this.playerSprites[data[i].id].puckSlowCount = 0;
+                    _this.playerSprites[data[i].id].puckX = 540;
+                    _this.playerSprites[data[i].id].puckY = 300;
+                    _this.playerSprites[data[i].id][0] =  new Player(_this, 750*sizer, 300, 'ball', false, (data[i].id === this.id));
+                    _this.playerSprites[data[i].id][1] =  new Player(_this, 550*sizer, 300, 'ball', false, (data[i].id === this.id));
+                    
 
                     _this.playerSprites[data[i].id][0].controlPlayer = false;
                     _this.playerSprites[data[i].id][0].body.rotation = - Math.PI  / 2.7;
                     _this.playerSprites[data[i].id][1].body.rotation = - Math.PI  / 2.7;
+/*
+                    if (_this.playerSprites[data[i].id][1].stick2){
+                        _this.physics.p2.enable(_this.playerSprites[data[i].id][0].stick2);
+                        _this.physics.p2.enable(_this.playerSprites[data[i].id][1].stick2);
+                        _this.playerSprites[data[i].id][0].stick2.body.collideWorldBounds = false;
+                        _this.playerSprites[data[i].id][0].stick2.body.setCollisionGroup(_this.stickCollisionGroup);
+                        _this.playerSprites[data[i].id][0].stick2.body.collides(_this.puckCollisionGroup);
+                        _this.playerSprites[data[i].id][1].stick2.body.collideWorldBounds = false;
+                        _this.playerSprites[data[i].id][1].stick2.body.setCollisionGroup(_this.stickCollisionGroup);
+                        _this.playerSprites[data[i].id][1].stick2.body.collides(_this.puckCollisionGroup);
+                    //_this.playerSprites[data[i].id].body.angle = Math.PI;
+                    }*/
 
 
                     //_this.playerSprites[data[i].id][2] =  new Circle(_this, 450, 20);
@@ -439,7 +489,7 @@ socket.on('state_update', function (data) {
 });
 
 
-
+/*
 socket.on('key_pressed', function(data){
     //console.log("Key that was pressed: " + data.key);
 //if (data.playerId === socket.id){
@@ -499,7 +549,7 @@ socket.on('key_pressed', function(data){
     }
 //}
 
-})
+})*/
 
 
 
@@ -531,3 +581,7 @@ FunkyMultiplayerGame.Boot.prototype = {
         });
     })()
 };
+
+function myXOR(a,b) {
+  return ( a || b ) && !( a && b );
+}
