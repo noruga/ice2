@@ -300,14 +300,14 @@ io.on('connection', function (socket) {
             var myDist = Math.min(((data[0].x1 - data[0].puckX)*(data[0].x1- data[0].puckX)+(data[0].y1 - data[0].puckY)*(data[0].y1 - data[0].puckY)),
                 ((data[0].x - data[0].puckX)*(data[0].x- data[0].puckX)+(data[0].y - data[0].puckY)*(data[0].y - data[0].puckY)));
             var puckDist = ((data[0].puckX - puckX)*(data[0].puckX - puckX) + (data[0].puckY - puckY)*(data[0].puckY - puckY));
-            if (puckDist < 4)
+            if (puckDist < 3)
                 puckSlowCount++;
             else
                 puckSlowCount = 0;
 
             if (adversoryDist < myDist){
                 countHost++;
-                if ((countHost > 10) && (puckSlowCount > 5)){
+                if ((countHost > 35) && (puckSlowCount > 5)){
                     countHost = 0;
                     puckSlowCount = 0;
                     lastHost = !players[playerId].host;
