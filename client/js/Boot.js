@@ -413,6 +413,9 @@ socket.on('state_update', function (data) {
                     _this.playerSprites[data[i].id][0].body.rotation = Math.PI / 2.7;
                     _this.playerSprites[data[i].id][1].body.rotation = Math.PI / 2.7;
                     _this.playerSprites[data[i].id].host = true;
+                    _this.playerSprites[data[i].id].puckSlowCount = 0;
+                    _this.playerSprites[data[i].id].puckX = 540;
+                    _this.playerSprites[data[i].id].puckY = 300;
                     _this.puck = new Puck(_this, 450*sizer, 300, true);
                     _this.target = new Puck(_this, 450*sizer, 300, false);
                     /*
@@ -432,6 +435,9 @@ socket.on('state_update', function (data) {
                     //console.log("_this.id : ", _this.id)
                     _this.playerSprites[data[i].id] = {}
                     _this.playerSprites[data[i].id].host = false;
+                    _this.playerSprites[data[i].id].puckSlowCount = 0;
+                    _this.playerSprites[data[i].id].puckX = 540;
+                    _this.playerSprites[data[i].id].puckY = 300;
                     _this.playerSprites[data[i].id][0] =  new Player(_this, 750*sizer, 300, 'ball', false, (data[i].id === this.id));
                     _this.playerSprites[data[i].id][1] =  new Player(_this, 550*sizer, 300, 'ball', false, (data[i].id === this.id));
                     
@@ -483,7 +489,7 @@ socket.on('state_update', function (data) {
 });
 
 
-
+/*
 socket.on('key_pressed', function(data){
     //console.log("Key that was pressed: " + data.key);
 //if (data.playerId === socket.id){
@@ -543,7 +549,7 @@ socket.on('key_pressed', function(data){
     }
 //}
 
-})
+})*/
 
 
 
