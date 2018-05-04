@@ -76,7 +76,7 @@ var x2 = 0;
 var y2 = 0;
 var puckX = 0;
 var puckY = 0;
-var puckDist = 0;
+//var puckDist = 0;
 
 
 let disconnection = {
@@ -299,7 +299,7 @@ io.on('connection', function (socket) {
                 ((x2 - data[0].puckX)*(x2- data[0].puckX)+(y2 - data[0].puckY)*(y2 - data[0].puckY)));
             var myDist = Math.min(((data[0].x1 - data[0].puckX)*(data[0].x1- data[0].puckX)+(data[0].y1 - data[0].puckY)*(data[0].y1 - data[0].puckY)),
                 ((data[0].x - data[0].puckX)*(data[0].x- data[0].puckX)+(data[0].y - data[0].puckY)*(data[0].y - data[0].puckY)));
-            puckDist = ((data[0].puckX - puckX)*(data[0].puckX - puckX) + (data[0].puckY - puckY)*(data[0].puckY - puckY));
+            var puckDist = ((data[0].puckX - puckX)*(data[0].puckX - puckX) + (data[0].puckY - puckY)*(data[0].puckY - puckY));
             if (puckDist < 4)
                 puckSlowCount++;
             else
