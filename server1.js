@@ -300,6 +300,8 @@ io.on('connection', function (socket) {
             var myDist = Math.min(((data[0].x1 - data[0].puckX)*(data[0].x1- data[0].puckX)+(data[0].y1 - data[0].puckY)*(data[0].y1 - data[0].puckY)),
                 ((data[0].x - data[0].puckX)*(data[0].x- data[0].puckX)+(data[0].y - data[0].puckY)*(data[0].y - data[0].puckY)));
             var puckDist = ((data[0].puckX - puckX)*(data[0].puckX - puckX) + (data[0].puckY - puckY)*(data[0].puckY - puckY));
+            puckX = data[0].puckX;
+            puckY = data[0].puckY;
             if (puckDist < 6)
                 puckSlowCount++;
             else
@@ -307,7 +309,7 @@ io.on('connection', function (socket) {
 
             if (adversoryDist < myDist){
                 countHost++;
-                if ((countHost > 30) && (puckSlowCount > 2)){
+                if ((countHost > 30) && (puckSlowCount > 7)){
                     countHost = 0;
                     puckSlowCount = 0;
                     lastHost = !players[playerId].host;
@@ -340,8 +342,6 @@ io.on('connection', function (socket) {
                     socket.broadcast.to(key).emit('player_update', sendData);
                 }
             })
-            puckX = data[0].puckX;
-            puckY = data[0].puckY;
         }
         else{
             x1 = data[0].x1;
