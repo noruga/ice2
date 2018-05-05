@@ -74,8 +74,8 @@ var x1 = 0;
 var y1 = 0; 
 var x2 = 0; 
 var y2 = 0;
-var puckX = 0;
-var puckY = 0;
+var puckX //= 540;
+var puckY //= 300;
 //var puckDist = 0;
 
 
@@ -309,7 +309,7 @@ io.on('connection', function (socket) {
 
             if (adversoryDist < myDist){
                 countHost++;
-                if ((countHost > 30) && (puckSlowCount > 7)){
+                if ((countHost > 20) && (puckSlowCount > 5)){
                     countHost = 0;
                     puckSlowCount = 0;
                     lastHost = !players[playerId].host;
