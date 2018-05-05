@@ -554,7 +554,7 @@ Player = function (game, x, y, img, host, hostStick) {
 
 
     game.physics.p2.enable(this);
-    this.body.setCircle(12);
+    this.body.setCircle(14);
     this.anchor.setTo(0.5, 0.5);
     
     
@@ -594,6 +594,7 @@ Player = function (game, x, y, img, host, hostStick) {
     this.stick            = game.add.sprite(x, y, null);
     
     _this.physics.p2.enable(this.stick2);
+    this.stick2.body.setRectangle(27, 20);
     //_this.physics.p2.enable(this.stick);
     this.stick2.body.clearCollision(true);
     this.stick2.body.collideWorldBounds = false;
@@ -614,7 +615,7 @@ Player = function (game, x, y, img, host, hostStick) {
     this.sticky.body.setCollisionGroup(stickCollisionGroup);
     this.sticky.body.collides(puckCollisionGroup);*/
     //var constraint  = _this.physics.p2.createLockConstraint(this, this.stick, [-30, 0], 0);
-    var constraint1 = _this.physics.p2.createLockConstraint(this, this.stick2, [30, 0], 0);
+    //var constraint1 = _this.physics.p2.createLockConstraint(this, this.stick2, [30, 0], 0);
   }
 
     game.add.existing(this);
