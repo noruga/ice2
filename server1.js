@@ -309,7 +309,7 @@ io.on('connection', function (socket) {
 
             if (adversoryDist < myDist){
                 countHost++;
-                if ((countHost > 20) && (puckSlowCount > 5)){
+                if ((countHost > 20) && (puckSlowCount > 7)){
                     countHost = 0;
                     puckSlowCount = 0;
                     lastHost = !players[playerId].host;
