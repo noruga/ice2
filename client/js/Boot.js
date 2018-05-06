@@ -134,8 +134,8 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                             //_this.puck.body.x += (_this.puck.target_x - _this.puck.body.x) / divisor;
                             //_this.puck.body.y += (_this.puck.target_y - _this.puck.body.y) / divisor;
                             isHost = true;
-                            _this.puck.body.x = _this.target.body.x;
-                            _this.puck.body.y = _this.target.body.y;
+                            _this.puck.body.x = data[i].puckX;
+                            _this.puck.body.y = data[i].puckY;
 
                             _this.target.visible = true;
                             _this.puck.visible = false;
