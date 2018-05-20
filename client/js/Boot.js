@@ -307,12 +307,14 @@ function preparePlayersDataToSend() {
    /* dataToSend.push({id: socket.id, left: left, right: right, down: down, up: up, brake: brake, shoot: shoot, go_home: go_home, 
         controlPlayer0: _this.playerSprites[socket.id][0].controlPlayer, puckX: _this.puck.x, puckY: _this.puck.y, host: host});*/
 //console.log("JOHOOO ", Math.abs(_this.playerSprites[socket.id][0].x));
+    if(typeof _this.playerSprites !== null) {
     dataToSend.push({id: socket.id, x: Math.round(_this.playerSprites[socket.id][0].x), y: Math.round(_this.playerSprites[socket.id][0].y), 
             angle: Math.round(_this.playerSprites[socket.id][0].body.rotation* 100) / 100, puckX: Math.round(_this.puck.x), puckY: Math.round(_this.puck.y),
             //host: (_this.playerSprites[socket.id][0].withinPuck || _this.playerSprites[socket.id][1].withinPuck),
             x1: Math.round(_this.playerSprites[socket.id][1].x), y1: Math.round(_this.playerSprites[socket.id][1].y), angle1: Math.round(_this.playerSprites[socket.id][1].body.rotation* 100) / 100});
 //console.log(_this.host)
     return dataToSend;
+    }
 }
     
 
