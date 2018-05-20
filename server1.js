@@ -302,7 +302,7 @@ io.on('connection', function (socket) {
             var puckDist = ((data[0].puckX - puckX)*(data[0].puckX - puckX) + (data[0].puckY - puckY)*(data[0].puckY - puckY));
             puckX = data[0].puckX;
             puckY = data[0].puckY;
-            if (puckDist < 6)
+            if (puckDist < 4)
                 puckSlowCount++;
             else
                 puckSlowCount = 0;
