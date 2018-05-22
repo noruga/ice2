@@ -286,8 +286,16 @@ FunkyMultiplayerGame.Game.prototype = {
             'brake': this.game.input.keyboard.addKey(Phaser.Keyboard.V),
             'shoot': this.game.input.keyboard.addKey(Phaser.Keyboard.B),
             'swap' : this.game.input.keyboard.addKey(Phaser.Keyboard.N),
-            'M'    : this.game.input.keyboard.addKey(Phaser.Keyboard.M)
+            'M'    : this.game.input.keyboard.addKey(Phaser.Keyboard.M),
+            'left1': this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
+            'right1': this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
+            'up1': this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
+            'down1': this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT)
         };
+        var cursors = this.game.input.keyboard.createCursorKeys();
+
+
+
         for (var keyName in keys) {
             (function (keyName) {
                 keys[keyName].onDown.add(function () {
@@ -297,21 +305,21 @@ FunkyMultiplayerGame.Game.prototype = {
                     for (var j = 0; j < 2; j++){
                         if (_this.playerSprites[socket.id][j]){
                         if (_this.playerSprites[socket.id][j].controlPlayer === true){
-                            if (keyName === 'left'){
+                            if (keyName === 'left' || keyName === 'left1'){
                                 //left = true;
                                 _this.playerSprites[socket.id][j].isDownA = true;
                             }
-                            if (keyName === 'right'){
+                            if (keyName === 'right' || keyName === 'right1'){
                                 //right = true;
                                 console.log("clicked right")
                                 _this.playerSprites[socket.id][j].isDownD = true;
                             }
 
-                            if (keyName === 'down'){
+                            if (keyName === 'down' || keyName === 'down1'){
                                 //down = true;
                                 _this.playerSprites[socket.id][j].isDownS = true;
                             }
-                            if (keyName === 'up'){
+                            if (keyName === 'up' || keyName === 'up1'){
                                 //up = true;
                                 //console.log("up: ", up)
                                 _this.playerSprites[socket.id][j].isDownW = true;
@@ -365,20 +373,20 @@ FunkyMultiplayerGame.Game.prototype = {
 
                     for (var j = 0; j < 2; j++){
                         //if (_this.playerSprites[socket.id][j].controlPlayer === true){
-                            if (keyName === 'left'){
+                            if (keyName === 'left' || keyName === 'left1'){
                                 //left = false;
                                 _this.playerSprites[socket.id][j].isDownA = false;
                             }
-                            if (keyName === 'right'){
+                            if (keyName === 'right' || keyName === 'right1'){
                                 _this.playerSprites[socket.id][j].isDownD = false;
                                 //right = false;
                             }
 
-                            if (keyName === 'down'){
+                            if (keyName === 'down' || keyName === 'down1'){
                                 _this.playerSprites[socket.id][j].isDownS = false;
                                 //down = false;
                             }
-                            if (keyName === 'up'){
+                            if (keyName === 'up' || keyName === 'up1'){
                                 //up = false;
                                 _this.playerSprites[socket.id][j].isDownW = false;
                             }
@@ -463,7 +471,8 @@ Puck = function(game, x, y, authorative){
 
     //this.body.collideWorldBounds = true;
     this.body.clearCollision(true);
-
+    this.lastX = 540;
+    this.lastY = 300;
 
     this.master = false;
 
@@ -498,23 +507,35 @@ Puck.prototype.update = function () {
             //if(puck.prevx < )
             if (checkOverlap(this, goalsensor1))
             {
-            /*
-                updateScore2();*/
-                goalscored = true;
-                socket.emit('goalScored2');
-                this.body.velocity.x = this.body.velocity.x * 0.01;
-                this.body.velocity.y = this.body.velocity.y * 0.01;
+                if ((this.lastY > 350 || this.lastY < 242) || this.lastX < this.body.x){
+                    this.body.x = this.lastX;
+                    this.body.y = this.lastY;
+            
+                }
+                else{
+                    goalscored = true;
+                    socket.emit('goalScored2');
+                    this.body.velocity.x = this.body.velocity.x * 0.01;
+                    this.body.velocity.y = this.body.velocity.y * 0.01;
+                }
     
             };
 
             if (checkOverlap(this, goalsensor2))
             {
+                if ((this.lastY > 350 || this.lastY < 242) || this.lastX > this.body.x){
+                    this.body.x = this.lastX;
+                    this.body.y = this.lastY;
+            
+                }
+                else{
 
-                //updateScore1();
-                goalscored = true;
-                socket.emit('goalScored1');
-                this.body.velocity.x = this.body.velocity.x * 0.01;
-                this.body.velocity.y = this.body.velocity.y * 0.01;
+                    //updateScore1();
+                    goalscored = true;
+                    socket.emit('goalScored1');
+                    this.body.velocity.x = this.body.velocity.x * 0.01;
+                    this.body.velocity.y = this.body.velocity.y * 0.01;
+                }
             };
         };
     }
@@ -526,6 +547,8 @@ Puck.prototype.update = function () {
             this.divisor = 3;
                     //_this.target.body.y += (_this.puck.target_y - _this.target.body.y) / divisor;
     }
+    this.lastX = this.body.x;
+    this.lastY = this.body.y;
 }
 
 Player = function (game, x, y, img, host, hostStick) {
