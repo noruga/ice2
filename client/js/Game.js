@@ -508,8 +508,8 @@ Puck.prototype.update = function () {
             if (checkOverlap(this, goalsensor1))
             {
                 if ((this.lastY > 350 || this.lastY < 242) || this.lastX < this.body.x){
-                    this.body.x = this.lastX;
-                    this.body.y = this.lastY;
+                    //this.body.x = this.lastX;
+                    //this.body.y = this.lastY;
             
                 }
                 else{
@@ -524,8 +524,8 @@ Puck.prototype.update = function () {
             if (checkOverlap(this, goalsensor2))
             {
                 if ((this.lastY > 350 || this.lastY < 242) || this.lastX > this.body.x){
-                    this.body.x = this.lastX;
-                    this.body.y = this.lastY;
+                    //this.body.x = this.lastX;
+                    //this.body.y = this.lastY;
             
                 }
                 else{
