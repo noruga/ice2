@@ -711,8 +711,7 @@ else{
     }
 
     if(this.isDownS){
-        this.body.velocity.x *= 0.2;
-        this.body.velocity.y *= 0.2;
+        this.body.reverse(500);
     }
     if (this.isDownV) {
         this.body.velocity.x *= 0.9;
