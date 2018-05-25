@@ -229,6 +229,9 @@ io.on('connection', function (socket) {
             var dataToSend = preparePlayersDataToSend();
             io.in('game-room').emit('state_update', dataToSend);*/
         }
+        else if (Object.keys(players).length > 2){
+            socket.broadcast.to(players[socket.id]).emit('disconnecting');
+        }
     });
 
     socket.on('im_fine', function (/* No data was sent by the client for this event. You could put 'data' here but it would just be undefined. */) {
