@@ -351,7 +351,7 @@ socket.on('state_update', function (data) {
 
     if(_this.playerSprites !== undefined){
         // The 'playerSprites' object exists.
-        for(let i= 0, len = data.length; i<len; i+=1){
+        for(let i= 0, len = data.length; i<2; i+=1){
 
             if(_this.playerSprites[data[i].id]){
             /*

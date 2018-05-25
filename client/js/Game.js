@@ -523,19 +523,19 @@ Puck.prototype.update = function () {
 
             if (checkOverlap(this, goalsensor2))
             {
-                if ((this.lastY > 350 || this.lastY < 242) || this.lastX > this.body.x){
+               /* if ((this.lastY > 350 || this.lastY < 242) || this.lastX > this.body.x){
                     //this.body.x = this.lastX;
                     //this.body.y = this.lastY;
             
                 }
                 else{
-
+*/
                     //updateScore1();
                     goalscored = true;
                     socket.emit('goalScored1');
                     this.body.velocity.x = this.body.velocity.x * 0.01;
                     this.body.velocity.y = this.body.velocity.y * 0.01;
-                }
+                //}
             };
         };
     }
@@ -817,6 +817,12 @@ else{
         this.divisior--;
         if (this.divisior === 0)
             this.divisor = 3;
+        if ((this.body.x - _this.puck.body.x)*(this.body.x - _this.puck.body.x) + (this.body.y - _this.puck.body.x)*(this.body.y - _this.puck.body.y) < 50*50){
+            this.isClosePuck = true;
+        }
+        else
+            this.isClosePuck = false;
+
         }
 
         /*
@@ -835,9 +841,17 @@ function brake(player, puck) {
     player.body.velocity.y *= 0.9;
 
     if (_this.physics.arcade.distanceBetween(puck, player.stick1) < 22.15) {
-        moveToObject(puck, player.stick1, 100);
-        _this.host = true;
+
+
+        for(var id in _this.playerSprites){
+            if (this.id !=_this.playerSprites[id]){
+                if (!(_this.playerSprites[id][0].isClosePuck || _this.playerSprites[id][1].isClosePuck))
+                    moveToObject(puck, player.stick1, 100);
+            }
+        //_this.host = true;
+        }
     }
+
 };
 
 function moveToObject(obj1, obj2, speed1) {
