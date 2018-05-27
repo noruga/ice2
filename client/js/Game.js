@@ -721,9 +721,9 @@ else{
             for (var id in _this.playerSprites) {
                 if (id !== socket.id){
                     if (!(_this.playerSprites[id][0].isClosePuck || _this.playerSprites[id][1].isClosePuck))
-                        moveToObject(_this.puck, this.stick1, 100);
-                    else
-                        _this.game.input.keyboard.isDown(Phaser.Keyboard.V) = false;
+                        moveToObject(_this.puck, this.stick1, 70);
+                    //else
+                    //    this.isDownV = false;
                 }
             }
             //moveToObject(_this.puck, this.stick1, 100);
