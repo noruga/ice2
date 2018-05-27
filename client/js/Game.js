@@ -573,6 +573,7 @@ Player = function (game, x, y, img, host, hostStick) {
     this.target_y ;
     this.target_x ;
     this.divisor = 3;
+    this.isClosePuck = false;
 
 
 
@@ -716,8 +717,18 @@ else{
     if (this.isDownV) {
         this.body.velocity.x *= 0.9;
         this.body.velocity.y *= 0.9;
-        if (distanceSq(_this.puck, this.stick1) < (23*23))
-            moveToObject(_this.puck, this.stick1, 70);
+        if (distanceSq(_this.puck, this.stick1) < (23*23)){
+            for (var id in _this.playerSprites) {
+                if (id !== socket.id){
+                    if (!(_this.playerSprites[id][0].isClosePuck || _this.playerSprites[id][1].isClosePuck))
+                        moveToObject(_this.puck, this.stick1, 70);
+                    //else
+                    //    this.isDownV = false;
+                }
+            }
+            //moveToObject(_this.puck, this.stick1, 100);
+        }
+
         //console.log("braking");
         //console.log(this.host);
         //brake(this, _this.puck);
@@ -817,7 +828,7 @@ else{
         this.divisior--;
         if (this.divisior === 0)
             this.divisor = 3;
-        if ((this.body.x - _this.puck.body.x)*(this.body.x - _this.puck.body.x) + (this.body.y - _this.puck.body.x)*(this.body.y - _this.puck.body.y) < 50*50){
+        if ((this.body.x - _this.puck.body.x)*(this.body.x - _this.puck.body.x) + (this.body.y - _this.puck.body.x)*(this.body.y - _this.puck.body.y) < 15*15){
             this.isClosePuck = true;
         }
         else
@@ -830,11 +841,13 @@ else{
         this.stick2.body.y = this.body.y;*/
         //this.sticky2.body.rotation = this.body.rotation;
     }
+    else
+        this.isClosePuck = false;
 };
 
 //module.exports = Player;
 
-
+/*
 
 function brake(player, puck) {
     player.body.velocity.x *= 0.9;                  //slows down by 10% every frame
@@ -844,15 +857,19 @@ function brake(player, puck) {
 
 
         for(var id in _this.playerSprites){
-            if (this.id !=_this.playerSprites[id]){
+            (function (id) {
+                if (socket.id !== id ){
                 if (!(_this.playerSprites[id][0].isClosePuck || _this.playerSprites[id][1].isClosePuck))
+                //if ((_this.playerSprites[id][0].x - _this.puck.body.x)*(_this.playerSprites[id][0].x - _this.puck.body.x) + (_this.playerSprites[id][0].y - _this.puck.body.y)*(_this.playerSprites[id][0].y - _this.puck.body.y) > 150 * 150)
                     moveToObject(puck, player.stick1, 100);
-            }
+
+                }
+            })
         //_this.host = true;
         }
     }
 
-};
+};*/
 
 function moveToObject(obj1, obj2, speed1) {
     //if (typeof speed1 === 'undefined') { speed1 = 60; }
