@@ -61,7 +61,13 @@ var io = require('socket.io').listen(server);
 
 // Used to manage players in the game. See the slightly more advanced stuff
 // after you understand everything else and are done with the basics.
+
+var faceOffCounter = 0;
+
 var players = {};
+var usernames = {};
+
+var rooms = [];
 
 var puckSlowCount = 0;
 var countHost = 0;
@@ -266,13 +272,17 @@ io.on('connection', function (socket) {
 
 
             firstUpdate++;
+            if(firstUpdate % 1){
+                rooms.push(room);
+            }
+
             socket.isInGame = true;
             // Add this socket to the room for the game. A room is an easy way to group sockets, so you can send events to a bunch of sockets easily.
             // A socket can be in many rooms.
-            socket.join('game-room');
+            socket.join(rooms[rooms.length - 1]);
             //numOfPlayers++;
-
-            if (Object.keys(players).length === 2) {
+        if(Object.keys(players).length < 3){
+            if (Object.keys(players).length & 2) {
                 players[socket.id].host = false;
                 console.log("two players connection and clicked Join Game");
 
@@ -286,6 +296,11 @@ io.on('connection', function (socket) {
         else {
             console.log("* " + socket.username + " is already in a game.");
         }
+    }
+    else{
+        delete players[socket.id];
+        //io.in(rooms[rooms.length - 1]).emit('remove_player', socket.id);
+    }
     });/*
     socket.on('conte', function(m_count){
         console.log("M count is : ", m_count);
@@ -310,7 +325,7 @@ io.on('connection', function (socket) {
             else
                 puckSlowCount = 0;
 
-            if (adversoryDist < myDist){
+            if (adversoryDist < myDist){// && faceOffCounter == 0){         //faceOffCounter : if goal has been scored last within last 2 secs
                 countHost++;
                 if ((countHost > 20) && (puckSlowCount > 12)){
                     countHost = 0;
@@ -366,14 +381,20 @@ io.on('connection', function (socket) {
         //console.log(playerId, " hc :  ", players[playerId].hostCounter)
     })
 
-    socket.on('goalScored1', function(){
-        io.in('game-room').emit('goalScored1');
-        console.log("goal scored 1 event recieved");
+    socket.on('goalScored1', function(puckDist){
+        if (faceOffCounter == 0){
+            io.in(rooms[rooms.length - 1]).emit('goalScored1', puckDist);
+            console.log("goal scored 1 event recieved");
+            faceOffCounter++;
+        }
     })
 
-    socket.on('goalScored2', function(){
-        io.in('game-room').emit('goalScored2');
-        console.log("goal scored 2 event recieved");
+    socket.on('goalScored2', function(puckDist){
+        if (faceOffCounter == 0){
+            io.in(rooms[rooms.length - 1]).emit('goalScored2', puckDist);
+            console.log("goal scored 2 event recieved");
+            faceOffCounter++;
+        }
     })
 /*
 /*
@@ -429,7 +450,7 @@ io.on('connection', function (socket) {
             }
         //set timeout to variable, in case of reconnection
 
-            io.in('game-room').emit('remove_player', socket.id);
+            io.in(rooms[rooms.length - 1]).emit('remove_player', socket.id);
         //emit the disconnection event
         }, 5000);
     });
@@ -456,13 +477,16 @@ io.on('connection', function (socket) {
 var emitRate = 2000;
 
 setInterval(function () {
-
+    if (faceOffCounter > 0)
+        faceOffCounter++;
+    if (faceOffCounter > 2)
+        faceOffCounter = 0;
 
     var dataToSend = preparePlayersDataToSend();
     //console.log(dataToSend);
 
     // Send the data to all clients in the room called 'game-room'.
-    io.in('game-room').emit('state_update', dataToSend);
+    io.in(rooms[rooms.length - 1]).emit('state_update', dataToSend);
     console.log("interval");
 }, emitRate);
 
