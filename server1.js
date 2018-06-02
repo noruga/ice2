@@ -380,17 +380,17 @@ io.on('connection', function (socket) {
         //console.log(playerId, " hc :  ", players[playerId].hostCounter)
     })
 
-    socket.on('goalScored1', function(puckDist){
+    socket.on('goalScored1', function(puckD){
         if (faceOffCounter == 0){
-            io.in(rooms[rooms.length - 1]).emit('goalScored1', puckDist);
+            io.in(rooms[rooms.length - 1]).emit('goalScored1', puckD);
             console.log("goal scored 1 event recieved");
             faceOffCounter++;
         }
     })
 
-    socket.on('goalScored2', function(puckDist){
+    socket.on('goalScored2', function(puckD){
         if (faceOffCounter == 0){
-            io.in(rooms[rooms.length - 1]).emit('goalScored2', puckDist);
+            io.in(rooms[rooms.length - 1]).emit('goalScored2', puckD);
             console.log("goal scored 2 event recieved");
             faceOffCounter++;
         }
