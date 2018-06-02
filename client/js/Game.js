@@ -36,7 +36,7 @@ var tween;
 var fx1;
 var sizer = 1.2;
 
-var puckDist = 1;
+var puckD = 1;
 
 var puckCoordX = 540;
 var puckCoordY = 300;   // to measure puck speed
@@ -527,9 +527,9 @@ Puck.prototype.update = function () {
             
                 }
                 else{
-                    puckDist = Math.sqrt((puckCoordX - this.body.x)*(puckCoordX - this.body.x) + (puckCoordY - this.body.y)*(puckCoordY - this.body.y));
+                    puckD = Math.sqrt((puckCoordX - this.body.x)*(puckCoordX - this.body.x) + (puckCoordY - this.body.y)*(puckCoordY - this.body.y));
                     goalscored = true;
-                    socket.emit('goalScored2', Math.floor(puckDist/2));
+                    socket.emit('goalScored2', Math.floor(puckD/2));
                     this.body.velocity.x = this.body.velocity.x * 0.01;
                     this.body.velocity.y = this.body.velocity.y * 0.01;
                 }
@@ -547,8 +547,8 @@ Puck.prototype.update = function () {
 */
                     //updateScore1();
                     goalscored = true;
-                    puckDist = Math.sqrt((puckCoordX - this.body.x)*(puckCoordX - this.body.x) + (puckCoordY - this.body.y)*(puckCoordY - this.body.y));
-                    socket.emit('goalScored1', Math.floor(puckDist/2));
+                    puckD = Math.sqrt((puckCoordX - this.body.x)*(puckCoordX - this.body.x) + (puckCoordY - this.body.y)*(puckCoordY - this.body.y));
+                    socket.emit('goalScored1', Math.floor(puckD/2));
                     this.body.velocity.x = this.body.velocity.x * 0.01;
                     this.body.velocity.y = this.body.velocity.y * 0.01;
                 //}
@@ -961,7 +961,7 @@ function distanceSq(object,target) {
 };
 
 
-function updateScore1(puckDist)
+function updateScore1(puckD)
 {
     if (waitTwoSec === false){
         score1++;
@@ -969,7 +969,7 @@ function updateScore1(puckDist)
         waitTwoSec = true;
 
     scoreText2.text = (400*sizer, 300, "   GOAL!!!!");
-    scoreText3.text = (700*sizer, 500, puckDist + " km/h");
+    scoreText3.text = (700*sizer, 500, puckD + " km/h");
     }
 
 /*
@@ -985,14 +985,14 @@ function updateScore1(puckDist)
     //sound.play();
 }
 
-function updateScore2(puckDist)
+function updateScore2(puckD)
 {
     if (waitTwoSec === false){
         score2++;
         scoreText.text = 'Score : ' + score1 + " : " + score2;
         waitTwoSec = true;
         scoreText2.text = (400*sizer, 400, "   GOAL!!!!");
-        scoreText3.text = (700*sizer, 500, puckDist + " km/h");
+        scoreText3.text = (700*sizer, 500, puckD + " km/h");
     }
 /*
     player.body.x = 150;
