@@ -15,7 +15,7 @@ var waitTwoSec = false;
 var waitSecs   = 0;
 var shotpause  = 0;
 var shotpause1 = 0;
-var scoreText1, scoreText2;
+var scoreText1, scoreText2, scoreText3;
 var gameEnd    = false;
 var goalarea1, goalarea2;
 var areaSecs1  = 0;
@@ -35,6 +35,9 @@ var waitTwoSec = false;
 var tween;
 var fx1;
 var sizer = 1.2;
+
+var puckCoordX = 540;
+var puckCoordY = 300;   // to measure puck speed
 
 
 
@@ -74,6 +77,8 @@ FunkyMultiplayerGame.Game.prototype = {
         });
         this.physics.startSystem(Phaser.Physics.P2JS);
         this.physics.startSystem(Phaser.Physics.ARCADE);
+
+        this.time.events.add(Phaser.Timer.SECOND * 150, finalScore, this);
         this.physics.p2.restitution = 0.1;
 
         stickCollisionGroup = _this.physics.p2.createCollisionGroup();
@@ -94,6 +99,9 @@ FunkyMultiplayerGame.Game.prototype = {
 
         scoreText = _this.add.text(300*sizer, 10, 'Score : ' + score1 + " : " + score2, { font: '34px Arial', fill: '#bbf' });
         scoreText2 = _this.add.text(200*sizer, 300, "" ,{ font: '100px Arial', fill: '#bbf' });
+        scoreText1 = _this.add.text(1, 10, "Time : " + this.game.time.events.duration/60, { font: '34px Arial', fill: '#aaa' });
+        scoreText3 = _this.add.text(400*sizer, 500, " " );
+        //scoreText1 = _this.add.text(10, 10, "Time : " + score1, { font: '34px Arial', fill: '#bbf' });
 
         //var puck1 = new Puck(game, 450, 350);
 
@@ -236,6 +244,9 @@ FunkyMultiplayerGame.Game.prototype = {
                 waitTwoSec = false;                     //the two secs are over
                 waitSecs = 0;
                 scoreText2.text = (600*sizer, 400, " ");      //Erases the 'GOAL!!!'
+                scoreText3.text = (600*sizer, 400, " "); 
+
+              //  scoreText3.text = (600, 400, " ");  
             }
 
         };/*
@@ -276,6 +287,7 @@ FunkyMultiplayerGame.Game.prototype = {
         }*/
         //puck.body.velocity.x = puck.body.velocity.x * 0.995;
         //puck.body.velocity.y = puck.body.velocity.y * 0.995;
+            scoreText1.text =  " Time : "+ Math.floor(this.game.time.events.duration/1000);
     },
     mapKeys: function() {
         var keys = {
@@ -507,14 +519,15 @@ Puck.prototype.update = function () {
             //if(puck.prevx < )
             if (checkOverlap(this, goalsensor1))
             {
-                if ((this.lastY > 350 || this.lastY < 242) || this.lastX < this.body.x){
-                    //this.body.x = this.lastX;
-                    //this.body.y = this.lastY;
+                if ((this.lastY > 350 || this.lastY < 242)){
+                    this.body.x = this.lastX;
+                    this.body.y = this.lastY;
             
                 }
                 else{
+                    let puckDist = Math.sqrt((puckCoordX - this.body.x)*(puckCoordX - this.body.x) + (puckCoordY - this.body.y)*(puckCoordY - this.body.y));
                     goalscored = true;
-                    socket.emit('goalScored2');
+                    socket.emit('goalScored2', Math.floor(puckDist/2));
                     this.body.velocity.x = this.body.velocity.x * 0.01;
                     this.body.velocity.y = this.body.velocity.y * 0.01;
                 }
@@ -532,7 +545,8 @@ Puck.prototype.update = function () {
 */
                     //updateScore1();
                     goalscored = true;
-                    socket.emit('goalScored1');
+                    let puckDist = Math.sqrt((puckCoordX - this.body.x)*(puckCoordX - this.body.x) + (puckCoordY - this.body.y)*(puckCoordY - this.body.y));
+                    socket.emit('goalScored1', Math.floor(puckDist/2));
                     this.body.velocity.x = this.body.velocity.x * 0.01;
                     this.body.velocity.y = this.body.velocity.y * 0.01;
                 //}
@@ -736,8 +750,11 @@ else{
 
     else if (this.isDownB) {
         this.isDownV = false;
-        if (checkOverlap(this.stick1, _this.puck))
+        if (checkOverlap(this.stick1, _this.puck)){
             fx1.play();
+            puckCoordX = _this.puck.body.x;
+            puckCoordY = _this.puck.body.y;
+        }
         if (this.isDownA) {
             //this.body.rotateLeft(1200);
             //if (controlPlayer1){
@@ -948,13 +965,15 @@ function distanceSq(object,target) {
 };
 
 
-function updateScore1()
+function updateScore1(puckDist)
 {
     if (waitTwoSec === false){
         score1++;
         scoreText.text = 'Score : ' + score1 + " : " + score2;
         waitTwoSec = true;
-        scoreText2.text = (400*sizer, 400, "   GOAL!!!!");
+
+    scoreText2.text = (400*sizer, 300, "   GOAL!!!!");
+    scoreText3.text = (700*sizer, 500, puckDist + " km/h");
     }
 
 /*
@@ -970,13 +989,14 @@ function updateScore1()
     //sound.play();
 }
 
-function updateScore2()
+function updateScore2(puckDist)
 {
     if (waitTwoSec === false){
         score2++;
         scoreText.text = 'Score : ' + score1 + " : " + score2;
         waitTwoSec = true;
         scoreText2.text = (400*sizer, 400, "   GOAL!!!!");
+        scoreText3.text = (700*sizer, 500, puckDist + " km/h");
     }
 /*
     player.body.x = 150;
@@ -992,4 +1012,23 @@ function updateScore2()
     //fx.play('sfx');
     fx.play();
     //sound.play();
+}
+
+function finalScore(){
+//    scoreText1.text = ('You win!', { font: '34px Arial', fill: '#bbf' });
+        //fx2.play();
+
+        if (score1 > score2){
+            scoreText2.text = (400, 400, "Player1 WINS!");
+        }
+        else if (score2 > score1){
+            scoreText2.text = " Player2 WINS!";
+            //gameEnd = true;
+        }
+        else{
+            scoreText2.text = " DRAW ";
+        
+            //gameEnd = true;
+        }
+        //game.paused = true;
 }
