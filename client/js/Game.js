@@ -36,6 +36,8 @@ var tween;
 var fx1;
 var sizer = 1.2;
 
+var puckDist = 1;
+
 var puckCoordX = 540;
 var puckCoordY = 300;   // to measure puck speed
 
@@ -525,7 +527,7 @@ Puck.prototype.update = function () {
             
                 }
                 else{
-                    let puckDist = Math.sqrt((puckCoordX - this.body.x)*(puckCoordX - this.body.x) + (puckCoordY - this.body.y)*(puckCoordY - this.body.y));
+                    puckDist = Math.sqrt((puckCoordX - this.body.x)*(puckCoordX - this.body.x) + (puckCoordY - this.body.y)*(puckCoordY - this.body.y));
                     goalscored = true;
                     socket.emit('goalScored2', Math.floor(puckDist/2));
                     this.body.velocity.x = this.body.velocity.x * 0.01;
@@ -545,7 +547,7 @@ Puck.prototype.update = function () {
 */
                     //updateScore1();
                     goalscored = true;
-                    let puckDist = Math.sqrt((puckCoordX - this.body.x)*(puckCoordX - this.body.x) + (puckCoordY - this.body.y)*(puckCoordY - this.body.y));
+                    puckDist = Math.sqrt((puckCoordX - this.body.x)*(puckCoordX - this.body.x) + (puckCoordY - this.body.y)*(puckCoordY - this.body.y));
                     socket.emit('goalScored1', Math.floor(puckDist/2));
                     this.body.velocity.x = this.body.velocity.x * 0.01;
                     this.body.velocity.y = this.body.velocity.y * 0.01;
