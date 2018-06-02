@@ -262,7 +262,6 @@ io.on('connection', function (socket) {
             players[socket.id].hostArray = [false, false, false, false, false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false];
-
             //console.log(players[socket.id].hostCounter)
             /*
             if (Object.keys(players).length === 1)
