@@ -865,27 +865,21 @@ else{
 //module.exports = Player;
 
 /*
-
 function brake(player, puck) {
     player.body.velocity.x *= 0.9;                  //slows down by 10% every frame
     player.body.velocity.y *= 0.9;
-
     if (_this.physics.arcade.distanceBetween(puck, player.stick1) < 22.15) {
-
-
         for(var id in _this.playerSprites){
             (function (id) {
                 if (socket.id !== id ){
                 if (!(_this.playerSprites[id][0].isClosePuck || _this.playerSprites[id][1].isClosePuck))
                 //if ((_this.playerSprites[id][0].x - _this.puck.body.x)*(_this.playerSprites[id][0].x - _this.puck.body.x) + (_this.playerSprites[id][0].y - _this.puck.body.y)*(_this.playerSprites[id][0].y - _this.puck.body.y) > 150 * 150)
                     moveToObject(puck, player.stick1, 100);
-
                 }
             })
         //_this.host = true;
         }
     }
-
 };*/
 
 function moveToObject(obj1, obj2, speed1) {
