@@ -967,7 +967,7 @@ function updateScore1(puckD)
         score1++;
         scoreText.text = 'Score : ' + score1 + " : " + score2;
         waitTwoSec = true;
-
+    console.log(" goalscored1 received speed: ", puckD)
     scoreText2.text = (400*sizer, 300, "   GOAL!!!!");
     scoreText3.text = (700*sizer, 500, puckD + " km/h");
     }
@@ -991,6 +991,7 @@ function updateScore2(puckD)
         score2++;
         scoreText.text = 'Score : ' + score1 + " : " + score2;
         waitTwoSec = true;
+        console.log(" goalscored1 received speed: ", puckD)
         scoreText2.text = (400*sizer, 400, "   GOAL!!!!");
         scoreText3.text = (700*sizer, 500, puckD + " km/h");
     }
