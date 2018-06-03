@@ -76,6 +76,8 @@ var lastHost = true;
 var lastPuckX = 540;
 var lastPuckY = 300;
 
+var puckD;
+
 var x1 = 0;
 var y1 = 0; 
 var x2 = 0; 
@@ -383,7 +385,7 @@ io.on('connection', function (socket) {
     socket.on('goalScored1', function(puckD){
         if (faceOffCounter == 0){
             io.in(rooms[rooms.length - 1]).emit('goalScored1', puckD);
-            console.log("goal scored 1 event recieved");
+            console.log("goal scored 1 event recieved", puckD);
             faceOffCounter++;
         }
     })
@@ -391,7 +393,7 @@ io.on('connection', function (socket) {
     socket.on('goalScored2', function(puckD){
         if (faceOffCounter == 0){
             io.in(rooms[rooms.length - 1]).emit('goalScored2', puckD);
-            console.log("goal scored 2 event recieved");
+            console.log("goal scored 2 event recieved", puckD);
             faceOffCounter++;
         }
     })
