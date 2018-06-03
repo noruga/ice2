@@ -13,6 +13,8 @@ var lastPuckX = 540;
 var lastPuckY = 300;
 var velX = 0;
 var velY = 0;
+
+var puckD;
 // Connect to the Socket.io server that is running on the IP address 127.0.0.1 and at port number 3512.
 //var socket = io("http://127.0.0.1:3512");
 var socket = io();
@@ -337,12 +339,14 @@ function preparePlayersDataToSend() {
 
 var firstUpd = false; //true;
 
-socket.on('goalScored2', function (){
-    updateScore2();
+socket.on('goalScored2', function (puckD){
+    updateScore2(puckD);
+        console.log(" goalscored2 sent speed: ", puckD);
 })
 
-socket.on('goalScored1', function (){
-    updateScore1();
+socket.on('goalScored1',  function (puckD){
+    updateScore1(puckD);
+    console.log(" goalscored2 sent speed: ", puckD);
 })
 
 
