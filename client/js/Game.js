@@ -99,10 +99,10 @@ FunkyMultiplayerGame.Game.prototype = {
         forwPoint4  = this.add.sprite(180*sizer, 500, null);
 
 
-        scoreText = _this.add.text(300*sizer, 10, 'Score : ' + score1 + " : " + score2, { font: '34px Arial', fill: '#bbf' });
-        scoreText2 = _this.add.text(200*sizer, 300, "" ,{ font: '100px Arial', fill: '#bbf' });
-        scoreText1 = _this.add.text(1, 10, "Time : " + this.game.time.events.duration/60, { font: '34px Arial', fill: '#aaa' });
-        scoreText3 = _this.add.text(400*sizer, 500, " " );
+        scoreText = _this.add.text(300*sizer, 10, 'Score : ' + score1 + " : " + score2, { font: '34px Arial', fill: '#0066cc' });
+    scoreText1 = game.add.text(1, 10, "Time : " + game.time.events.duration/60, { font: '34px Arial', fill: '#cc0000' });
+    scoreText2 = game.add.text(200*sizer, 300, "" ,{ font: '100px Arial', fill: '#cc0000' });
+    scoreText3 = game.add.text(200*sizer, 500, "" ,{ font: '100px Arial', fill: '#cc0000' });
         //scoreText1 = _this.add.text(10, 10, "Time : " + score1, { font: '34px Arial', fill: '#bbf' });
 
         //var puck1 = new Puck(game, 450, 350);
