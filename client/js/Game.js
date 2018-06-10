@@ -734,15 +734,15 @@ else{
         this.body.velocity.x *= 0.9;
         this.body.velocity.y *= 0.9;
         if (distanceSq(_this.puck, this.stick1) < (23*23)){
-            for (var id in _this.playerSprites) {
+            /*for (var id in _this.playerSprites) {
                 if (id !== socket.id){
                     if (!(_this.playerSprites[id][0].isClosePuck || _this.playerSprites[id][1].isClosePuck))
                         moveToObject(_this.puck, this.stick1, 70);
                     //else
                     //    this.isDownV = false;
                 }
-            }
-            //moveToObject(_this.puck, this.stick1, 100);
+            }*/
+            moveToObject(_this.puck, this.stick1, 100);
         }
 
         //console.log("braking");
@@ -1027,5 +1027,5 @@ function finalScore(){
         
             //gameEnd = true;
         }
-        //_this.paused = true;
+        _this.game.paused = true;
 }
