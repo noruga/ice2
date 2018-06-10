@@ -1027,5 +1027,5 @@ function finalScore(){
         
             //gameEnd = true;
         }
-        game.paused = true;
+        _this.paused = true;
 }
