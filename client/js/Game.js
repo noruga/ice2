@@ -736,10 +736,10 @@ else{
         if (distanceSq(_this.puck, this.stick1) < (23*23)){
             for (var id in _this.playerSprites) {
                 if (id !== socket.id){
-                   if (!(_this.playerSprites[id][0].isClosePuck || _this.playerSprites[id][1].isClosePuck))
+                    if (!(_this.playerSprites[id][0].isClosePuck || _this.playerSprites[id][1].isClosePuck))
                         moveToObject(_this.puck, this.stick1, 70);
-                    else
-                        this.isDownV = false;
+                    //else
+                    //    this.isDownV = false;
                 }
             }
             //moveToObject(_this.puck, this.stick1, 100);
@@ -860,8 +860,8 @@ else{
         this.stick2.body.y = this.body.y;*/
         //this.sticky2.body.rotation = this.body.rotation;
     }
-    else
-        this.isClosePuck = false;
+    //else
+        //this.isClosePuck = false;
 };
 
 //module.exports = Player;
