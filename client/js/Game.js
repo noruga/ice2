@@ -847,7 +847,7 @@ else{
         this.divisior--;
         if (this.divisior === 0)
             this.divisor = 3;
-        if ((this.body.x - _this.puck.body.x)*(this.body.x - _this.puck.body.x) + (this.body.y - _this.puck.body.x)*(this.body.y - _this.puck.body.y) < 15*15){
+        if ((this.body.x - _this.puck.body.x)*(this.body.x - _this.puck.body.x) + (this.body.y - _this.puck.body.x)*(this.body.y - _this.puck.body.y) < 10*10){
             this.isClosePuck = true;
         }
         else
@@ -1027,5 +1027,5 @@ function finalScore(){
         
             //gameEnd = true;
         }
-        _this.paused = true;
+        //_this.paused = true;
 }
