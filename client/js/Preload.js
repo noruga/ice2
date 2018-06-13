@@ -14,8 +14,6 @@ FunkyMultiplayerGame.Preload.prototype = {
 		this.load.image('stick', "assets/stick.png");
         this.load.image('goalshort', "assets/goalshort.png");
         this.load.image('goallong1', "assets/goallong1.png");
-        this.load.image('goallong2', "assets/goallong2.png");
-        //game.load.image('goallong', "assets/goallong.png");
         this.load.image('goalsensor', "assets/goalsensor.png");
         this.load.image('cornerRec', "assets/cornerRec.png");
         this.load.image('goalarea', "assets/goalarea.png");
