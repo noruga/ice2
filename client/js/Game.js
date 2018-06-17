@@ -80,7 +80,7 @@ FunkyMultiplayerGame.Game.prototype = {
             align: 'center'
         });*/
         this.physics.startSystem(Phaser.Physics.P2JS);
-        //this.physics.startSystem(Phaser.Physics.ARCADE);
+        this.physics.startSystem(Phaser.Physics.ARCADE);
 
         this.physics.p2.setBounds(margX, margY, 1080, 600);
         rink = this.add.tileSprite(margX+0, margY+0, 1080, 600, 'starfield');
