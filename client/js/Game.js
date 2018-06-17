@@ -37,6 +37,8 @@ var fx1;
 var sizer = 1.2;
 
 var puckD = 1;
+const margX = 30;
+const margY = 45;
 
 var puckCoordX = 540;
 var puckCoordY = 300;   // to measure puck speed
@@ -45,6 +47,15 @@ var puckCoordY = 300;   // to measure puck speed
 
 
 var accelerateRemote = true;
+/*
+var left = false,
+    right = false,
+    up = false,
+    down = false,
+    brake = false,
+    shoot = false,
+    go_home = false;*/
+
 
 FunkyMultiplayerGame.Game = function () {
 };
@@ -62,12 +73,12 @@ FunkyMultiplayerGame.Game.prototype = {
         this.puck;
 
         //this.hostess = false;
-
+/*
         this.add.text(120, 20, "Use Up/Down/Left/Right\nkeys to move.", {
             font : "40px Arial",
             fill : '#ffffff',
             align: 'center'
-        });
+        });*/
         this.physics.startSystem(Phaser.Physics.P2JS);
         this.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -79,25 +90,49 @@ FunkyMultiplayerGame.Game.prototype = {
         goalsensorGroup     = _this.physics.p2.createCollisionGroup();
 
 
-        rink = this.add.tileSprite(0, 0, 1080, 600, 'starfield');
-        homePoint = this.add.sprite(112*sizer, 319, null);
-        homePoint1  = this.add.sprite(788*sizer, 281, null);
+        rink = this.add.tileSprite(margX+0, margY+0, 1080, 600, 'starfield');
+        homePoint = this.add.sprite(margX+112*sizer, margY+319, null);
+        homePoint1  = this.add.sprite(margX+788*sizer, margY+281, null);
 
 
-        forwPoint1  = this.add.sprite(720*sizer, 100, null);
-        forwPoint2  = this.add.sprite(720*sizer, 500, null);
-        forwPoint3  = this.add.sprite(180*sizer, 100, null);
-        forwPoint4  = this.add.sprite(180*sizer, 500, null);
+        forwPoint1  = this.add.sprite(margX+720*sizer, margY+100, null);
+        forwPoint2  = this.add.sprite(margX+720*sizer, margY+500, null);
+        forwPoint3  = this.add.sprite(margX+180*sizer, margY+100, null);
+        forwPoint4  = this.add.sprite(margX+180*sizer, margY+500, null);
 
 
-        scoreText = _this.add.text(300*sizer, 10, 'Score : ' + score1 + " : " + score2, { font: '34px Arial', fill: '#0066cc' });
-        scoreText2 = _this.add.text(200*sizer, 300, "" ,{ font: '100px Arial', fill: '#bbf' });
-        scoreText1 = _this.add.text(1, 10, "Time : " + this.game.time.events.duration/60, { font: '34px Arial', fill: '#cc0000' });
-        scoreText3 = _this.add.text(400*sizer, 500, " " );
+        scoreText = _this.add.text(margX+323*sizer, 0, 'Score : ' + score1 + " : " + score2, { font: '34px Arial', fill: '#0066cc' });
+        scoreText2 = _this.add.text(margX+200*sizer, margY+300, "" ,{ font: '100px Arial', fill: '#bbf' });
+        scoreText1 = _this.add.text(margX+1, 0, "Time : " + this.game.time.events.duration/60, { font: '34px Arial', fill: '#cc0000' });
+        scoreText3 = _this.add.text(margX+400*sizer, margY+500, " " );
+        //scoreText1 = _this.add.text(10, 10, "Time : " + score1, { font: '34px Arial', fill: '#bbf' });
 
+        //var puck1 = new Puck(game, 450, 350);
+
+        // #############THE PUCK#######################
+/*        bmd = this.add.bitmapData(15, 15, 'rgb(0,200,0)');
+        bmd.circle(7, 7, 6, 0);
+        puck = this.add.sprite(50, 30, bmd);
+        this.physics.p2.enable(puck);
+        puck.body.setCircle(7);
+        puck.body.mass = 0.00001;
+        //puck.visible = false;
+        //game.physics.enable(puck, Phaser.Physics.ARCADE);
+        puck.body.collideWorldBounds = true;
+        puck.body.setCollisionGroup(puckCollisionGroup);
+        puck.body.collides([stickCollisionGroup, puckCollisionGroup]);
+        puck.target_x = 050;
+        puck.target_y = 30;*/
+/*
+        this.target = this.add.sprite(450, 300, bmd);
+        this.physics.p2.enable(this.target);
+        this.target.body.setCircle(7);
+        this.target.visible = true;
+        this.target.collides = false;
+        //target.body.collideWorldBounds = true;*/
 
         //############ The Corners ##############
-        var cornerRec   = this.add.sprite(874*sizer, 595, 'cornerRec');
+        var cornerRec   = this.add.sprite(margX+874*sizer, margY+595, 'cornerRec');
         cornerRec.angle = -45;
         this.physics.p2.enable(cornerRec);
         //cornerRec.angle = -45;
@@ -108,7 +143,7 @@ FunkyMultiplayerGame.Game.prototype = {
         cornerRec.body.collides([puckCollisionGroup]);
 
 
-        var cornerRec1   = this.add.sprite(874*sizer, 5, 'cornerRec');
+        var cornerRec1   = this.add.sprite(margX+874*sizer, margY+5, 'cornerRec');
         cornerRec1.angle = 45;
         this.physics.p2.enable(cornerRec1);
         //cornerRec.angle = -45;
@@ -118,7 +153,7 @@ FunkyMultiplayerGame.Game.prototype = {
         cornerRec1.body.setCollisionGroup(puckCollisionGroup);
         cornerRec1.body.collides([puckCollisionGroup]);
 
-        var cornerRec2   = this.add.sprite(0, 25, 'cornerRec');
+        var cornerRec2   = this.add.sprite(margX+0, margY+25, 'cornerRec');
         cornerRec2.angle = -45;
         this.physics.p2.enable(cornerRec2);
         //cornerRec.angle = -45;
@@ -128,7 +163,7 @@ FunkyMultiplayerGame.Game.prototype = {
         cornerRec2.body.setCollisionGroup(puckCollisionGroup);
         cornerRec2.body.collides([puckCollisionGroup]);
 
-        var cornerRec3   = this.add.sprite(0, 595, 'cornerRec');
+        var cornerRec3   = this.add.sprite(margX+0, margY+595, 'cornerRec');
         cornerRec3.angle = 45;
         this.physics.p2.enable(cornerRec3);
         //cornerRec.angle = -45;
@@ -143,28 +178,28 @@ FunkyMultiplayerGame.Game.prototype = {
         cornerRec2.visible = false;
         cornerRec3.visible = false;
         //###### End Corners ############
-
+        
 
 
         // #############The Goals#################
-        goal6 = this.add.sprite(844*sizer, 297, 'goallong1');
-        //goal6.body.angle = 180;
-        goal3 = this.add.sprite(56*sizer, 298, 'goallong1');
+        goal6 = this.add.sprite(margX+844*sizer, margY+297, 'goallong1');
+        goal6.angle = 180;
+        goal3 = this.add.sprite(margX+56*sizer, margY+298, 'goallong1');
 
-        goal1 = this.add.sprite(67*sizer, 247, 'goalshort');
-        goal2 = this.add.sprite(67*sizer, 350, 'goalshort');
+        goal1 = this.add.sprite(margX+67*sizer, margY+247, 'goalshort');
+        goal2 = this.add.sprite(margX+67*sizer, margY+350, 'goalshort');
 
-        goal4 = this.add.sprite(832*sizer, 247, 'goalshort');
-        goal5 = this.add.sprite(832*sizer, 350, 'goalshort');
+        goal4 = this.add.sprite(margX+832*sizer, margY+247, 'goalshort');
+        goal5 = this.add.sprite(margX+832*sizer, margY+350, 'goalshort');
 
 
-        goalsensor1         = this.add.sprite(60*sizer, 259, 'goalsensor');
-        goalsensor2         = this.add.sprite(837*sizer, 259, 'goalsensor');
+        goalsensor1         = this.add.sprite(margX+60*sizer, margY+259, 'goalsensor');
+        goalsensor2         = this.add.sprite(margX+837*sizer, margY+259, 'goalsensor');
         goalsensor1.visible = false;
         goalsensor2.visible = false;
 
-        goalarea1         = this.add.sprite(81*sizer, 241, 'goalarea');
-        goalarea2         = this.add.sprite(774*sizer, 241, 'goalarea');
+        goalarea1         = this.add.sprite(margX+81*sizer, margY+241, 'goalarea');
+        goalarea2         = this.add.sprite(margX+774*sizer, margY+241, 'goalarea');
         goalarea1.visible = false;
         goalarea2.visible = false;
         goalarea1.anchor.setTo(0.5, 0.5);
@@ -192,7 +227,6 @@ FunkyMultiplayerGame.Game.prototype = {
         goal5.body.static = true;
         goal6.body.static = true;
 
-        goal6.body.angle = 180;
         this.physics.p2.updateBoundsCollisionGroup();
         this.game.stage.disableVisibilityChange = true;
         this.mapKeys();
@@ -214,12 +248,51 @@ FunkyMultiplayerGame.Game.prototype = {
                 goalscored = false;                     //goals will again be counted
                 waitTwoSec = false;                     //the two secs are over
                 waitSecs = 0;
-                scoreText2.text = (600*sizer, 400, " ");      //Erases the 'GOAL!!!'
-                scoreText3.text = (600*sizer, 400, " ");  
+                scoreText2.text = (margX+600*sizer, margY+400, " ");      //Erases the 'GOAL!!!'
+                scoreText3.text = (margX+600*sizer, margY+400, " "); 
+
+              //  scoreText3.text = (600, 400, " ");  
             }
 
-        };
-        scoreText1.text =  " Time : "+ Math.floor(this.game.time.events.duration/1000);
+        };/*
+        if (checkOverlap(_this.puck, goalsensor1)){
+            socket.emit('goalScored2');
+        }*/
+
+/*
+    if (checkOverlap(puck, goalsensor1)){
+        socket.emit('goalScored2');
+    }
+    /*
+        if(this.input.keyboard.isDown(Phaser.Keyboard.LEFT)){
+            socket.emit('move_player', {axis: 'x', force: -1});
+        }
+        if(this.input.keyboard.isDown(Phaser.Keyboard.RIGHT)){
+            socket.emit('move_player', {axis: 'x', force: 1});
+        }
+        if(this.input.keyboard.isDown(Phaser.Keyboard.UP)){
+            socket.emit('move_player', {axis: 'y', force: -1});
+        }
+        if(this.input.keyboard.isDown(Phaser.Keyboard.DOWN)){
+            socket.emit('move_player', {axis: 'y', force: 1});
+        }*/
+     /*   for(var id in _this.playerSprites){
+            var p = _this.playerSprites[id];
+            if(p.target_x != undefined){
+                p.position[0] += (p.target_x - p.position[0]) * 0.16;
+                p.position[1] += (p.target_y - p.position[1]) * 0.16;
+                // Interpolate angle while avoiding the positive/negative issue 
+                var angle = p.target_rotation;
+                var dir = (angle - p.rotation) / (Math.PI * 2);
+                dir -= Math.round(dir);
+                dir = dir * Math.PI * 2;
+                p.rotation += dir * 0.16;
+                console.log(p.target_x );
+            }
+        }*/
+        //puck.body.velocity.x = puck.body.velocity.x * 0.995;
+        //puck.body.velocity.y = puck.body.velocity.y * 0.995;
+            scoreText1.text =  " Time : "+ Math.floor(this.game.time.events.duration/1000);
     },
     mapKeys: function() {
         var keys = {
@@ -300,13 +373,20 @@ FunkyMultiplayerGame.Game.prototype = {
                                     _this.playerSprites[socket.id][1].isDownM = true;
                                 else
                                     _this.playerSprites[socket.id][0].isDownM = true;
-
+                                //_this.playerSprites[socket.id].m_count++;
+                                //m_count++;
+                                //_this.playerSprites[socket.id][j].goHome = true;
                             }
                         }
+
+                        //socket.emit('key_pressed', {key: keyName});
+                        //console.log("key pressed", _this.playerSprites[socket.id][1].isDownV, _this.playerSprites[socket.id][1].isDownB )
                         }
                     }
                 });
                 keys[keyName].onUp.add(function () {
+                    //for (var i in _this.playerSprites){}
+
 
                     for (var j = 0; j < 2; j++){
                         //if (_this.playerSprites[socket.id][j].controlPlayer === true){
@@ -339,11 +419,44 @@ FunkyMultiplayerGame.Game.prototype = {
                             if (keyName === 'swap'){
                                 n_count = 0;
                             }
+                                /*
+                                if (_this.playerSprites[socket.id][0].controlPlayer === true){
+                                    _this.playerSprites[socket.id][0].controlPlayer = false;
+                                    _this.playerSprites[socket.id][1].controlPlayer = true;
+                                }
+                                else{
+                                    _this.playerSprites[socket.id][1].controlPlayer = false;
+                                    _this.playerSprites[socket.id][0].controlPlayer = true;
+                                }*/
                             if (keyName === 'M'){
                                 if(_this.playerSprites[socket.id][j].controlPlayer === false)
                                     _this.playerSprites[socket.id][j].isDownM = false;
-                            }              
+
+
+
+                            /*
+                                if (_this.playerSprites[socket.id].m_count > 20){
+                                    if (_this.playerSprites[socket.id][0].controlPlayer)
+                                        _this.playerSprites[socket.id][1].goForw = true;;
+                                    else
+                                        _this.playerSprites[socket.id][0].goForw = true;
+                                }
+                                else{
+                                    if (_this.playerSprites[socket.id][0].controlPlayer)
+                                         _this.playerSprites[socket.id][1].goHome = true;
+                                    else
+                                        _this.playerSprites[socket.id][0].goHome = true;
+                                }
+                                //socket.emit('conte', m_count);
+                                _this.playerSprites[socket.id].m_count = 0;
+                                */
+
+                            }
+
+                        //socket.emit('key_pressed', {key: keyName});
+                
                         }
+                    //}
                 });
             })(keyName)
 
@@ -360,7 +473,7 @@ Puck = function(game, x, y, authorative){
     var bmd1 = game.add.bitmapData(15, 15, 'rgb(0,200,0)');
     bmd1.circle(7, 7, 6, 0);
 
-        Phaser.Sprite.call(this, game, x, y, bmd1);
+        Phaser.Sprite.call(this, game, margX+x, margY+y, bmd1);
 
     
 
@@ -428,6 +541,14 @@ Puck.prototype.update = function () {
 
             if (checkOverlap(this, goalsensor2))
             {
+               /* if ((this.lastY > 350 || this.lastY < 242) || this.lastX > this.body.x){
+                    //this.body.x = this.lastX;
+                    //this.body.y = this.lastY;
+            
+                }
+                else{
+*/
+                    //updateScore1();
                     goalscored = true;
                     puckD = Math.sqrt((puckCoordX - this.body.x)*(puckCoordX - this.body.x) + (puckCoordY - this.body.y)*(puckCoordY - this.body.y));
                     socket.emit('goalScored1', Math.floor(puckD/2));
@@ -443,14 +564,14 @@ Puck.prototype.update = function () {
         this.divisor--;
         if (this.divisor === 0)
             this.divisor = 3;
-
+                    //_this.target.body.y += (_this.puck.target_y - _this.target.body.y) / divisor;
     }
     this.lastX = this.body.x;
     this.lastY = this.body.y;
 }
 
 Player = function (game, x, y, img, host, hostStick) {
-    Phaser.Sprite.call(this, game, x, y, img);
+    Phaser.Sprite.call(this, game, margX+x, margY+y, img);
 
     this.divisor = 3;
 
@@ -468,13 +589,14 @@ Player = function (game, x, y, img, host, hostStick) {
 
     this.withinPuck = false;
 
-
+    this.target_y ;
+    this.target_x ;
     this.divisor = 3;
     this.isClosePuck = false;
 
 
 
-    _this.game.physics.p2.enable(this);
+    game.physics.p2.enable(this);
     this.body.setCircle(14);
     this.anchor.setTo(0.5, 0.5);
     
@@ -493,9 +615,11 @@ Player = function (game, x, y, img, host, hostStick) {
     this.target_rotation;
     // ####This stick is invisible, without collision###############
   if (hostStick){  
-    this.stick            = game.add.sprite(x, y, null);
+    this.stick            = game.add.sprite(margX+x, margY+ y, null);
+    //this.stick.anchor.setTo(-1.5, 0.5);
     // #####This stick1 is visible, collides with puck###################
-    this.stick1 = game.add.sprite(x, y, 'stick');
+    this.stick1 = game.add.sprite(margX+x, margY+y, 'stick');
+    //this.stick1.anchor.setTo(1.5, 0.5);
 
     _this.physics.p2.enable(this.stick);
     _this.physics.p2.enable(this.stick1);
@@ -509,8 +633,8 @@ Player = function (game, x, y, img, host, hostStick) {
   }
   
   else{
-    this.stick2 = (game.add.sprite(x - 30, y, 'stick'));
-    this.stick            = game.add.sprite(x, y, null);
+    this.stick2 = (game.add.sprite(margX+x - 30, margY+y, 'stick'));
+    this.stick            = game.add.sprite(margX+x, margY+y, null);
     
     _this.physics.p2.enable(this.stick2);
     this.stick2.body.setRectangle(27, 20);
@@ -519,16 +643,62 @@ Player = function (game, x, y, img, host, hostStick) {
     this.stick2.body.collideWorldBounds = false;
     this.stick2.body.setCollisionGroup(stickCollisionGroup);
     this.stick2.body.collides(puckCollisionGroup);
+
+    //this.stick2.anchor.setTo(1.5, 0.5);
     if (this.host)
         this.stick2.body.rotation = this.body.rotation + Math.PI / 2.7;
     else
         this.stick2.body.rotation = this.body.rotation - Math.PI / 2.7;
+    //this.stick2.mass = 0;
+    //this.addChild(this.stick2);
+    /*this.stick2.visible = false;
+    this.sticky = _this.add.sprite(30, 30, 'stick');
+    game.physics.p2.enable(this.sticky);
+    this.sticky.body.collideWorldBounds = false;
+    this.sticky.body.setCollisionGroup(stickCollisionGroup);
+    this.sticky.body.collides(puckCollisionGroup);*/
+    //var constraint  = _this.physics.p2.createLockConstraint(this, this.stick, [-30, 0], 0);
+    //var constraint1 = _this.physics.p2.createLockConstraint(this, this.stick2, [30, 0], 0);
   }
 
     game.add.existing(this);
     console.log("player created")
 
 };
+/*
+Player = function (game, x, y, img) {
+    Phaser.Sprite.call(this, game, x, y, img);
+    this.isDownA = false;
+    this.isDownS = false;
+    this.isDownD = false;
+    this.idDownW = false;
+    this.isDownV = false;
+    this.isDownB = false;
+    this.isDownN = false;
+    this.isDownM = false;
+    _this.physics.p2.enable(this);
+    this.body.setCircle(12);
+    this.anchor.setTo(0.5, 0.5);
+    /*
+     this.body.setCollisionGroup(puckCollisionGroup);
+     this.body.collides([stickCollisionGroup, puckCollisionGroup]) ;*/
+/*
+    this.controlPlayer    = true;
+    this.accelerateRemote = false;
+    // ####This stick is invisible, without collision###############
+    this.stick            = game.add.sprite(x, y, null);
+    // #####This stick1 is visible, collides with puck###################
+    this.stick1 = game.add.sprite(x, y, 'stick');
+    _this.physics.p2.enable(this.stick);
+    _this.physics.p2.enable(this.stick1);
+    this.stick.body.clearCollision(true);
+    this.stick1.body.collideWorldBounds = false;
+    //stick1.body.setCollisionGroup(stickCollisionGroup);
+    //stick1.body.collides(puckCollisionGroup);
+    var constraint  = game.physics.p2.createLockConstraint(this, this.stick, [-30, 0], 0);
+    var constraint1 = game.physics.p2.createLockConstraint(this, this.stick1, [30, 0], 0);
+    game.add.existing(this);
+};*/
 
 Player.prototype             = Object.create(Phaser.Sprite.prototype);
 Player.prototype.constructor = Player;
@@ -543,6 +713,7 @@ else{
     this.body.velocity.y *= 0.94;
 }
     this.body.setZeroRotation();
+    //this.body.angularVelocity = 0;
 
 
     if (this.isDownA)
@@ -555,6 +726,7 @@ else{
             this.body.thrust(1500);
         else {
             this.body.thrust(3000);
+            //console.log("thrusting");
         }
     }
 
@@ -567,14 +739,18 @@ else{
         if (distanceSq(_this.puck, this.stick1) < (23*23)){
             for (var id in _this.playerSprites) {
                 if (id !== socket.id){
-                    if (!(_this.playerSprites[id][0].isClosePuck)){
-                        if (!(_this.playerSprites[id][1].isClosePuck))
-                            moveToObject(_this.puck, this.stick1, 70);
-                    }
+                   // if (!(_this.playerSprites[id][0].isClosePuck || _this.playerSprites[id][1].isClosePuck))
+                        moveToObject(_this.puck, this.stick1, 70);
+                    //else
+                    //    this.isDownV = false;
                 }
             }
+            //moveToObject(_this.puck, this.stick1, 100);
         }
 
+        //console.log("braking");
+        //console.log(this.host);
+        //brake(this, _this.puck);
     }
 
     else if (this.isDownB) {
@@ -613,6 +789,8 @@ else{
     }
     else
         this.withinPuck = false;
+
+    //console.log("withing puck : ", this.withinPuck);
 
     if (this.controlPlayer){
         this.goHome = false;
@@ -672,24 +850,51 @@ else{
         this.divisior--;
         if (this.divisior === 0)
             this.divisor = 3;
-        /*
-        if ((this.body.x - _this.puck.body.x)*(this.body.x - _this.puck.body.x) + (this.body.y - _this.puck.body.x)*(this.body.y - _this.puck.body.y) < 100*100){
+        if ((this.body.x - _this.puck.body.x)*(this.body.x - _this.puck.body.x) + (this.body.y - _this.puck.body.x)*(this.body.y - _this.puck.body.y) < 15*15){
             this.isClosePuck = true;
         }
         else
             this.isClosePuck = false;
-*/
-        }
-    }
 
+        }
+
+        /*
+        this.stick2.body.x = this.body.x;
+        this.stick2.body.y = this.body.y;*/
+        //this.sticky2.body.rotation = this.body.rotation;
+    }
+    else
+        this.isClosePuck = false;
 };
 
+//module.exports = Player;
+
+/*
+function brake(player, puck) {
+    player.body.velocity.x *= 0.9;                  //slows down by 10% every frame
+    player.body.velocity.y *= 0.9;
+    if (_this.physics.arcade.distanceBetween(puck, player.stick1) < 22.15) {
+        for(var id in _this.playerSprites){
+            (function (id) {
+                if (socket.id !== id ){
+                if (!(_this.playerSprites[id][0].isClosePuck || _this.playerSprites[id][1].isClosePuck))
+                //if ((_this.playerSprites[id][0].x - _this.puck.body.x)*(_this.playerSprites[id][0].x - _this.puck.body.x) + (_this.playerSprites[id][0].y - _this.puck.body.y)*(_this.playerSprites[id][0].y - _this.puck.body.y) > 150 * 150)
+                    moveToObject(puck, player.stick1, 100);
+                }
+            })
+        //_this.host = true;
+        }
+    }
+};*/
 
 function moveToObject(obj1, obj2, speed1) {
-
+    //if (typeof speed1 === 'undefined') { speed1 = 60; }
+    //obj2.x -= 18;
+    //obj2.y += 21;
+    //obj1.body.anchor = 0.75, 0.75;
     var angle            = Math.atan2(obj2.y - obj1.y, obj2.x - obj1.x);
-    obj1.body.rotation   = angle + _this.math.degToRad(90); 
-    obj1.body.velocity.x = Math.cos(angle) * speed1; 
+    obj1.body.rotation   = angle + _this.math.degToRad(90);  //
+    obj1.body.velocity.x = Math.cos(angle) * speed1;    // accelerateToObject 
     obj1.body.velocity.y = Math.sin(angle) * speed1;
 }
 
@@ -704,6 +909,17 @@ function accelerateToPoint(obj1, obj2, speed) {
 
     var angle = _this.physics.arcade.angleBetween(obj1, obj2);
 
+    //var angle = Math.atan2(obj2.y - obj1.y, obj2.x - obj1.x) + game.math.degToRad(90);
+/*
+    var x1 = Math.cos(angle) * (-55) + obj2.x;
+    var y1 = Math.sin(angle) * (-55) + obj2.y;*/
+
+
+    //point.rotate(x1, y1, angle, true, 90);
+
+
+    //var angle1 = Math.atan2(y1 - obj1.y, x1 - obj1.x);
+    //obj1.rotation = angle + game.math.degToRad(90);
     if (checkOverlap(obj1, goalarea1)){
         obj1.body.rotation = -80;
 
@@ -725,10 +941,10 @@ function accelerateToPoint(obj1, obj2, speed) {
     
     else
         obj1.body.rotation = angle + _this.math.degToRad(90);
-    obj1.body.force.x = Math.cos(angle) * speed;   
+    obj1.body.force.x = Math.cos(angle) * speed;    // accelerateToObject 
     obj1.body.force.y = Math.sin(angle) * speed;
 
-
+    //if(obj1.)
 }
 
 function checkOverlap(spriteA, spriteB) {
@@ -755,11 +971,21 @@ function updateScore1(puckD)
         scoreText.text = 'Score : ' + score1 + " : " + score2;
         waitTwoSec = true;
     console.log(" goalscored1 received speed: ", puckD)
-    scoreText2.text = (400*sizer, 300, "   GOAL!!!!");
-    scoreText3.text = (700*sizer, 500, puckD + " km/h");
+    scoreText2.text = (margX+400*sizer, margY+300, "   GOAL!!!!");
+    scoreText3.text = (margX+700*sizer, margY+500, puckD + " km/h");
     }
-    fx.play();
 
+/*
+    player.body.x = 150;
+    player.body.y = 200;
+    player1.body.x = 150;
+    player1.body.y = 400;
+    player.body.velocity.x = 0;
+    player1.body.velocity.x = 0;
+    player3.body.velocity.x = 0;
+    player2.body.velocity.x = 0;+*/
+    fx.play();
+    //sound.play();
 }
 
 function updateScore2(puckD)
@@ -769,16 +995,31 @@ function updateScore2(puckD)
         scoreText.text = 'Score : ' + score1 + " : " + score2;
         waitTwoSec = true;
         console.log(" goalscored1 received speed: ", puckD)
-        scoreText2.text = (400*sizer, 400, "   GOAL!!!!");
-        scoreText3.text = (700*sizer, 500, puckD + " km/h");
+        scoreText2.text = (margX+400*sizer, margY+400, "   GOAL!!!!");
+        scoreText3.text = (margX+700*sizer, margY+500, puckD + " km/h");
     }
-    fx.play();
+/*
+    player.body.x = 150;
+    player.body.y = 200;
+    player1.body.x = 150;
+    player1.body.y = 400;
+    player.body.velocity.x = 0;
+    player1.body.velocity.x = 0;
+    player3.body.velocity.x = 0;
+    player2.body.velocity.x = 0;
+*/
 
+    //fx.play('sfx');
+    fx.play();
+    //sound.play();
 }
 
 function finalScore(){
+//    scoreText1.text = ('You win!', { font: '34px Arial', fill: '#bbf' });
+        //fx2.play();
+
         if (score1 > score2){
-            scoreText2.text = (400, 400, "Player1 WINS!");
+            scoreText2.text = (margX+400, margY+400, "Player1 WINS!");
         }
         else if (score2 > score1){
             scoreText2.text = " Player2 WINS!";
@@ -786,6 +1027,8 @@ function finalScore(){
         }
         else{
             scoreText2.text = " DRAW ";
+        
+            //gameEnd = true;
         }
-        _this.game.paused = true;
+        //game.paused = true;
 }
