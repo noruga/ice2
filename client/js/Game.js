@@ -37,7 +37,7 @@ var fx1;
 var sizer = 1.2;
 
 var puckD = 1;
-const margX = 30;
+const margX = 0;
 const margY = 45;
 
 var puckCoordX = 540;
@@ -80,17 +80,17 @@ FunkyMultiplayerGame.Game.prototype = {
             align: 'center'
         });*/
         this.physics.startSystem(Phaser.Physics.P2JS);
-        this.physics.startSystem(Phaser.Physics.ARCADE);
+        //this.physics.startSystem(Phaser.Physics.ARCADE);
+
+        this.physics.p2.setBounds(margX, margY, 1080, 600);
+        rink = this.add.tileSprite(margX+0, margY+0, 1080, 600, 'starfield');
 
         this.time.events.add(Phaser.Timer.SECOND * 150, finalScore, this);
         this.physics.p2.restitution = 0.1;
 
-        stickCollisionGroup = _this.physics.p2.createCollisionGroup();
-        puckCollisionGroup  = _this.physics.p2.createCollisionGroup();
-        goalsensorGroup     = _this.physics.p2.createCollisionGroup();
-
-
-        rink = this.add.tileSprite(margX+0, margY+0, 1080, 600, 'starfield');
+        stickCollisionGroup = this.physics.p2.createCollisionGroup();
+        puckCollisionGroup  = this.physics.p2.createCollisionGroup();
+        goalsensorGroup     = this.physics.p2.createCollisionGroup();
         homePoint = this.add.sprite(margX+112*sizer, margY+319, null);
         homePoint1  = this.add.sprite(margX+788*sizer, margY+281, null);
 
@@ -130,6 +130,13 @@ FunkyMultiplayerGame.Game.prototype = {
         this.target.visible = true;
         this.target.collides = false;
         //target.body.collideWorldBounds = true;*/
+        //var wallRec = new Phaser.Rectangle(0, 0, margX, 600);
+/*        var wall = this.add.sprite(20, 0, 'wall');
+        this.physics.p2.enable(wall);
+        wall.body.static             = true;
+        wall.body.collideWorldBounds = false;
+        wall.body.setCollisionGroup(puckCollisionGroup);
+        wall.body.collides([puckCollisionGroup]);*/
 
         //############ The Corners ##############
         var cornerRec   = this.add.sprite(margX+874*sizer, margY+595, 'cornerRec');
@@ -227,6 +234,7 @@ FunkyMultiplayerGame.Game.prototype = {
         goal5.body.static = true;
         goal6.body.static = true;
 
+
         this.physics.p2.updateBoundsCollisionGroup();
         this.game.stage.disableVisibilityChange = true;
         this.mapKeys();
@@ -240,9 +248,9 @@ FunkyMultiplayerGame.Game.prototype = {
         if (waitTwoSec == true){
             waitSecs++;
             if (waitSecs == 180){
-                _this.puck.reset(540, 300);
-                _this.puck.target_x = 450;
-                _this.puck.target_y = 300;
+                _this.puck.reset(margX+540, margY+300);
+                _this.puck.target_x = margX+450;
+                _this.puck.target_y = margY+300;
             }
             else if (waitSecs > 180){
                 goalscored = false;                     //goals will again be counted
@@ -524,7 +532,7 @@ Puck.prototype.update = function () {
             //if(puck.prevx < )
             if (checkOverlap(this, goalsensor1))
             {
-                if ((this.lastY > 350 || this.lastY < 242)){
+                if ((this.lastY > margY+350 || this.lastY < margY+242)){
                     this.body.x = this.lastX;
                     this.body.y = this.lastY;
             
@@ -541,20 +549,20 @@ Puck.prototype.update = function () {
 
             if (checkOverlap(this, goalsensor2))
             {
-               /* if ((this.lastY > 350 || this.lastY < 242) || this.lastX > this.body.x){
-                    //this.body.x = this.lastX;
-                    //this.body.y = this.lastY;
+                if (this.lastY > margY+350 || this.lastY < margY+242){
+                    this.body.x = this.lastX;
+                    this.body.y = this.lastY;
             
                 }
                 else{
-*/
+
                     //updateScore1();
                     goalscored = true;
                     puckD = Math.sqrt((puckCoordX - this.body.x)*(puckCoordX - this.body.x) + (puckCoordY - this.body.y)*(puckCoordY - this.body.y));
                     socket.emit('goalScored1', Math.floor(puckD/2));
                     this.body.velocity.x = this.body.velocity.x * 0.01;
                     this.body.velocity.y = this.body.velocity.y * 0.01;
-                //}
+                }
             };
         };
     }
@@ -599,7 +607,7 @@ Player = function (game, x, y, img, host, hostStick) {
     game.physics.p2.enable(this);
     this.body.setCircle(14);
     this.anchor.setTo(0.5, 0.5);
-    
+         this.body.collideWorldBounds = true;
     
      this.body.setCollisionGroup(puckCollisionGroup);
      this.body.collides([ puckCollisionGroup]) ;
