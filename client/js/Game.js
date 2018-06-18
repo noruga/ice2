@@ -82,6 +82,7 @@ FunkyMultiplayerGame.Game.prototype = {
         this.physics.startSystem(Phaser.Physics.P2JS);
         this.physics.startSystem(Phaser.Physics.ARCADE);
 
+
         this.physics.p2.setBounds(margX, margY, 1080, 600);
         rink = this.add.tileSprite(margX+0, margY+0, 1080, 600, 'starfield');
 
@@ -101,9 +102,14 @@ FunkyMultiplayerGame.Game.prototype = {
         forwPoint4  = this.add.sprite(margX+180*sizer, margY+500, null);
 
 
-        scoreText = _this.add.text(margX+323*sizer, 0, 'Score : ' + score1 + " : " + score2, { font: '34px Arial', fill: '#0066cc' });
+        //for (var keyName in _this.) {
+            //(function (keyName) {
+        var nameText = _this.add.text(margX+300*sizer, 0, "SWE" ,{ font: '34px Arial', fill: 'rgb(247, 238, 35)' });
+        var nameText2 = _this.add.text(margX+550*sizer, 0, "RUS" ,{ font: '34px Arial', fill: '#cc0000' });
+
+        scoreText = _this.add.text(margX+423*sizer, 0, score1 + " : " + score2, { font: '34px Arial', fill: '#0066cc' });
         scoreText2 = _this.add.text(margX+200*sizer, margY+300, "" ,{ font: '100px Arial', fill: '#bbf' });
-        scoreText1 = _this.add.text(margX+1, 0, "Time : " + this.game.time.events.duration/60, { font: '34px Arial', fill: '#cc0000' });
+        scoreText1 = _this.add.text(margX+1, 0, "Time : " + this.game.time.events.duration/60, { font: '34px Arial', fill: '#0066cc' });
         scoreText3 = _this.add.text(margX+400*sizer, margY+500, " " );
         //scoreText1 = _this.add.text(10, 10, "Time : " + score1, { font: '34px Arial', fill: '#bbf' });
 
@@ -477,8 +483,9 @@ Puck = function(game, x, y, authorative){
     // #############THE PUCK#######################
 
 
-
+    
     var bmd1 = game.add.bitmapData(15, 15, 'rgb(0,200,0)');
+    
     bmd1.circle(7, 7, 6, 0);
 
         Phaser.Sprite.call(this, game, margX+x, margY+y, bmd1);
@@ -509,11 +516,11 @@ Puck = function(game, x, y, authorative){
         this.body.setCollisionGroup(puckCollisionGroup);
         this.body.collides([stickCollisionGroup, puckCollisionGroup]);
     }
-
+/*
     else{
         this.visible = false;
         this.collides = false;
-    }
+    }*/
 
     game.add.existing(this);
 
@@ -976,7 +983,7 @@ function updateScore1(puckD)
 {
     if (waitTwoSec === false){
         score1++;
-        scoreText.text = 'Score : ' + score1 + " : " + score2;
+        scoreText.text = score1 + " : " + score2;
         waitTwoSec = true;
     console.log(" goalscored1 received speed: ", puckD)
     scoreText2.text = (margX+400*sizer, margY+300, "   GOAL!!!!");
@@ -1000,7 +1007,7 @@ function updateScore2(puckD)
 {
     if (waitTwoSec === false){
         score2++;
-        scoreText.text = 'Score : ' + score1 + " : " + score2;
+        scoreText.text = score1 + " : " + score2;
         waitTwoSec = true;
         console.log(" goalscored1 received speed: ", puckD)
         scoreText2.text = (margX+400*sizer, margY+400, "   GOAL!!!!");
