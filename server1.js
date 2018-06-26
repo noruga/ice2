@@ -64,8 +64,9 @@ var io = require('socket.io').listen(server);
 
 var faceOffCounter = 0;
 
-var players = {};
+var players = [];
 var usernames = {};
+var playerList = {};
 
 var rooms = [];
 
@@ -114,6 +115,13 @@ io.on('connection', function (socket) {
     // the id of each socket that connects being printed.
     console.log("* ID of new socket object: " + socket.id);
 
+
+    socket.on('adduser', function(username) {
+        socket.username = username;
+        usernames[socket.id] = username;
+        playerList[socket.id] = socket;
+        io.emit('who_connected', usernames);
+    });
     // Using the socket object that was passed in, events can be sent to the
     // client that socket belongs to using .emit(...)
     // The socket object on the client (see Boot.js in /client/js) should have event
@@ -126,16 +134,20 @@ io.on('connection', function (socket) {
     // parameter is any data you might want to send along with the event.
     socket.emit('hello_client', {crazyString: 'abc123', coolArray: [40, 'beep', true]});
     // Or with no data, just an event.
-    socket.emit('how_are_you');
+
     // An event that the client isn't listening for, so will be ignored when the client receives it.
     socket.emit('anyone_there');
 
     // You can add your own properties onto the socket object like any other object.
     // Useful if you want to store player data like a score, username, or a flag of
     // whether they are currently in a game.
-    socket.username = 'DEFAULT NAME';
+    //socket.username = 'DEF';
     socket.score = 0;
     socket.isInGame = false;
+    var dataToSend = [];
+    //dataToSend.push({name: socket.username});
+
+   // socket.emit('how_are_you', socket.username);
 
 
     // Event listeners can be added to this socket. Every time the client sends
@@ -150,11 +162,15 @@ io.on('connection', function (socket) {
         // Update the player's username with the data that they sent from their client.
         // The name of the property that you access on the data object must match how it
         // looks when the client sent it.
-        socket.username = data.username;
-        console.log("* Username changed to: " + data.username);
+        socket.username = data;
+        //socket.emit('how_are_you', socket.username);
+        console.log("* Username changed to: " + socket.username);
     });
     socket.on('player.ready', function() {
         players[socket.id] = socket;
+        //players[socket.id].username = socket.username;
+        console.log("socket username: ", socket.username)
+
         if (Object.keys(players).length === 2) {
             console.log("two players connection and clicked Join Game");
             io.sockets.emit('players.ready');/*
@@ -163,6 +179,7 @@ io.on('connection', function (socket) {
         }
         else if (Object.keys(players).length > 2){
             socket.broadcast.to(players[socket.id]).emit('disconnecting');
+            delete players[socket.id];
         }
     });
 
@@ -189,7 +206,7 @@ io.on('connection', function (socket) {
             socket.join(rooms[rooms.length - 1]);
             //numOfPlayers++;
         if(Object.keys(players).length < 3){
-            if (Object.keys(players).length & 2) {
+            if (Object.keys(players).length === 2) {
                 players[socket.id].host = false;
                 console.log("two players connection and clicked Join Game");
 
@@ -256,10 +273,13 @@ io.on('connection', function (socket) {
             })
         }
         else{
+
             x1 = data[0].x1;
             y1 = data[0].y1;
             x2 = data[0].x;
             y2 = data[0].y;
+            if (data[0].host)
+                lastHost = players[playerId].host;
 
             sendData[0].host = lastHost;
             keys.forEach(function (key) {
@@ -296,6 +316,7 @@ io.on('connection', function (socket) {
         disconnection.delay = setTimeout(() => {
             if(socket.isInGame === true){
                 delete players[socket.id];
+                delete usernames[socket.id];
             }
         //set timeout to variable, in case of reconnection
 
@@ -329,14 +350,18 @@ function preparePlayersDataToSend() {
     // Prepare the positions of the players, ready to send to all players.
     var dataToSend = [];
     var host = true;
+    //var username = "SWE"
     // 'players' is an object, so get a list of the keys.
     var keys = Object.keys(players);
+    //var values = Object.values(players);
 
     keys.forEach(function (key) {
         // Add the position (and ID, so the client knows who is where) to the data to send.
-        dataToSend.push({id: key, host});
+        dataToSend.push({id: key, host: host, username: usernames[key]});
         console.log("ID : ", key, "HOST :", host)
+        console.log("username :", usernames[key]);
         host = false;
+        //username = "RUS"
 
     });
     return dataToSend;
