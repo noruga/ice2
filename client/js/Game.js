@@ -71,6 +71,8 @@ FunkyMultiplayerGame.Game.prototype = {
         // Create an object to hold references to the player sprites.
         this.playerSprites = {};
         this.puck;
+        this.username1 = " ";
+        this.username2 = " ";
 
         //this.hostess = false;
 /*
@@ -101,11 +103,20 @@ FunkyMultiplayerGame.Game.prototype = {
         forwPoint3  = this.add.sprite(margX+180*sizer, margY+100, null);
         forwPoint4  = this.add.sprite(margX+180*sizer, margY+500, null);
 
+/*
+        for (var keyName in _this.playerSprites) {
+            (function (keyName) {
+                console.log(keyName.username + " : " )
+            })
+        }*/
+        //console.log("ratatatata" + Object.keys(_this.playerSprites[0].username);
 
+        //var obj = Object.keys(_this.playerSprites)[0];
+        //console.log("plyaersf: " + _this.playerSprites.username)
         //for (var keyName in _this.) {
             //(function (keyName) {
-        var nameText = _this.add.text(margX+300*sizer, 0, "SWE" ,{ font: '34px Arial', fill: 'rgb(247, 238, 35)' });
-        var nameText2 = _this.add.text(margX+550*sizer, 0, "RUS" ,{ font: '34px Arial', fill: '#cc0000' });
+        //var nameText = _this.add.text(margX+300*sizer, 0, "swe", { font: '34px Arial', fill: 'rgb(247, 238, 35)' });
+        //var nameText2 = _this.add.text(margX+550*sizer, 0, _this.username2, { font: '34px Arial', fill: '#cc0000' });
 
         scoreText = _this.add.text(margX+423*sizer, 0, score1 + " : " + score2, { font: '34px Arial', fill: '#0066cc' });
         scoreText2 = _this.add.text(margX+200*sizer, margY+300, "" ,{ font: '100px Arial', fill: '#bbf' });
@@ -253,6 +264,7 @@ FunkyMultiplayerGame.Game.prototype = {
 
         if (waitTwoSec == true){
             waitSecs++;
+
             if (waitSecs == 180){
                 _this.puck.reset(margX+540, margY+300);
                 _this.puck.target_x = margX+450;
@@ -772,6 +784,7 @@ else{
         this.isDownV = false;
         if (checkOverlap(this.stick1, _this.puck)){
             fx1.play();
+            this.withinPuck = true;
             puckCoordX = _this.puck.body.x;
             puckCoordY = _this.puck.body.y;
         }
@@ -865,12 +878,12 @@ else{
         this.divisior--;
         if (this.divisior === 0)
             this.divisor = 3;
-        if ((this.body.x - _this.puck.body.x)*(this.body.x - _this.puck.body.x) + (this.body.y - _this.puck.body.x)*(this.body.y - _this.puck.body.y) < 15*15){
+        /*if ((this.body.x - _this.puck.body.x)*(this.body.x - _this.puck.body.x) + (this.body.y - _this.puck.body.x)*(this.body.y - _this.puck.body.y) < 15*15){
             this.isClosePuck = true;
         }
         else
             this.isClosePuck = false;
-
+*/
         }
 
         /*

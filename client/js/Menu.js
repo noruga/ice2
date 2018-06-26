@@ -22,7 +22,7 @@ FunkyMultiplayerGame.Menu.prototype = {
     	//this.add.plugin(PhaserInput.Plugin);
     	//input = this.game.add.inputField(500, 90);
 /*		var player = prompt("Please enter your name", "");*/
-		socket.emit('change_username', player)
+		//socket.emit('change_username', player)
     	this.textMsg = this.add.text(470, 100, " " , { font: '80px Arial', fill: '#cc0000' });
         // This button will cause the 'join_game' event to be emitted.
         this.add.button(150, 80, 'btn-join-game', this.joinGamePressed, this);

@@ -14,11 +14,43 @@ var lastPuckY = 300;
 var velX = 0;
 var velY = 0;
 
+var myRepeat1X = [];
+var myRepeat1Y = [];
+var myRepeat2X = [];
+var myRepeat2Y = [];
+var oppRepeat1X = [];
+var oppRepeat1Y = [];
+var oppRepeat2X = [];
+var oppRepeat2Y = [];
+var puckRepeatX = [];
+var puckRepeatY = [];
+
+var textPlayers;
+
+
 var puckD;
 // Connect to the Socket.io server that is running on the IP address 127.0.0.1 and at port number 3512.
 //var socket = io("http://127.0.0.1:3512");
 var socket = io();
 
+
+
+socket.on('connect', function(){
+    socket.emit('adduser', prompt("What's your name: "));
+});
+
+socket.on('who_connected', function(data){
+        var y = 150;
+
+    var keys = Object.keys(data);
+    //var values = Object.values(players);
+
+    keys.forEach(function (key) {
+        textPlayers = _this.add.text(margX+550*sizer, y, data[key], { font: '34px Arial', fill: '#cc0000' });
+        y += 100;
+    })
+    
+})
 // This connects to 127.0.0.1 which is localhost (this computer), which is also where the server is running.
 // If the server was running somewhere else, like on a cloud service, then change the IP address to the
 // public IP address of that device. If on Windows, open a console and type 'ipconfig' to find the IPv4
@@ -33,6 +65,7 @@ socket.on('join_game_success', function () {
     console.log("");
     console.log("* * * join_game_success event received from server.");
     console.log("* Starting Game state.");
+
     // This player joined the game. Start the 'Game' state.
     _this.state.start("Game");
 });
@@ -87,8 +120,6 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                             _this.puck.body.velocity.x = velX *20;
                             _this.puck.body.velocity.y = velY *20;
 
-                            console.log("velocity ")
-                            console.log(_this.target.velocity);
                         }
 
                         _this.puck.collides = true;
@@ -131,7 +162,7 @@ function preparePlayersDataToSend() {
 //console.log("JOHOOO ", Math.abs(_this.playerSprites[socket.id][0].x));
     dataToSend.push({id: socket.id, x: Math.round(_this.playerSprites[socket.id][0].x), y: Math.round(_this.playerSprites[socket.id][0].y), 
             angle: Math.round(_this.playerSprites[socket.id][0].body.rotation* 100) / 100, puckX: Math.round(_this.puck.x), puckY: Math.round(_this.puck.y),
-            //host: (_this.playerSprites[socket.id][0].withinPuck || _this.playerSprites[socket.id][1].withinPuck),
+            host: (_this.playerSprites[socket.id][0].withinPuck || _this.playerSprites[socket.id][1].withinPuck),
             x1: Math.round(_this.playerSprites[socket.id][1].x), y1: Math.round(_this.playerSprites[socket.id][1].y), angle1: Math.round(_this.playerSprites[socket.id][1].body.rotation* 100) / 100});
 //console.log(_this.host)
     return dataToSend;
@@ -154,6 +185,7 @@ socket.on('goalScored1',  function (puckD){
 socket.on('state_update', function (data) {
 
     if(_this.playerSprites !== undefined){
+
         // The 'playerSprites' object exists.
         for(let i= 0, len = data.length; i<2; i+=1){
 
@@ -164,7 +196,7 @@ socket.on('state_update', function (data) {
                 
             // No property was found for the player that this socket ID belongs to. Add a sprite for them.
             else {
-                
+
                 if (host){
                     host = false;
                     //_this.playerSprites[data[i].id] =  new Player(_this, data[i].x, data[i].y, 'ball1m');
@@ -178,17 +210,19 @@ socket.on('state_update', function (data) {
                     _this.playerSprites[data[i].id][1].body.rotation = Math.PI / 2.7;
                     _this.playerSprites[data[i].id].host = true;
                     _this.playerSprites[data[i].id].puckSlowCount = 0;
-                    _this.playerSprites[data[i].id].puckX = 540;
-                    _this.playerSprites[data[i].id].puckY = 300;
+                    //_this.playerSprites[data[i].id].puckX = 540;
+                    //_this.playerSprites[data[i].id].puckY = 300;
                     _this.puck = new Puck(_this, 450*sizer, 300, true);
                     _this.target = new Puck(_this, 450*sizer, 300, false);
+                    _this.playerSprites[data[i].id].username = data[i].username;
+                    var nameText = _this.add.text(margX+300*sizer, 0, _this.playerSprites[data[i].id].username, { font: '34px Arial', fill: 'rgb(247, 238, 35)' });
                 }
                 else{
                     _this.playerSprites[data[i].id] = {}
                     _this.playerSprites[data[i].id].host = false;
                     _this.playerSprites[data[i].id].puckSlowCount = 0;
-                    _this.playerSprites[data[i].id].puckX = 540;
-                    _this.playerSprites[data[i].id].puckY = 300;
+                    //_this.playerSprites[data[i].id].puckX = 540;
+                    //_this.playerSprites[data[i].id].puckY = 300;
                     _this.playerSprites[data[i].id][0] =  new Player(_this, 750*sizer, 300, 'ball', false, (data[i].id === this.id));
                     _this.playerSprites[data[i].id][1] =  new Player(_this, 550*sizer, 300, 'ball', false, (data[i].id === this.id));
                     
@@ -196,9 +230,13 @@ socket.on('state_update', function (data) {
                     _this.playerSprites[data[i].id][0].controlPlayer = false;
                     _this.playerSprites[data[i].id][0].body.rotation = - Math.PI  / 2.7;
                     _this.playerSprites[data[i].id][1].body.rotation = - Math.PI  / 2.7;
+                    _this.playerSprites[data[i].id].username = data[i].username;
+                    var nameText2 = _this.add.text(margX+550*sizer, 0, _this.playerSprites[data[i].id].username, { font: '34px Arial', fill: '#cc0000' });
                 }
 
             }
+           // console.log(data[i].list[0])
+            //_this.textMsg = game.add.text(800, 20, data[i].list , { fill: '#ffffff', font: '14pt Arial' });
         }
     }
 
