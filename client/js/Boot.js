@@ -181,6 +181,7 @@ setInterval(function () {
     if(dataToSend !== undefined){
         socket.emit('player_update', dataToSend);
     }
+    /*
     _this.playerSprites[socket.id][0].repeatX.push(_this.playerSprites[socket.id][0].x);
     _this.playerSprites[socket.id][0].repeatY.push(_this.playerSprites[socket.id][0].y);
     _this.playerSprites[socket.id][0].repeatAngle.push(_this.playerSprites[socket.id][0].rotation);
@@ -191,7 +192,7 @@ setInterval(function () {
     _this.puck.repeatX.push(_this.puck.body.x);
     _this.puck.repeatY.push(_this.puck.body.y);*/
 
-
+/*
     if (_this.playerSprites[socket.id][0].repeatX.length > 100){
         _this.playerSprites[socket.id][0].repeatX.shift();
         _this.playerSprites[socket.id][0].repeatY.shift();
@@ -201,7 +202,7 @@ setInterval(function () {
         _this.playerSprites[socket.id][1].repeatAngle.shift();
 //        _this.puck.repeatX.shift();
 //        _this.puck.repeatY.shift();
-    }
+    }*/
 
 }, emitRate);
 

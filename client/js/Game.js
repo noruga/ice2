@@ -46,6 +46,8 @@ var playRepeat = false;
 var repeatTimer = 0;
 var n = 0;
 
+var repeatText;
+
 var accelerateRemote = true;
 /*
 var left = false,
@@ -122,6 +124,8 @@ FunkyMultiplayerGame.Game.prototype = {
         scoreText2 = _this.add.text(margX+200*sizer, margY+300, "" ,{ font: '100px Arial', fill: '#bbf' });
         scoreText1 = _this.add.text(margX+1, 0, "Time : " + this.game.time.events.duration/60, { font: '34px Arial', fill: '#0066cc' });
         scoreText3 = _this.add.text(margX+400*sizer, margY+500, " " );
+
+        repeatText = _this.add.text(margX+800*sizer, margY+500, " ", { font: '34px Arial', fill: '#0066cc' });
         //scoreText1 = _this.add.text(10, 10, "Time : " + score1, { font: '34px Arial', fill: '#bbf' });
 
         //var puck1 = new Puck(game, 450, 350);
@@ -262,11 +266,15 @@ FunkyMultiplayerGame.Game.prototype = {
 
 
     if (playRepeat){
+
+
+        /*
         repeatTimer++;
-        if (repeatTimer > 300){
+        if (repeatTimer > 100){
             playRepeat = false;
             n = 0;
-        }
+            repeatTimer = 0;
+        }*/
 
     }
     else{
@@ -277,11 +285,10 @@ FunkyMultiplayerGame.Game.prototype = {
         if (waitTwoSec == true){
             waitSecs++;
 
-            if (waitSecs == 14){
-                //_this.game.paused;
-                console.log(_this.playerSprites[socket.id][1].repeatAngle[0]);
-                console.log(_this.playerSprites[socket.id][0].repeatAngle[0]);
-                //playRepeat = true;
+            if (waitSecs == 100){
+
+                playRepeat = true;
+                repeatText = " REPLAY "
             }
 
             else if (waitSecs == 180){
@@ -536,8 +543,8 @@ Puck = function(game, x, y, authorative){
     this.lastX = 540;
     this.lastY = 300;
 
-    this.repeatX = [540, 540, 540, 540, 540];
-    this.repeatY = [300, 300, 300, 300, 300];
+    this.repeatX = [];
+    this.repeatY = [];
     this.divisor = 3;
 
     this.master = false;
@@ -566,9 +573,10 @@ Puck.prototype.constructor = Puck;
 Puck.prototype.update = function () {
 if (playRepeat){
     
-    //if (this.repeatX.length > n){
-    this.body.y += (this.repeatY[0] - this.repeatY[1]) / this.divisor;
-    this.body.x += (this.repeatX[0] - this.repeatX[1]) / this.divisor;
+if (this.repeatX.length > n){
+    this.body.y = this.repeatY[n]
+    this.body.x = this.repeatX[n]
+}
     //let angle = this.repeatAngle[1];
    /* let dir = (angle - this.repeatAngle[n+1]) / (Math.PI * 2);
         //dir = Math.round(dir);
@@ -576,14 +584,15 @@ if (playRepeat){
         this.body.rotation += dir / this.divisor;
         //this.stick2.body.rotation += dir / this.divisor;*/
     //n++;
+    /*
     this.divisor--;
     if (this.divisor < 1)
-        this.divisor = 3;
+        this.divisor = 3;*/
 }
 else{
-    this.repeatX.push(this.body.x);
-    this.repeatY.push(this.body.y);
-    if(this.repeatX.length > 6){
+    this.repeatX.push(Math.round(this.body.x));
+    this.repeatY.push(Math.round(this.body.y));
+    if(this.repeatX.length > 300){
         this.repeatX.shift();
         this.repeatY.shift();
     }
@@ -602,8 +611,10 @@ else{
             
                 }
                 else{
-                    console.log("x: " + this.repeatX)
-                    puckD = Math.sqrt((this.repeatX[0] - this.repeatX[5])*(this.repeatX[0] - this.repeatX[5]) + (this.repeatY[0] - this.repeatY[5])*(this.repeatY[0] - this.repeatY[5]));
+
+                    puckD = Math.sqrt((this.repeatX[this.repeatX.length-6] - this.repeatX[this.repeatX.length-1])*(this.repeatX[this.repeatX.length-6] - 
+                        this.repeatX[this.repeatX.length-1]) + (this.repeatY[this.repeatX.length-6] - this.repeatY[this.repeatX.length-1])*(this.repeatY[this.repeatX.length-6] -
+                         this.repeatY[this.repeatX.length-1]));
                     goalscored = true;
                     socket.emit('goalScored2', Math.floor(puckD));
                     this.body.velocity.x = this.body.velocity.x * 0.01;
@@ -620,10 +631,11 @@ else{
             
                 }
                 else{
-                    console.log("x: " + this.repeatX)
-                    //updateScore1();
+
                     goalscored = true;
-                    puckD = Math.sqrt((this.repeatX[0] - this.repeatX[5])*(this.repeatX[0] - this.repeatX[5]) + (this.repeatY[0] - this.repeatY[5])*(this.repeatY[0] - this.repeatY[5]));
+                    puckD = Math.sqrt((this.repeatX[this.repeatX.length-6] - this.repeatX[this.repeatX.length-1])*(this.repeatX[this.repeatX.length-6] - 
+                        this.repeatX[this.repeatX.length-1]) + (this.repeatY[this.repeatX.length-6] - this.repeatY[this.repeatX.length-1])*(this.repeatY[this.repeatX.length-6] -
+                        this.repeatY[this.repeatX.length-1]));
                     socket.emit('goalScored1', Math.floor(puckD));
                     this.body.velocity.x = this.body.velocity.x * 0.01;
                     this.body.velocity.y = this.body.velocity.y * 0.01;
@@ -694,10 +706,9 @@ Player = function (game, x, y, img, host, hostStick) {
     // ####This stick is invisible, without collision###############
   if (hostStick){  
     this.stick            = game.add.sprite(margX+x, margY+ y, null);
-    //this.stick.anchor.setTo(-1.5, 0.5);
     // #####This stick1 is visible, collides with puck###################
     this.stick1 = game.add.sprite(margX+x, margY+y, 'stick');
-    //this.stick1.anchor.setTo(1.5, 0.5);
+
 
     _this.physics.p2.enable(this.stick);
     _this.physics.p2.enable(this.stick1);
@@ -711,81 +722,40 @@ Player = function (game, x, y, img, host, hostStick) {
   }
   
   else{
-    this.stick2 = (game.add.sprite(margX+x - 30, margY+y, 'stick'));
+    this.stick1 = (game.add.sprite(margX+x - 30, margY+y, 'stick'));
     this.stick            = game.add.sprite(margX+x, margY+y, null);
     
-    _this.physics.p2.enable(this.stick2);
-    this.stick2.body.setRectangle(27, 20);
+    _this.physics.p2.enable(this.stick1);
+    this.stick1.body.setRectangle(27, 20);
     //_this.physics.p2.enable(this.stick);
-    this.stick2.body.clearCollision(true);
-    this.stick2.body.collideWorldBounds = false;
-    this.stick2.body.setCollisionGroup(stickCollisionGroup);
-    this.stick2.body.collides(puckCollisionGroup);
+    this.stick1.body.clearCollision(true);
+    this.stick1.body.collideWorldBounds = false;
+    this.stick1.body.setCollisionGroup(stickCollisionGroup);
+    this.stick1.body.collides(puckCollisionGroup);
 
     //this.stick2.anchor.setTo(1.5, 0.5);
     if (this.host)
-        this.stick2.body.rotation = this.body.rotation + Math.PI / 2.7;
+        this.stick1.body.rotation = this.body.rotation + Math.PI / 2.7;
     else
-        this.stick2.body.rotation = this.body.rotation - Math.PI / 2.7;
-    //this.stick2.mass = 0;
-    //this.addChild(this.stick2);
-    /*this.stick2.visible = false;
-    this.sticky = _this.add.sprite(30, 30, 'stick');
-    game.physics.p2.enable(this.sticky);
-    this.sticky.body.collideWorldBounds = false;
-    this.sticky.body.setCollisionGroup(stickCollisionGroup);
-    this.sticky.body.collides(puckCollisionGroup);*/
-    //var constraint  = _this.physics.p2.createLockConstraint(this, this.stick, [-30, 0], 0);
-    //var constraint1 = _this.physics.p2.createLockConstraint(this, this.stick2, [30, 0], 0);
+        this.stick1.body.rotation = this.body.rotation - Math.PI / 2.7;
   }
 
     game.add.existing(this);
     console.log("player created")
 
 };
-/*
-Player = function (game, x, y, img) {
-    Phaser.Sprite.call(this, game, x, y, img);
-    this.isDownA = false;
-    this.isDownS = false;
-    this.isDownD = false;
-    this.idDownW = false;
-    this.isDownV = false;
-    this.isDownB = false;
-    this.isDownN = false;
-    this.isDownM = false;
-    _this.physics.p2.enable(this);
-    this.body.setCircle(12);
-    this.anchor.setTo(0.5, 0.5);
-    /*
-     this.body.setCollisionGroup(puckCollisionGroup);
-     this.body.collides([stickCollisionGroup, puckCollisionGroup]) ;*/
-/*
-    this.controlPlayer    = true;
-    this.accelerateRemote = false;
-    // ####This stick is invisible, without collision###############
-    this.stick            = game.add.sprite(x, y, null);
-    // #####This stick1 is visible, collides with puck###################
-    this.stick1 = game.add.sprite(x, y, 'stick');
-    _this.physics.p2.enable(this.stick);
-    _this.physics.p2.enable(this.stick1);
-    this.stick.body.clearCollision(true);
-    this.stick1.body.collideWorldBounds = false;
-    //stick1.body.setCollisionGroup(stickCollisionGroup);
-    //stick1.body.collides(puckCollisionGroup);
-    var constraint  = game.physics.p2.createLockConstraint(this, this.stick, [-30, 0], 0);
-    var constraint1 = game.physics.p2.createLockConstraint(this, this.stick1, [30, 0], 0);
-    game.add.existing(this);
-};*/
 
 Player.prototype             = Object.create(Phaser.Sprite.prototype);
 Player.prototype.constructor = Player;
 Player.prototype.update = function () {
 
 if (playRepeat){
-    if (this.repeatX.length > n){
-    this.body.y += (this.repeatY[n] - this.body.y) / this.divisor;
-    this.body.x += (this.repeatX[n] - this.body.x) / this.divisor;
+  if (n < this.repeatX.length){
+    this.body.y = (this.repeatY[n]);// - this.body.y) / this.divisor;
+    this.body.x = (this.repeatX[n]);// - this.body.x) / this.divisor;
+    this.body.rotation = this.repeatAngle[n];
+    this.stick1.body.x = this.body.x - Math.cos(this.body.rotation) * (10);
+    this.stick1.body.y = this.body.y - Math.sin(this.body.rotation) * (10);
     /*let angle = this.repeatAngle[n];
     let dir = (angle - this.body.rotation) / (Math.PI * 2);
         //dir = Math.round(dir);
@@ -795,12 +765,24 @@ if (playRepeat){
    /* if (n < 100)
         n++;
     }*/
+    n++;
     }
-    this.divisor--;
-    if (this.divisor < 1)
-        this.divisor = 3;
+  else{
+    playRepeat = false;
+    repeatText = " ";
+    n = 0;
+  }
 }
 else{
+    this.repeatX.push(Math.round(this.body.x));
+    this.repeatY.push(Math.round(this.body.y));
+    this.repeatAngle.push(Math.round(this.body.rotation));
+
+    if (this.repeatX.length > 300){
+        this.repeatX.shift();
+        this.repeatY.shift();
+        this.repeatAngle.shift()
+    }
 
 if(!this.controlPlayer){
     this.body.velocity.x *= 0.99;
@@ -943,9 +925,9 @@ else{
         //dir = Math.round(dir);
         dir = dir * Math.PI * 2;
         this.body.rotation += dir / this.divisor;
-        this.stick2.body.rotation += dir / this.divisor;
-        this.stick2.body.x += (this.target_x - this.stick2.body.x) / this.divisor - Math.cos(this.stick2.body.rotation) * (10);
-        this.stick2.body.y += (this.target_y - this.stick2.body.y) / this.divisor - Math.sin(this.stick2.body.rotation) * (10);
+        this.stick1.body.rotation += dir / this.divisor;
+        this.stick1.body.x += (this.target_x - this.stick1.body.x) / this.divisor - Math.cos(this.stick1.body.rotation) * (10);
+        this.stick1.body.y += (this.target_y - this.stick1.body.y) / this.divisor - Math.sin(this.stick1.body.rotation) * (10);
         this.divisior--;
         if (this.divisior === 0)
             this.divisor = 3;
