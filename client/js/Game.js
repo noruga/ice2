@@ -30,8 +30,7 @@ var stickCollisionGroup
     , goalsensorGroup;
 var score1 = 0;
 var score2 = 0;
-var goalscored = false;
-var waitTwoSec = false;
+
 var tween;
 var fx1;
 var sizer = 1.2;
@@ -43,8 +42,9 @@ const margY = 45;
 var puckCoordX = 540;
 var puckCoordY = 300;   // to measure puck speed
 
-
-
+var playRepeat = false;
+var repeatTimer = 0;
+var n = 0;
 
 var accelerateRemote = true;
 /*
@@ -259,13 +259,32 @@ FunkyMultiplayerGame.Game.prototype = {
     },
 
     update: function () {
+
+
+    if (playRepeat){
+        repeatTimer++;
+        if (repeatTimer > 300){
+            playRepeat = false;
+            n = 0;
+        }
+
+    }
+    else{
+
         if (this.mdown)
             this.m_count++;
 
         if (waitTwoSec == true){
             waitSecs++;
 
-            if (waitSecs == 180){
+            if (waitSecs == 14){
+                //_this.game.paused;
+                console.log(_this.playerSprites[socket.id][1].repeatAngle[0]);
+                console.log(_this.playerSprites[socket.id][0].repeatAngle[0]);
+                //playRepeat = true;
+            }
+
+            else if (waitSecs == 180){
                 _this.puck.reset(margX+540, margY+300);
                 _this.puck.target_x = margX+450;
                 _this.puck.target_y = margY+300;
@@ -319,6 +338,7 @@ FunkyMultiplayerGame.Game.prototype = {
         //puck.body.velocity.x = puck.body.velocity.x * 0.995;
         //puck.body.velocity.y = puck.body.velocity.y * 0.995;
             scoreText1.text =  " Time : "+ Math.floor(this.game.time.events.duration/1000);
+    }
     },
     mapKeys: function() {
         var keys = {
@@ -353,8 +373,6 @@ FunkyMultiplayerGame.Game.prototype = {
                                 _this.playerSprites[socket.id][j].isDownA = true;
                             }
                             if (keyName === 'right' || keyName === 'right1'){
-                                //right = true;
-                                console.log("clicked right")
                                 _this.playerSprites[socket.id][j].isDownD = true;
                             }
 
@@ -518,9 +536,13 @@ Puck = function(game, x, y, authorative){
     this.lastX = 540;
     this.lastY = 300;
 
+    this.repeatX = [540, 540, 540, 540, 540];
+    this.repeatY = [300, 300, 300, 300, 300];
+    this.divisor = 3;
+
     this.master = false;
 
-    this.target_x = 450;
+    this.target_x = 540;
     this.target_y = 300;
 
     if (authorative){
@@ -542,6 +564,29 @@ Puck.prototype.constructor = Puck;
 
 
 Puck.prototype.update = function () {
+if (playRepeat){
+    
+    //if (this.repeatX.length > n){
+    this.body.y += (this.repeatY[0] - this.repeatY[1]) / this.divisor;
+    this.body.x += (this.repeatX[0] - this.repeatX[1]) / this.divisor;
+    //let angle = this.repeatAngle[1];
+   /* let dir = (angle - this.repeatAngle[n+1]) / (Math.PI * 2);
+        //dir = Math.round(dir);
+        dir = dir * Math.PI * 2;
+        this.body.rotation += dir / this.divisor;
+        //this.stick2.body.rotation += dir / this.divisor;*/
+    //n++;
+    this.divisor--;
+    if (this.divisor < 1)
+        this.divisor = 3;
+}
+else{
+    this.repeatX.push(this.body.x);
+    this.repeatY.push(this.body.y);
+    if(this.repeatX.length > 6){
+        this.repeatX.shift();
+        this.repeatY.shift();
+    }
 
 
     if (this.authorative === true){
@@ -557,9 +602,10 @@ Puck.prototype.update = function () {
             
                 }
                 else{
-                    puckD = Math.sqrt((puckCoordX - this.body.x)*(puckCoordX - this.body.x) + (puckCoordY - this.body.y)*(puckCoordY - this.body.y));
+                    console.log("x: " + this.repeatX)
+                    puckD = Math.sqrt((this.repeatX[0] - this.repeatX[5])*(this.repeatX[0] - this.repeatX[5]) + (this.repeatY[0] - this.repeatY[5])*(this.repeatY[0] - this.repeatY[5]));
                     goalscored = true;
-                    socket.emit('goalScored2', Math.floor(puckD/2));
+                    socket.emit('goalScored2', Math.floor(puckD));
                     this.body.velocity.x = this.body.velocity.x * 0.01;
                     this.body.velocity.y = this.body.velocity.y * 0.01;
                 }
@@ -574,11 +620,11 @@ Puck.prototype.update = function () {
             
                 }
                 else{
-
+                    console.log("x: " + this.repeatX)
                     //updateScore1();
                     goalscored = true;
-                    puckD = Math.sqrt((puckCoordX - this.body.x)*(puckCoordX - this.body.x) + (puckCoordY - this.body.y)*(puckCoordY - this.body.y));
-                    socket.emit('goalScored1', Math.floor(puckD/2));
+                    puckD = Math.sqrt((this.repeatX[0] - this.repeatX[5])*(this.repeatX[0] - this.repeatX[5]) + (this.repeatY[0] - this.repeatY[5])*(this.repeatY[0] - this.repeatY[5]));
+                    socket.emit('goalScored1', Math.floor(puckD));
                     this.body.velocity.x = this.body.velocity.x * 0.01;
                     this.body.velocity.y = this.body.velocity.y * 0.01;
                 }
@@ -595,6 +641,7 @@ Puck.prototype.update = function () {
     }
     this.lastX = this.body.x;
     this.lastY = this.body.y;
+}
 }
 
 Player = function (game, x, y, img, host, hostStick) {
@@ -620,6 +667,10 @@ Player = function (game, x, y, img, host, hostStick) {
     this.target_x ;
     this.divisor = 3;
     this.isClosePuck = false;
+
+    this.repeatX = [];
+    this.repeatY = [];
+    this.repeatAngle = [];
 
 
 
@@ -730,6 +781,26 @@ Player = function (game, x, y, img) {
 Player.prototype             = Object.create(Phaser.Sprite.prototype);
 Player.prototype.constructor = Player;
 Player.prototype.update = function () {
+
+if (playRepeat){
+    if (this.repeatX.length > n){
+    this.body.y += (this.repeatY[n] - this.body.y) / this.divisor;
+    this.body.x += (this.repeatX[n] - this.body.x) / this.divisor;
+    /*let angle = this.repeatAngle[n];
+    let dir = (angle - this.body.rotation) / (Math.PI * 2);
+        //dir = Math.round(dir);
+        dir = dir * Math.PI * 2;
+        this.body.rotation += dir / this.divisor;
+        //this.stick2.body.rotation += dir / this.divisor;*/
+   /* if (n < 100)
+        n++;
+    }*/
+    }
+    this.divisor--;
+    if (this.divisor < 1)
+        this.divisor = 3;
+}
+else{
 
 if(!this.controlPlayer){
     this.body.velocity.x *= 0.99;
@@ -893,27 +964,10 @@ else{
     }
     else
         this.isClosePuck = false;
+}
+
 };
 
-//module.exports = Player;
-
-/*
-function brake(player, puck) {
-    player.body.velocity.x *= 0.9;                  //slows down by 10% every frame
-    player.body.velocity.y *= 0.9;
-    if (_this.physics.arcade.distanceBetween(puck, player.stick1) < 22.15) {
-        for(var id in _this.playerSprites){
-            (function (id) {
-                if (socket.id !== id ){
-                if (!(_this.playerSprites[id][0].isClosePuck || _this.playerSprites[id][1].isClosePuck))
-                //if ((_this.playerSprites[id][0].x - _this.puck.body.x)*(_this.playerSprites[id][0].x - _this.puck.body.x) + (_this.playerSprites[id][0].y - _this.puck.body.y)*(_this.playerSprites[id][0].y - _this.puck.body.y) > 150 * 150)
-                    moveToObject(puck, player.stick1, 100);
-                }
-            })
-        //_this.host = true;
-        }
-    }
-};*/
 
 function moveToObject(obj1, obj2, speed1) {
     //if (typeof speed1 === 'undefined') { speed1 = 60; }
@@ -1002,16 +1056,6 @@ function updateScore1(puckD)
     scoreText2.text = (margX+400*sizer, margY+300, "   GOAL!!!!");
     scoreText3.text = (margX+700*sizer, margY+500, puckD + " km/h");
     }
-
-/*
-    player.body.x = 150;
-    player.body.y = 200;
-    player1.body.x = 150;
-    player1.body.y = 400;
-    player.body.velocity.x = 0;
-    player1.body.velocity.x = 0;
-    player3.body.velocity.x = 0;
-    player2.body.velocity.x = 0;+*/
     fx.play();
     //sound.play();
 }
@@ -1026,20 +1070,7 @@ function updateScore2(puckD)
         scoreText2.text = (margX+400*sizer, margY+400, "   GOAL!!!!");
         scoreText3.text = (margX+700*sizer, margY+500, puckD + " km/h");
     }
-/*
-    player.body.x = 150;
-    player.body.y = 200;
-    player1.body.x = 150;
-    player1.body.y = 400;
-    player.body.velocity.x = 0;
-    player1.body.velocity.x = 0;
-    player3.body.velocity.x = 0;
-    player2.body.velocity.x = 0;
-*/
-
-    //fx.play('sfx');
     fx.play();
-    //sound.play();
 }
 
 function finalScore(){

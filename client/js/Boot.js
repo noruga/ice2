@@ -1,6 +1,3 @@
- 
- 
-
 // Global reference to the active Phaser game state. This makes doing things with
 // a state possible without actually being in the state file itself.
 var _this;
@@ -13,18 +10,20 @@ var lastPuckX = 540;
 var lastPuckY = 300;
 var velX = 0;
 var velY = 0;
-
 var myRepeat1X = [];
 var myRepeat1Y = [];
+var myRepeat1Angle = [];
 var myRepeat2X = [];
 var myRepeat2Y = [];
+var myRepeat2Angle = [];
 var oppRepeat1X = [];
 var oppRepeat1Y = [];
 var oppRepeat2X = [];
 var oppRepeat2Y = [];
 var puckRepeatX = [];
 var puckRepeatY = [];
-
+var oppRepeat1Angle = [];
+var oppRepeat2Angle = [];
 var textPlayers;
 
 
@@ -40,7 +39,7 @@ socket.on('connect', function(){
 });
 
 socket.on('who_connected', function(data){
-        var y = 150;
+    var y = 150;
 
     var keys = Object.keys(data);
     //var values = Object.values(players);
@@ -49,7 +48,6 @@ socket.on('who_connected', function(data){
         textPlayers = _this.add.text(margX+550*sizer, y, data[key], { font: '34px Arial', fill: '#cc0000' });
         y += 100;
     })
-    
 })
 // This connects to 127.0.0.1 which is localhost (this computer), which is also where the server is running.
 // If the server was running somewhere else, like on a cloud service, then change the IP address to the
@@ -103,6 +101,8 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
         for(let i= 0; i<1; i+=1){
                     if(_this.playerSprites[data[i].id].host === data[i].host){
 
+
+
                             isHost = true;
                             _this.puck.body.x = _this.target.body.x;
                             _this.puck.body.y = _this.target.body.y;
@@ -110,6 +110,15 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                             _this.target.visible = true;
                             _this.puck.visible = false;
                             _this.puck.collides = false;
+                            puckRepeatX.push(_this.puck.body.x);
+                            puckRepeatY.push(_this.puck.body.y);
+
+                            if (puckRepeatX.length > 100){
+                                puckRepeatX.shift();
+                                puckRepeatY.shift();
+                            }
+
+
 
                     }
                 
@@ -127,6 +136,7 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                         _this.puck.visible = true;
                         isHost = false;
                     }
+
                 _this.playerSprites[data[i].id][0].target_x         = data[i].x; // Update target, not actual position, so we can interpolate
                 _this.playerSprites[data[i].id][0].target_y         = data[i].y;
                 _this.playerSprites[data[i].id][0].target_rotation  = data[i].angle;
@@ -138,6 +148,24 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                 _this.playerSprites[data[i].id][1].target_rotation  = data[i].angle1;
                 velX = _this.target.target_x - _this.target.body.x;
                 velY = _this.target.target_y - _this.target.body.y;
+
+
+                _this.playerSprites[data[i].id][0].repeatX.push(data[i].x); // Update target, not actual position, so we can interpolate
+                _this.playerSprites[data[i].id][0].repeatY.push(data[i].y);
+                _this.playerSprites[data[i].id][0].repeatAngle.push(data[i].angle);
+                _this.playerSprites[data[i].id][1].repeatX.push(data[i].x1); // Update target, not actual position, so we can interpolate
+                _this.playerSprites[data[i].id][1].repeatY.push(data[i].y1);
+                _this.playerSprites[data[i].id][1].repeatAngle.push(data[i].angle1);
+
+                if (_this.playerSprites[data[i].id][0].repeatX.length > 100){
+                    _this.playerSprites[data[i].id][0].repeatX.shift(); // Update target, not actual position, so we can interpolate
+                    _this.playerSprites[data[i].id][0].repeatY.shift();
+                    _this.playerSprites[data[i].id][0].repeatAngle.shift();
+                    _this.playerSprites[data[i].id][1].repeatX.shift(); // Update target, not actual position, so we can interpolate
+                    _this.playerSprites[data[i].id][1].repeatY.shift();
+                    _this.playerSprites[data[i].id][1].repeatAngle.shift();
+
+                }
         }
     }
 
@@ -153,6 +181,28 @@ setInterval(function () {
     if(dataToSend !== undefined){
         socket.emit('player_update', dataToSend);
     }
+    _this.playerSprites[socket.id][0].repeatX.push(_this.playerSprites[socket.id][0].x);
+    _this.playerSprites[socket.id][0].repeatY.push(_this.playerSprites[socket.id][0].y);
+    _this.playerSprites[socket.id][0].repeatAngle.push(_this.playerSprites[socket.id][0].rotation);
+    _this.playerSprites[socket.id][1].repeatX.push(_this.playerSprites[socket.id][1].x);
+    _this.playerSprites[socket.id][1].repeatY.push(_this.playerSprites[socket.id][1].y);
+    _this.playerSprites[socket.id][1].repeatAngle.push(_this.playerSprites[socket.id][1].rotation);
+/*
+    _this.puck.repeatX.push(_this.puck.body.x);
+    _this.puck.repeatY.push(_this.puck.body.y);*/
+
+
+    if (_this.playerSprites[socket.id][0].repeatX.length > 100){
+        _this.playerSprites[socket.id][0].repeatX.shift();
+        _this.playerSprites[socket.id][0].repeatY.shift();
+        _this.playerSprites[socket.id][0].repeatAngle.shift();
+        _this.playerSprites[socket.id][1].repeatX.shift();
+        _this.playerSprites[socket.id][1].repeatY.shift();
+        _this.playerSprites[socket.id][1].repeatAngle.shift();
+//        _this.puck.repeatX.shift();
+//        _this.puck.repeatY.shift();
+    }
+
 }, emitRate);
 
 function preparePlayersDataToSend() {  
@@ -162,7 +212,7 @@ function preparePlayersDataToSend() {
 //console.log("JOHOOO ", Math.abs(_this.playerSprites[socket.id][0].x));
     dataToSend.push({id: socket.id, x: Math.round(_this.playerSprites[socket.id][0].x), y: Math.round(_this.playerSprites[socket.id][0].y), 
             angle: Math.round(_this.playerSprites[socket.id][0].body.rotation* 100) / 100, puckX: Math.round(_this.puck.x), puckY: Math.round(_this.puck.y),
-            host: (_this.playerSprites[socket.id][0].withinPuck || _this.playerSprites[socket.id][1].withinPuck),
+            //host: (_this.playerSprites[socket.id][0].withinPuck || _this.playerSprites[socket.id][1].withinPuck),
             x1: Math.round(_this.playerSprites[socket.id][1].x), y1: Math.round(_this.playerSprites[socket.id][1].y), angle1: Math.round(_this.playerSprites[socket.id][1].body.rotation* 100) / 100});
 //console.log(_this.host)
     return dataToSend;
@@ -212,8 +262,8 @@ socket.on('state_update', function (data) {
                     _this.playerSprites[data[i].id].puckSlowCount = 0;
                     //_this.playerSprites[data[i].id].puckX = 540;
                     //_this.playerSprites[data[i].id].puckY = 300;
-                    _this.puck = new Puck(_this, 450*sizer, 300, true);
-                    _this.target = new Puck(_this, 450*sizer, 300, false);
+                    _this.puck = new Puck(_this, 540, 300, true);
+                    _this.target = new Puck(_this, 540, 300, false);
                     _this.playerSprites[data[i].id].username = data[i].username;
                     var nameText = _this.add.text(margX+300*sizer, 0, _this.playerSprites[data[i].id].username, { font: '34px Arial', fill: 'rgb(247, 238, 35)' });
                 }
@@ -233,7 +283,6 @@ socket.on('state_update', function (data) {
                     _this.playerSprites[data[i].id].username = data[i].username;
                     var nameText2 = _this.add.text(margX+550*sizer, 0, _this.playerSprites[data[i].id].username, { font: '34px Arial', fill: '#cc0000' });
                 }
-
             }
            // console.log(data[i].list[0])
             //_this.textMsg = game.add.text(800, 20, data[i].list , { fill: '#ffffff', font: '14pt Arial' });
@@ -241,7 +290,6 @@ socket.on('state_update', function (data) {
     }
 
 });
-
 
 // Create the game object for the game. This is what the
 // Phaser states, and your own game data, are added on to.
@@ -261,8 +309,6 @@ FunkyMultiplayerGame.Boot.prototype = {
         _this.game.stage.disableVisibilityChange = true;
         this.state.start('Preload');
     },
-
-
 
     events: (function () {
         socket.on('disconnect', function () {
