@@ -68,7 +68,7 @@ var players = [];
 var usernames = {};
 var playerList = {};
 
-var rooms = [];
+var rooms = ['room1','room2','room3'];
 
 var puckSlowCount = 0;
 var countHost = 0;
@@ -120,7 +120,7 @@ io.on('connection', function (socket) {
         socket.username = username;
         usernames[socket.id] = username;
         playerList[socket.id] = socket;
-        io.emit('who_connected', usernames);
+        socket.broadcast.emit('who_connected', usernames);
     });
     // Using the socket object that was passed in, events can be sent to the
     // client that socket belongs to using .emit(...)
@@ -196,16 +196,17 @@ io.on('connection', function (socket) {
  
             };
             firstUpdate++;
-            if(firstUpdate % 1){
+            /*if(firstUpdate % 1){
                 rooms.push(room);
-            }
+            }*/
 
             socket.isInGame = true;
             // Add this socket to the room for the game. A room is an easy way to group sockets, so you can send events to a bunch of sockets easily.
             // A socket can be in many rooms.
-            socket.join(rooms[rooms.length - 1]);
+            //socket.join(rooms['room1']);
             //numOfPlayers++;
         if(Object.keys(players).length < 3){
+            socket.join(rooms['room1']);
             if (Object.keys(players).length === 2) {
                 players[socket.id].host = false;
                 console.log("two players connection and clicked Join Game");
@@ -217,9 +218,34 @@ io.on('connection', function (socket) {
                 players[socket.id].host = true;
             console.log("* " + socket.username + " joined a game.");
         }
-        else {
-            console.log("* " + socket.username + " is already in a game.");
+        else if(Object.keys(players).length < 5){
+            socket.join(rooms['room2']);
+            if (Object.keys(players).length == 4) {
+                players[socket.id].host = false;
+                console.log("game room 2 created");
+
+                // Tell the clients that they successfully joined the game.
+                io.sockets.emit('join_game_success');
+            }
+            else
+                players[socket.id].host = true;
         }
+        else if(Object.keys(players).length < 7){
+            socket.join(rooms['room3']);
+             if (Object.keys(players).length == 6) {
+                players[socket.id].host = false;
+                console.log("game room 3 created");
+
+                // Tell the clients that they successfully joined the game.
+                io.sockets.emit('join_game_success');
+            }
+            else
+                players[socket.id].host = true;
+        }/*
+            else{
+                players[socket.id].host = true;
+                console.log("* " + socket.username + " joined a game.");
+        }*/
     }
     else{
         delete players[socket.id];
@@ -251,7 +277,7 @@ io.on('connection', function (socket) {
 
             if (adversoryDist < myDist){// && faceOffCounter == 0){         //faceOffCounter : if goal has been scored last within last 2 secs
                 countHost++;
-                if ((countHost > 20) && (puckSlowCount > 12)){
+                if (((countHost > 20) && (puckSlowCount > 12)) || countHost > 40){
                     countHost = 0;
                     puckSlowCount = 0;
                     lastHost = !players[playerId].host;
@@ -294,7 +320,7 @@ io.on('connection', function (socket) {
 
     socket.on('goalScored1', function(puckD){
         if (faceOffCounter == 0){
-            io.in(rooms[rooms.length - 1]).emit('goalScored1', puckD);
+            io.in(rooms['rooms.length - 1']).emit('goalScored1', puckD);
             console.log("goal scored 1 event recieved", puckD);
             faceOffCounter++;
         }
@@ -302,7 +328,7 @@ io.on('connection', function (socket) {
 
     socket.on('goalScored2', function(puckD){
         if (faceOffCounter == 0){
-            io.in(rooms[rooms.length - 1]).emit('goalScored2', puckD);
+            io.in(rooms['rooms.length - 1']).emit('goalScored2', puckD);
             console.log("goal scored 2 event recieved", puckD);
             faceOffCounter++;
         }
@@ -320,7 +346,7 @@ io.on('connection', function (socket) {
             }
         //set timeout to variable, in case of reconnection
 
-            io.in(rooms[rooms.length - 1]).emit('remove_player', socket.id);
+            io.in(rooms['rooms1']).emit('remove_player', socket.id);
         //emit the disconnection event
         }, 5000);
     });
@@ -342,7 +368,7 @@ setInterval(function () {
     //console.log(dataToSend);
 
     // Send the data to all clients in the room called 'game-room'.
-    io.in(rooms[rooms.length - 1]).emit('state_update', dataToSend);
+    io.in(rooms['rooms1']).emit('state_update', dataToSend);
     console.log("interval");
 }, emitRate);
 
