@@ -120,7 +120,7 @@ io.on('connection', function (socket) {
         socket.username = username;
         usernames[socket.id] = username;
         playerList[socket.id] = socket;
-        socket.broadcast.emit('who_connected', usernames);
+        io.emit('who_connected', usernames);
     });
     // Using the socket object that was passed in, events can be sent to the
     // client that socket belongs to using .emit(...)
@@ -277,7 +277,7 @@ io.on('connection', function (socket) {
 
             if (adversoryDist < myDist){// && faceOffCounter == 0){         //faceOffCounter : if goal has been scored last within last 2 secs
                 countHost++;
-                if (((countHost > 20) && (puckSlowCount > 12)) || countHost > 40){
+                if ((countHost > 20) && (puckSlowCount > 12)){
                     countHost = 0;
                     puckSlowCount = 0;
                     lastHost = !players[playerId].host;
