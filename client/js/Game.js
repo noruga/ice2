@@ -286,9 +286,9 @@ FunkyMultiplayerGame.Game.prototype = {
             waitSecs++;
 
             if (waitSecs == 100){
-
+/*
                 playRepeat = true;
-                repeatText = " REPLAY "
+                repeatText = " REPLAY "*/
             }
 
             else if (waitSecs == 180){
