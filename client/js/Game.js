@@ -976,6 +976,26 @@ else{
 
     }
 
+    
+    if (this.controlPlayer){
+        this.goHome = false;
+        this.goForw = false;
+    }
+    if(this.isDownM){
+        this.m_count++;
+        this.goHome = false;
+        this.goforw = false;
+    }
+    else{
+        if (this.m_count > 0){
+            if (this.m_count < 21)
+                this.goHome = true;
+            else
+                this.goForw = true;
+        }
+        this.m_count = 0;
+    }
+
     /*else if (_this.input.keyboard.isDown(Phaser.Keyboard.B)){
         if (checkOverlap(this.stick1, puck)){
             fx1.play();
