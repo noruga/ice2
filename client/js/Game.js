@@ -981,7 +981,7 @@ else{
         this.goHome = false;
         this.goForw = false;
     }
-    if(this._this.input.keyboard.isDown(Phaser.Keyboard.M){
+    if(_this.input.keyboard.isDown(Phaser.Keyboard.M){
         this.m_count++;
         this.goHome = false;
         this.goforw = false;
