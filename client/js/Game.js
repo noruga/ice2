@@ -976,12 +976,12 @@ else{
 
     }
 
-    
+
     if (this.controlPlayer){
         this.goHome = false;
         this.goForw = false;
     }
-    if(this.isDownM){
+    if(this._this.input.keyboard.isDown(Phaser.Keyboard.M){
         this.m_count++;
         this.goHome = false;
         this.goforw = false;
