@@ -24,7 +24,7 @@ var puckRepeatX = [];
 var puckRepeatY = [];
 var oppRepeat1Angle = [];
 var oppRepeat2Angle = [];
-var textPlayers;
+//var textPlayers;
 
 
 var puckD;
@@ -37,7 +37,7 @@ var socket = io();
 socket.on('connect', function(){
     socket.emit('adduser', prompt("What's your name: "));
 });
-
+/*
 socket.on('who_connected', function(data){
     var y = 150;
 
@@ -48,7 +48,7 @@ socket.on('who_connected', function(data){
         textPlayers = _this.add.text(margX+550*sizer, y, data[key], { font: '34px Arial', fill: '#cc0000' });
         y += 100;
     })
-})
+})*/
 // This connects to 127.0.0.1 which is localhost (this computer), which is also where the server is running.
 // If the server was running somewhere else, like on a cloud service, then change the IP address to the
 // public IP address of that device. If on Windows, open a console and type 'ipconfig' to find the IPv4
@@ -148,7 +148,7 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                 _this.playerSprites[data[i].id][1].target_rotation  = data[i].angle1;
                 velX = _this.target.target_x - _this.target.body.x;
                 velY = _this.target.target_y - _this.target.body.y;
-
+/*
 
                 _this.playerSprites[data[i].id][0].repeatX.push(data[i].x); // Update target, not actual position, so we can interpolate
                 _this.playerSprites[data[i].id][0].repeatY.push(data[i].y);
@@ -165,7 +165,7 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                     _this.playerSprites[data[i].id][1].repeatY.shift();
                     _this.playerSprites[data[i].id][1].repeatAngle.shift();
 
-                }
+                }*/
         }
     }
 
@@ -213,9 +213,11 @@ function preparePlayersDataToSend() {
 //console.log("JOHOOO ", Math.abs(_this.playerSprites[socket.id][0].x));
     dataToSend.push({id: socket.id, x: Math.round(_this.playerSprites[socket.id][0].x), y: Math.round(_this.playerSprites[socket.id][0].y), 
             angle: Math.round(_this.playerSprites[socket.id][0].body.rotation* 100) / 100, puckX: Math.round(_this.puck.x), puckY: Math.round(_this.puck.y),
-            //host: (_this.playerSprites[socket.id][0].withinPuck || _this.playerSprites[socket.id][1].withinPuck),
+            host: (_this.playerSprites[socket.id][0].withinPuck || _this.playerSprites[socket.id][1].withinPuck),
             x1: Math.round(_this.playerSprites[socket.id][1].x), y1: Math.round(_this.playerSprites[socket.id][1].y), angle1: Math.round(_this.playerSprites[socket.id][1].body.rotation* 100) / 100});
 //console.log(_this.host)
+    _this.playerSprites[socket.id][0].withinPuck = false;
+    _this.playerSprites[socket.id][1].withinPuck = false;
     return dataToSend;
 }
 
