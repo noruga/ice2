@@ -878,7 +878,7 @@ else{
         this.withinPuck = false;
 
     //console.log("withing puck : ", this.withinPuck);
-
+*/
     if (this.controlPlayer){
         this.goHome = false;
         this.goForw = false;
@@ -897,7 +897,7 @@ else{
         }
         this.m_count = 0;
     }
-*/
+
 
 
 
@@ -949,8 +949,8 @@ else{
         if (checkOverlap(this.stick1, _this.puck)){
             fx1.play();
             this.withinPuck = true;
-            puckCoordX = _this.puck.body.x;
-            puckCoordY = _this.puck.body.y;
+            //puckCoordX = _this.puck.body.x;
+            //puckCoordY = _this.puck.body.y;
         }
         if (this.isDownA) {
             //this.body.rotateLeft(1200);
@@ -976,15 +976,13 @@ else{
 
     }
 
-
-    if (this.controlPlayer){
-        this.goHome = false;
-        this.goForw = false;
-    }
-    if(_this.input.keyboard.isDown(Phaser.Keyboard.M)){
-        this.m_count++;
-        this.goHome = false;
-        this.goforw = false;
+    /*
+    if(this.isDownM){
+        if (this.controlPlayer == false){
+            this.m_count++;
+            this.goHome = false;
+            this.goforw = false;
+        }
     }
     else{
         if (this.m_count > 0){
@@ -994,7 +992,7 @@ else{
                 this.goForw = true;
         }
         this.m_count = 0;
-    }
+    }*/
 
     /*else if (_this.input.keyboard.isDown(Phaser.Keyboard.B)){
         if (checkOverlap(this.stick1, puck)){
