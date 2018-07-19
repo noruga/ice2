@@ -45,7 +45,7 @@ var puckCoordY = 300;   // to measure puck speed
 var playRepeat = false;
 var repeatTimer = 0;
 var n = 0;
-
+var cursors;
 var repeatText;
 
 var accelerateRemote = true;
@@ -66,6 +66,7 @@ FunkyMultiplayerGame.Game.prototype = {
 
     create: function () {
         // Create an external reference to this function context so we can access this game state from the socket callbacks.
+        cursors = _this.input.keyboard.createCursorKeys();
         _this = this;
         fx = _this.add.audio('sfx');
         fx1 = _this.add.audio('hit')
@@ -749,6 +750,9 @@ Player.prototype             = Object.create(Phaser.Sprite.prototype);
 Player.prototype.constructor = Player;
 Player.prototype.update = function () {
 
+
+
+
 if (playRepeat){
   if (n < this.repeatX.length){
     this.body.y = (this.repeatY[n]);// - this.body.y) / this.divisor;
@@ -784,6 +788,7 @@ else{
         this.repeatAngle.shift()
     }
 
+
 if(!this.controlPlayer){
     this.body.velocity.x *= 0.99;
     this.body.velocity.y *= 0.99;
@@ -796,6 +801,7 @@ else{
     //this.body.angularVelocity = 0;
 
 
+/*
     if (this.isDownA)
         this.body.rotateLeft(125);
     if (this.isDownD) {
@@ -891,6 +897,120 @@ else{
         }
         this.m_count = 0;
     }
+*/
+
+
+
+    if (this.controlPlayer == true && this.hostStick == true){
+    if (_this.input.keyboard.isDown(Phaser.Keyboard.A) || cursors.left.isDown){
+        this.body.rotateLeft(125);
+    }
+    if (_this.input.keyboard.isDown(Phaser.Keyboard.D)|| cursors.right.isDown){
+        this.body.rotateRight(125);
+    }
+    if (_this.input.keyboard.isDown(Phaser.Keyboard.W)|| cursors.up.isDown){
+        if ((this.body.velocity.x * this.body.velocity.x) + (this.body.velocity.y * this.body.velocity.y) > 25000)
+            this.body.thrust(1500);
+        else{
+            this.body.thrust(3000);
+            //slide.play();
+        }
+    }
+    if(_this.input.keyboard.isDown(Phaser.Keyboard.S)|| cursors.down.isDown){
+        this.body.reverse(500);
+    }
+
+    if(_this.input.keyboard.isDown(Phaser.Keyboard.V)){
+        //brake(this);
+         this.body.velocity.x *= 0.9;
+        this.body.velocity.y *= 0.9;
+        if (distanceSq(_this.puck, this.stick1) < (23*23)){
+            for (var id in _this.playerSprites) {
+                if (id !== socket.id){
+                   // if (!(_this.playerSprites[id][0].isClosePuck || _this.playerSprites[id][1].isClosePuck))
+                        moveToObject(_this.puck, this.stick1, 70);
+                    //else
+                    //    this.isDownV = false;
+                }
+            }
+            //moveToObject(_this.puck, this.stick1, 100);
+        }
+/*
+        this.body.velocity.x *= 0.9;
+        this.body.velocity.y *= 0.9;
+
+        if (game.physics.arcade.distanceBetween(puck, this.stick1) < 20) {
+                moveToObject(puck, this.stick1, 30);
+        }*/
+    }
+    else if (_this.input.keyboard.isDown(Phaser.Keyboard.B)){
+
+        this.isDownV = false;
+        if (checkOverlap(this.stick1, _this.puck)){
+            fx1.play();
+            this.withinPuck = true;
+            puckCoordX = _this.puck.body.x;
+            puckCoordY = _this.puck.body.y;
+        }
+        if (this.isDownA) {
+            //this.body.rotateLeft(1200);
+            //if (controlPlayer1){
+            if (shotpause1 < 12) {
+                this.body.rotateLeft(1075);
+                shotpause1++;
+            }
+
+            else
+                shotpause1 = 0;
+        }
+        else {
+            if (shotpause1 < 12) {
+                this.body.rotateRight(1200);
+                shotpause1++;
+            }
+
+            else
+                shotpause1 = 0;
+            //if (controlPlayer1){
+        }
+
+    }
+
+    /*else if (_this.input.keyboard.isDown(Phaser.Keyboard.B)){
+        if (checkOverlap(this.stick1, puck)){
+            fx1.play();
+            //goalFrameCounter = 1;
+           // puckCoordX = puck.body.x;
+            //puckCoordY = puck.body.y;
+        }
+
+
+        if (_this.input.keyboard.isDown(Phaser.Keyboard.A)|| cursors.left.isDown){
+            //if (controlPlayer1){
+                if (shotpause1 < 12){
+                    this.body.rotateLeft(1200);
+                    shotpause1++;   
+                }
+                
+                else
+                    shotpause1 = 0;
+        }
+
+            
+    
+        else{
+            //if (controlPlayer1){
+            if (shotpause1 < 12){
+                this.body.rotateRight(1200);
+                shotpause1++;   
+        }
+                
+        else
+            shotpause1 = 0;
+        }
+            
+    }*/
+}
 
     if (this.goHome){
         this.goForw = false;
@@ -1072,4 +1192,13 @@ function finalScore(){
             //gameEnd = true;
         }
         //game.paused = true;
+}
+
+function brake(player){
+        player.body.velocity.x *= 0.9;                  //slows down by 10% every frame
+        player.body.velocity.y *= 0.9;
+
+        if (_this.physics.arcade.distanceBetween(puck, player.stick1) < 22.15) {
+                moveToObject(puck, player.stick1, 100);
+        }
 }
