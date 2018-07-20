@@ -927,7 +927,7 @@ else{
         if (distanceSq(_this.puck, this.stick1) < (23*23)){
             for (var id in _this.playerSprites) {
                 if (id !== socket.id){
-                   if (!(_this.playerSprites[id][0].isClosePuck || _this.playerSprites[id][1].isClosePuck))
+                   //if (!(_this.playerSprites[id][0].isClosePuck || _this.playerSprites[id][1].isClosePuck))
                         moveToObject(_this.puck, this.stick1, 70);
                     //else
                     //    this.isDownV = false;
@@ -975,7 +975,7 @@ else{
         }
 
     }
-    
+
 
     /*
     if(this.isDownM){
