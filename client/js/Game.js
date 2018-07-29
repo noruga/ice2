@@ -287,9 +287,9 @@ FunkyMultiplayerGame.Game.prototype = {
             waitSecs++;
 
             if (waitSecs == 100){
-/*
+
                 playRepeat = true;
-                repeatText = " REPLAY "*/
+                repeatText = " REPLAY "
             }
 
             else if (waitSecs == 180){
@@ -758,8 +758,13 @@ if (playRepeat){
     this.body.y = (this.repeatY[n]);// - this.body.y) / this.divisor;
     this.body.x = (this.repeatX[n]);// - this.body.x) / this.divisor;
     this.body.rotation = this.repeatAngle[n];
-    this.stick1.body.x = this.body.x - Math.cos(this.body.rotation) * (10);
-    this.stick1.body.y = this.body.y - Math.sin(this.body.rotation) * (10);
+
+
+    this.stick1.body.x = this.repeatX[n] - Math.cos(this.body.rotation) * (30);
+    this.stick1.body.y = this.repeatY[n] - Math.sin(this.body.rotation) * (30);
+
+
+    this.stick1.body.rotation = this.body.rotation // + Math.PI / 2;
     /*let angle = this.repeatAngle[n];
     let dir = (angle - this.body.rotation) / (Math.PI * 2);
         //dir = Math.round(dir);
