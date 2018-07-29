@@ -277,7 +277,7 @@ io.on('connection', function (socket) {
 
             if (adversoryDist < myDist){// && faceOffCounter == 0){         //faceOffCounter : if goal has been scored last within last 2 secs
                 countHost++;
-                if ((countHost > 20) && (puckSlowCount > 12)){
+                if ((countHost > 20) && (puckSlowCount > 12) || countHost > 100){
                     countHost = 0;
                     puckSlowCount = 0;
                     lastHost = !players[playerId].host;
@@ -346,9 +346,9 @@ io.on('connection', function (socket) {
             }
         //set timeout to variable, in case of reconnection
 
-            io.in(rooms['rooms1']).emit('remove_player', socket.id);
+            io.in(rooms['rooms.length  - 1']).emit('remove_player', socket.id);
         //emit the disconnection event
-        }, 5000);
+        }, 1000);
     });
 
 });
