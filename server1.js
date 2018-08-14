@@ -118,6 +118,7 @@ io.on('connection', function (socket) {
 
     socket.on('adduser', function(username) {
         socket.username = username;
+        socket.roomNumber = 0;
         usernames[socket.id] = username;
         playerList[socket.id] = socket;
         io.emit('who_connected', usernames);
@@ -132,11 +133,11 @@ io.on('connection', function (socket) {
 
     // In this case, an event called 'hello_client' is sent, and the (optional) second
     // parameter is any data you might want to send along with the event.
-    socket.emit('hello_client', {crazyString: 'abc123', coolArray: [40, 'beep', true]});
+ //   socket.emit('hello_client', {crazyString: 'abc123', coolArray: [40, 'beep', true]});
     // Or with no data, just an event.
 
     // An event that the client isn't listening for, so will be ignored when the client receives it.
-    socket.emit('anyone_there');
+//    socket.emit('anyone_there');
 
     // You can add your own properties onto the socket object like any other object.
     // Useful if you want to store player data like a score, username, or a flag of
@@ -277,7 +278,7 @@ io.on('connection', function (socket) {
 
             if (adversoryDist < myDist){// && faceOffCounter == 0){         //faceOffCounter : if goal has been scored last within last 2 secs
                 countHost++;
-                if ((countHost > 20) && (puckSlowCount > 12) || countHost > 100){
+                if (((countHost > 20) && (puckSlowCount > 12))){
                     countHost = 0;
                     puckSlowCount = 0;
                     lastHost = !players[playerId].host;
