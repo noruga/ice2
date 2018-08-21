@@ -263,6 +263,9 @@ socket.on('state_update', function (data) {
                     _this.playerSprites[data[i].id][1].body.rotation = Math.PI / 2.7;
                     _this.playerSprites[data[i].id].host = true;
                     _this.playerSprites[data[i].id].puckSlowCount = 0;
+
+                    _this.playerSprites[data[i].id][0].host = true;
+                    _this.playerSprites[data[i].id][1].host = true;
                     //_this.playerSprites[data[i].id].puckX = 540;
                     //_this.playerSprites[data[i].id].puckY = 300;
                     _this.puck = new Puck(_this, 540, 300, true);
@@ -278,7 +281,8 @@ socket.on('state_update', function (data) {
                     //_this.playerSprites[data[i].id].puckY = 300;
                     _this.playerSprites[data[i].id][0] =  new Player(_this, 750*sizer, 300, 'ball', false, (data[i].id === this.id));
                     _this.playerSprites[data[i].id][1] =  new Player(_this, 550*sizer, 300, 'ball', false, (data[i].id === this.id));
-                    
+                    _this.playerSprites[data[i].id][0].host = false;
+                    _this.playerSprites[data[i].id][1].host = false;
 
                     _this.playerSprites[data[i].id][0].controlPlayer = false;
                     _this.playerSprites[data[i].id][0].body.rotation = - Math.PI  / 2.7;
