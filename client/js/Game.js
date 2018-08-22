@@ -1060,7 +1060,7 @@ else{
 
     }
     
-    if (this.host === false){
+    if (this.hostStick === false){
         if (this.target_y != 0){
             this.body.y += (this.target_y - this.body.y) / this.divisor;
             this.body.x += (this.target_x - this.body.x) / this.divisor;
