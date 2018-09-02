@@ -739,6 +739,9 @@ Player = function (game, x, y, img, host, hostStick) {
         this.stick1.body.rotation = this.body.rotation + Math.PI / 2.7;
     else
         this.stick1.body.rotation = this.body.rotation - Math.PI / 2.7;
+
+        var constraint  = _this.physics.p2.createLockConstraint(this, this.stick, [-30, 0], 0);
+    var constraint1 = _this.physics.p2.createLockConstraint(this, this.stick1, [30, 0], 0);
   }
 
     game.add.existing(this);
