@@ -271,14 +271,14 @@ io.on('connection', function (socket) {
             var puckDist = ((data[0].puckX - puckX)*(data[0].puckX - puckX) + (data[0].puckY - puckY)*(data[0].puckY - puckY));
             puckX = data[0].puckX;
             puckY = data[0].puckY;
-            if (puckDist < 2)
+            if (puckDist < 1.5)
                 puckSlowCount++;
             else
                 puckSlowCount = 0;
 
             if (adversoryDist < myDist){// && faceOffCounter == 0){         //faceOffCounter : if goal has been scored last within last 2 secs
                 countHost++;
-                if (((countHost > 25) && (puckSlowCount > 6))){
+                if (((countHost > 25) && (puckSlowCount > 18))){
                     countHost = 0;
                     puckSlowCount = 0;
                     lastHost = !players[playerId].host;
