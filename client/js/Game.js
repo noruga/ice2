@@ -606,7 +606,7 @@ else{
             //if(puck.prevx < )
             if (checkOverlap(this, goalsensor1))
             {
-                if ((this.lastY > margY+350 || this.lastY < margY+242)){
+                if ((this.lastY < margY+297 || this.lastY > margY+350)){
                     this.body.x = this.lastX;
                     this.body.y = this.lastY;
             
