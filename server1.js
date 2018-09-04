@@ -121,7 +121,7 @@ io.on('connection', function (socket) {
         socket.roomNumber = 0;
         usernames[socket.id] = username;
         playerList[socket.id] = socket;
-        io.emit('who_connected', usernames);
+        io.sockets.emit('who_connected', usernames);
     });
     // Using the socket object that was passed in, events can be sent to the
     // client that socket belongs to using .emit(...)
