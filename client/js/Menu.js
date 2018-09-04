@@ -3,6 +3,8 @@ var getPlayers = [];
 var input;
 var count = 0;
 var player = "def"
+//var y = 150;
+var textPlayers;
 
 /*
 socket.on('how_are_you', function(data){
@@ -30,6 +32,7 @@ FunkyMultiplayerGame.Menu.prototype = {
 
     },
     update: function () {
+        
 
     },
 
@@ -39,5 +42,18 @@ FunkyMultiplayerGame.Menu.prototype = {
         textMsg = this.add.text(470, 300, " another player ", { font: '80px Arial', fill: '#cc0000' });
     }
 };
+
+socket.on('who_connected', function(data){
+    var y = 150;
+
+    var keys = Object.keys(data);
+    //var values = Object.values(players);
+
+    keys.forEach(function (key) {
+        textPlayers = _this.add.text(margX+550*sizer, y, data[key], { font: '34px Arial', fill: '#cc0000' });
+        y += 100;
+        console.log("key: ", key)
+    })
+})
 
 
