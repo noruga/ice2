@@ -1146,7 +1146,7 @@ function accelerateToPoint(obj1, obj2, speed) {
         if (obj1.body.y > 400)
             obj1.body.rotation = 160;
         else if (obj1.body.y < 200)
-            obj1.body.rotation = -160;
+            obj1.body.rotation = 60;
     }
 
     
