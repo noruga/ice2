@@ -70,6 +70,7 @@ var playerList = {};
 
 var rooms = ['room1','room2','room3'];
 
+var adversoryCloseCount = 0;
 var puckSlowCount = 0;
 var countHost = 0;
 var lastHost = true;
@@ -275,10 +276,15 @@ io.on('connection', function (socket) {
                 puckSlowCount++;
             else
                 puckSlowCount = 0;
+            if (adversoryDist < 25*25)
+                adversoryCloseCount++;
+            else
+                adversoryCloseCount = 0;
+
 
             if (adversoryDist < myDist){// && faceOffCounter == 0){         //faceOffCounter : if goal has been scored last within last 2 secs
                 countHost++;
-                if ((countHost > 25 && puckSlowCount > 18) || (countHost > 150) && puckDist < 3){
+                if ((countHost > 25 && puckSlowCount > 18) || ((countHost > 150) && puckDist < 3) || (adversoryCloseCount > 8 && puckSlowCount > 2)){
                     countHost = 0;
                     puckSlowCount = 0;
                     lastHost = !players[playerId].host;
