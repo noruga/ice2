@@ -284,7 +284,7 @@ io.on('connection', function (socket) {
 
             if (adversoryDist < myDist){// && faceOffCounter == 0){         //faceOffCounter : if goal has been scored last within last 2 secs
                 countHost++;
-                if ((countHost > 25 && puckSlowCount > 18) || ((countHost > 150) && puckDist < 3) || (adversoryCloseCount > 8 && puckSlowCount > 2)){
+                if ((countHost > 25 && puckSlowCount > 18) || ((countHost > 150) && puckDist < 3) || (adversoryCloseCount > 8 && puckSlowCount > 8)){
                     countHost = 0;
                     puckSlowCount = 0;
                     lastHost = !players[playerId].host;
