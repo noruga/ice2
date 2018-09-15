@@ -212,7 +212,7 @@ FunkyMultiplayerGame.Game.prototype = {
 
         // #############The Goals#################
         goal6 = this.add.sprite(margX+844*sizer, margY+297, 'goallong1');
-        goal6.angle = 180;
+        
         goal3 = this.add.sprite(margX+56*sizer, margY+298, 'goallong1');
 
         goal1 = this.add.sprite(margX+67*sizer, margY+247, 'goalshort');
@@ -234,6 +234,7 @@ FunkyMultiplayerGame.Game.prototype = {
         goalarea1.anchor.setTo(0.5, 0.5);
 
         this.physics.p2.enable([goal1, goal2, goal3, goal4, goal5, goal6]);
+        goal6.body.angle = 180;
 
         goal1.body.setCollisionGroup(puckCollisionGroup);
         goal2.body.setCollisionGroup(puckCollisionGroup);
@@ -1144,9 +1145,9 @@ function accelerateToPoint(obj1, obj2, speed) {
         obj1.body.velocity.x *= 0.95;
         obj1.body.velocity.y *= 0.95;
         if (obj1.body.y > 400)
-            obj1.body.rotation = 160;
+            obj1.body.angle = 0;
         else if (obj1.body.y < 200)
-            obj1.body.rotation = 60;
+            obj1.body.angle = -180;
     }
 
     
