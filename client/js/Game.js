@@ -679,9 +679,6 @@ Player = function (game, x, y, img, host, hostStick) {
 
     this.target_y ;
     this.target_x ;
-
-    //this.xs = [540, 540, 540, 540, 540;];
-    //this.ys = [margY + 300, margY + 300, margY + 300, margY + 300, margY + 300];
     this.divisor = 3;
     this.isClosePuck = false;
 
@@ -1148,7 +1145,7 @@ function accelerateToPoint(obj1, obj2, speed) {
         obj1.body.velocity.x *= 0.95;
         obj1.body.velocity.y *= 0.95;
         if (obj1.body.y > 400)
-            obj1.body.angle = 0;
+            obj1.body.angle = 180;
         else if (obj1.body.y < 200)
             obj1.body.angle = -180;
     }
