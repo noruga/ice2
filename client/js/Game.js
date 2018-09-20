@@ -679,6 +679,9 @@ Player = function (game, x, y, img, host, hostStick) {
 
     this.target_y ;
     this.target_x ;
+
+    //this.xs = [540, 540, 540, 540, 540;];
+    //this.ys = [margY + 300, margY + 300, margY + 300, margY + 300, margY + 300];
     this.divisor = 3;
     this.isClosePuck = false;
 

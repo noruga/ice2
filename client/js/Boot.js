@@ -126,8 +126,8 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
 
                         if (isHost){
 
-                            _this.puck.body.velocity.x = velX *20;
-                            _this.puck.body.velocity.y = velY *20;
+                            _this.puck.body.velocity.x = velX *5;
+                            _this.puck.body.velocity.y = velY *5;
 
                         }
 
@@ -140,14 +140,14 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                 _this.playerSprites[data[i].id][0].target_x         = data[i].x; // Update target, not actual position, so we can interpolate
                 _this.playerSprites[data[i].id][0].target_y         = data[i].y;
                 _this.playerSprites[data[i].id][0].target_rotation  = data[i].angle;
-                _this.target.target_x                               = data[i].puckX;
-                _this.target.target_y                               = data[i].puckY;
+                //_this.target.target_x                               = data[i].puckX;
+                //_this.target.target_y                               = data[i].puckY;
 
                 _this.playerSprites[data[i].id][1].target_x         = data[i].x1; // Update target, not actual position, so we can interpolate
                 _this.playerSprites[data[i].id][1].target_y         = data[i].y1;
                 _this.playerSprites[data[i].id][1].target_rotation  = data[i].angle1;
-                velX = _this.target.target_x - _this.target.body.x;
-                velY = _this.target.target_y - _this.target.body.y;
+                velX = data[i].puckX - _this.puck.repeatX[0];
+                velY = data[i].puckY - _this.puck.repeatY[0];
 /*
 
                 _this.playerSprites[data[i].id][0].repeatX.push(data[i].x); // Update target, not actual position, so we can interpolate
