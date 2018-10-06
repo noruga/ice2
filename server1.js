@@ -276,7 +276,7 @@ io.on('connection', function (socket) {
                 puckSlowCount++;
             else
                 puckSlowCount = 0;
-            if (adversoryDist < 25*25)
+            if (adversoryDist < 30*30)
                 adversoryCloseCount++;
             else
                 adversoryCloseCount = 0;
@@ -284,7 +284,7 @@ io.on('connection', function (socket) {
 
             if (adversoryDist < myDist){// && faceOffCounter == 0){         //faceOffCounter : if goal has been scored last within last 2 secs
                 countHost++;
-                if ((countHost > 20 && puckSlowCount > 10)  || (adversoryCloseCount > 7 )){
+                if ((countHost > 25 && puckSlowCount > 18) || ((countHost > 150) && puckSlowCount > 5) || (adversoryCloseCount > 7 )){
                     countHost = 0;
                     puckSlowCount = 0;
                     adversoryCloseCount = 0;
