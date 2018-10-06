@@ -185,8 +185,8 @@ io.on('connection', function (socket) {
         }
     });
 
-    socket.on('im_fine', function (/* No data was sent by the client for this event. You could put 'data' here but it would just be undefined. */) {
-        socket.emit('good_to_hear');
+    socket.on('challenge', function (data) {
+        socket.emit('challenger');
     });
     var firstUpdate = 0;
 
@@ -284,15 +284,16 @@ io.on('connection', function (socket) {
 
             if (adversoryDist < myDist){// && faceOffCounter == 0){         //faceOffCounter : if goal has been scored last within last 2 secs
                 countHost++;
-                if ((countHost > 25 && puckSlowCount > 18) || ((countHost > 150) && puckSlowCount > 5) || (adversoryCloseCount > 8 && puckSlowCount > 8)){
+                if ( (adversoryCloseCount > 22 )){
                     countHost = 0;
                     puckSlowCount = 0;
+                    adversoryCloseCount = 0;
                     lastHost = !players[playerId].host;
-
+/*
                     console.log("first: ", adversoryDist, "second: ", myDist)
                     console.log("puckpace ", puckDist)
                     console.log("swapping!")
-                    console.log("Boss : ", lastHost )
+                    console.log("Boss : ", lastHost )*/
                 }
             }
             else{
