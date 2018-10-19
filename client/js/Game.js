@@ -936,8 +936,8 @@ else{
         if (distanceSq(_this.puck, this.stick1) < (23*23)){
             for (var id in _this.playerSprites) {
                 if (id !== socket.id){
-                   //if (!(_this.playerSprites[id][0].isClosePuck || _this.playerSprites[id][1].isClosePuck))
-                        moveToObject(_this.puck, this.stick1, 70);
+                   if (!(checkOverlap(_this.playerSprites[id][0], _this.puck) || checkOverlap(_this.playerSprites[id][0], _this.puck)))
+                        moveToObject(_this.puck, this.stick1, 100);
                     //else
                     //    this.isDownV = false;
                 }
@@ -1086,11 +1086,6 @@ else{
             this.isClosePuck = false;
 
         }
-
-        /*
-        this.stick2.body.x = this.body.x;
-        this.stick2.body.y = this.body.y;*/
-        //this.sticky2.body.rotation = this.body.rotation;
     }
     //else
         //this.isClosePuck = false;
