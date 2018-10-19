@@ -926,7 +926,7 @@ else{
         }
     }
     if(_this.input.keyboard.isDown(Phaser.Keyboard.S)|| cursors.down.isDown){
-        this.body.reverse(500);
+        this.body.reverse(1000);
     }
 
     if(_this.input.keyboard.isDown(Phaser.Keyboard.V)){
