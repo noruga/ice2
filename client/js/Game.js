@@ -918,10 +918,10 @@ else{
         this.body.rotateRight(125);
     }
     if (_this.input.keyboard.isDown(Phaser.Keyboard.W)|| cursors.up.isDown){
-        if ((this.body.velocity.x * this.body.velocity.x) + (this.body.velocity.y * this.body.velocity.y) > 25000)
+        if ((this.body.velocity.x * this.body.velocity.x) + (this.body.velocity.y * this.body.velocity.y) > 30000)
             this.body.thrust(1500);
         else{
-            this.body.thrust(3000);
+            this.body.thrust(1900);
             //slide.play();
         }
     }
