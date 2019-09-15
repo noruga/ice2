@@ -91,6 +91,11 @@ FunkyMultiplayerGame.Game.prototype = {
         this.physics.p2.setBounds(margX, margY, 1080, 600);
         rink = this.add.tileSprite(margX+0, margY+0, 1080, 600, 'starfield');
 
+
+
+        var goalImage = this.add.sprite(31*sizer, 244, 'goal');
+        var goalImage2 = this.add.sprite(830*sizer, 244, 'goal1');
+
         this.time.events.add(Phaser.Timer.SECOND * 150, finalScore, this);
         this.physics.p2.restitution = 0.1;
 
@@ -222,10 +227,17 @@ FunkyMultiplayerGame.Game.prototype = {
         goal5 = this.add.sprite(margX+832*sizer, margY+350, 'goalshort');
 
 
-        goalsensor1         = this.add.sprite(margX+60*sizer, margY+259, 'goalsensor');
-        goalsensor2         = this.add.sprite(margX+837*sizer, margY+259, 'goalsensor');
-        goalsensor1.visible = false;
-        goalsensor2.visible = false;
+        goal1.visible = false;
+        goal2.visible = false;
+        goal3.visible = false;
+        goal4.visible = false;
+        goal5.visible = false;
+        goal6.visible = false;
+
+        goalsensor1         = this.add.sprite(margX+57*sizer, margY+254, 'goalsensor');
+        goalsensor2         = this.add.sprite(margX+842*sizer, margY+254, 'goalsensor');
+        //goalsensor1.visible = false;
+        //goalsensor2.visible = false;
 
         goalarea1         = this.add.sprite(margX+81*sizer, margY+241, 'goalarea');
         goalarea2         = this.add.sprite(margX+774*sizer, margY+241, 'goalarea');
