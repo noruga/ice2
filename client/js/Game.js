@@ -93,8 +93,8 @@ FunkyMultiplayerGame.Game.prototype = {
 
 
 
-        var goalImage = this.add.sprite(31*sizer, 244, 'goal');
-        var goalImage2 = this.add.sprite(830*sizer, 244, 'goal1');
+        var goalImage = this.add.sprite(31*sizer + margX, 244 + margY, 'goal');
+        var goalImage2 = this.add.sprite(830*sizer + margX, 244 + margY, 'goal1');
 
         this.time.events.add(Phaser.Timer.SECOND * 150, finalScore, this);
         this.physics.p2.restitution = 0.1;
