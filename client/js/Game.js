@@ -27,7 +27,7 @@ var target;
 var homePoint, homePoint1, forwPoint1, forwPoint2, forwPoint3, forwPoint4;
 var stickCollisionGroup
     , puckCollisionGroup
-    , goalsensorGroup;
+    , playerBodyGroup;
 var score1 = 0;
 var score2 = 0;
 
@@ -102,7 +102,7 @@ FunkyMultiplayerGame.Game.prototype = {
         stickCollisionGroup = this.physics.p2.createCollisionGroup();
         puckCollisionGroup  = this.physics.p2.createCollisionGroup();
         //goalsensorGroup     = this.physics.p2.createCollisionGroup();
-        var playerBodyGroup = game.physics.p2.createCollisionGroup();
+        playerBodyGroup = game.physics.p2.createCollisionGroup();
         homePoint = this.add.sprite(margX+112*sizer, margY+319, null);
         homePoint1  = this.add.sprite(margX+788*sizer, margY+281, null);
 
@@ -570,7 +570,7 @@ Puck = function(game, x, y, authorative){
     if (authorative){
         //this.visible = true;
         this.body.setCollisionGroup(puckCollisionGroup);
-        this.body.collides([stickCollisionGroup, puckCollisionGroup]);
+        this.body.collides([stickCollisionGroup, puckCollisionGroup, playerBodyGroup]);
     }
 /*
     else{
@@ -935,18 +935,9 @@ else{
 
 
 
-    if (_this.input.keyboard.isDown(Phaser.Keyboard.W)|| cursors.up.isDown){
-        if (_this.input.keyboard.isDown(Phaser.Keyboard.A) || (_this.input.keyboard.isDown(Phaser.Keyboard.D))){
-            //this.body.velocity.x += Math.cos(this.body.angle);
-            //this.body.velocity.y += Math.sin(this.body.angle);
-        }
-        if (_this.input.keyboard.isDown(Phaser.Keyboard.Q)){
-            this.body.thrustLeft(1000);
-        }
-        else if (_this.input.keyboard.isDown(Phaser.Keyboard.E)){
-            this.body.thrustRight(1000);
-        }
-        else if (((this.body.velocity.x * this.body.velocity.x) + (this.body.velocity.y * this.body.velocity.y) > 60000) || (_this.input.keyboard.isDown(Phaser.Keyboard.V)))
+    if (_this.input.keyboard.isDown(Phaser.Keyboard.W) || cursors.up.isDown){
+
+        if (((this.body.velocity.x * this.body.velocity.x) + (this.body.velocity.y * this.body.velocity.y) > 60000) || (_this.input.keyboard.isDown(Phaser.Keyboard.V)))
             this.body.thrust(1800);
         else{
             this.body.thrust(4200);
