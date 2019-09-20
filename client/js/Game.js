@@ -101,7 +101,8 @@ FunkyMultiplayerGame.Game.prototype = {
 
         stickCollisionGroup = this.physics.p2.createCollisionGroup();
         puckCollisionGroup  = this.physics.p2.createCollisionGroup();
-        goalsensorGroup     = this.physics.p2.createCollisionGroup();
+        //goalsensorGroup     = this.physics.p2.createCollisionGroup();
+        var playerBodyGroup = game.physics.p2.createCollisionGroup();
         homePoint = this.add.sprite(margX+112*sizer, margY+319, null);
         homePoint1  = this.add.sprite(margX+788*sizer, margY+281, null);
 
@@ -173,7 +174,7 @@ FunkyMultiplayerGame.Game.prototype = {
         //game.physics.enable(cornerRec, Phaser.Physics.ARCADE);
         cornerRec.body.static             = true;
         cornerRec.body.collideWorldBounds = false;
-        cornerRec.body.setCollisionGroup(puckCollisionGroup);
+        cornerRec.body.setCollisionGroup(puckCollisionGroup, playerBodyGroup);
         cornerRec.body.collides([puckCollisionGroup]);
 
 
@@ -184,7 +185,7 @@ FunkyMultiplayerGame.Game.prototype = {
         //game.physics.enable(cornerRec, Phaser.Physics.ARCADE);
         cornerRec1.body.static             = true;
         cornerRec1.body.collideWorldBounds = false;
-        cornerRec1.body.setCollisionGroup(puckCollisionGroup);
+        cornerRec1.body.setCollisionGroup(puckCollisionGroup, playerBodyGroup);
         cornerRec1.body.collides([puckCollisionGroup]);
 
         var cornerRec2   = this.add.sprite(margX+0, margY+25, 'cornerRec');
@@ -194,7 +195,7 @@ FunkyMultiplayerGame.Game.prototype = {
         //game.physics.enable(cornerRec, Phaser.Physics.ARCADE);
         cornerRec2.body.static             = true;
         cornerRec2.body.collideWorldBounds = false;
-        cornerRec2.body.setCollisionGroup(puckCollisionGroup);
+        cornerRec2.body.setCollisionGroup(puckCollisionGroup, playerBodyGroup);
         cornerRec2.body.collides([puckCollisionGroup]);
 
         var cornerRec3   = this.add.sprite(margX+0, margY+595, 'cornerRec');
@@ -204,7 +205,7 @@ FunkyMultiplayerGame.Game.prototype = {
         //game.physics.enable(cornerRec, Phaser.Physics.ARCADE);
         cornerRec3.body.static             = true;
         cornerRec3.body.collideWorldBounds = false;
-        cornerRec3.body.setCollisionGroup(puckCollisionGroup);
+        cornerRec3.body.setCollisionGroup(puckCollisionGroup, playerBodyGroup);
         cornerRec3.body.collides([puckCollisionGroup]);
 
         cornerRec.visible  = false;
@@ -705,8 +706,8 @@ Player = function (game, x, y, img, host, hostStick) {
     this.anchor.setTo(0.5, 0.5);
          this.body.collideWorldBounds = true;
     
-     this.body.setCollisionGroup(puckCollisionGroup);
-     this.body.collides([ puckCollisionGroup]) ;
+     this.body.setCollisionGroup(playerBodyGroup);
+     this.body.collides([puckCollisionGroup, playerBodyGroup, stickCollisionGroup]) ;
      this.host = host;
      this.hostess = host;
      this.m_count = 0;
@@ -717,6 +718,7 @@ Player = function (game, x, y, img, host, hostStick) {
     this.target_x;
     this.target_y = 0;
     this.target_rotation;
+    this.shotcount = 0;
     // ####This stick is invisible, without collision###############
   if (hostStick){  
     this.stick            = game.add.sprite(margX+x, margY+ y, null);
@@ -729,7 +731,7 @@ Player = function (game, x, y, img, host, hostStick) {
     this.stick.body.clearCollision(true);
     this.stick1.body.collideWorldBounds = false;
     this.stick1.body.setCollisionGroup(stickCollisionGroup);
-    this.stick1.body.collides(puckCollisionGroup);
+    this.stick1.body.collides([puckCollisionGroup, playerBodyGroup]);
 
     var constraint  = _this.physics.p2.createLockConstraint(this, this.stick, [-30, 0], 0);
     var constraint1 = _this.physics.p2.createLockConstraint(this, this.stick1, [30, 0], 0);
@@ -815,8 +817,8 @@ if(!this.controlPlayer){
     this.body.velocity.y *= 0.99;
 }
 else{
-    this.body.velocity.x *= 0.94;
-    this.body.velocity.y *= 0.94;
+    this.body.velocity.x *= 0.93;
+    this.body.velocity.y *= 0.93;
 }
     this.body.setZeroRotation();
     //this.body.angularVelocity = 0;
@@ -929,6 +931,30 @@ else{
     if (_this.input.keyboard.isDown(Phaser.Keyboard.D)|| cursors.right.isDown){
         this.body.rotateRight(125);
     }
+
+
+
+
+    if (_this.input.keyboard.isDown(Phaser.Keyboard.W)|| cursors.up.isDown){
+        if (_this.input.keyboard.isDown(Phaser.Keyboard.A) || (_this.input.keyboard.isDown(Phaser.Keyboard.D))){
+            //this.body.velocity.x += Math.cos(this.body.angle);
+            //this.body.velocity.y += Math.sin(this.body.angle);
+        }
+        if (_this.input.keyboard.isDown(Phaser.Keyboard.Q)){
+            this.body.thrustLeft(1000);
+        }
+        else if (_this.input.keyboard.isDown(Phaser.Keyboard.E)){
+            this.body.thrustRight(1000);
+        }
+        else if (((this.body.velocity.x * this.body.velocity.x) + (this.body.velocity.y * this.body.velocity.y) > 60000) || (_this.input.keyboard.isDown(Phaser.Keyboard.V)))
+            this.body.thrust(1800);
+        else{
+            this.body.thrust(4200);
+            //slide.play();
+        
+        }
+    }
+    /*
     if (_this.input.keyboard.isDown(Phaser.Keyboard.W)|| cursors.up.isDown){
         if ((this.body.velocity.x * this.body.velocity.x) + (this.body.velocity.y * this.body.velocity.y) > 30000)
             this.body.thrust(1500);
@@ -936,15 +962,15 @@ else{
             this.body.thrust(1900);
             //slide.play();
         }
-    }
+    }*/
     if(_this.input.keyboard.isDown(Phaser.Keyboard.S)|| cursors.down.isDown){
-        this.body.reverse(1000);
+        this.body.reverse(1800);
     }
 
     if(_this.input.keyboard.isDown(Phaser.Keyboard.V)){
         //brake(this);
-         this.body.velocity.x *= 0.9;
-        this.body.velocity.y *= 0.9;
+         this.body.velocity.x *= 0.85;
+        this.body.velocity.y *= 0.85;
         if (distanceSq(_this.puck, this.stick1) < (23*23)){
             for (var id in _this.playerSprites) {
                 if (id !== socket.id){
@@ -964,6 +990,29 @@ else{
                 moveToObject(puck, this.stick1, 30);
         }*/
     }
+    else if (_this.input.keyboard.isDown(Phaser.Keyboard.B)){
+        if (this.shotcount < 18)
+            this.shotcount++;
+        if (this.shotcount < 18){
+            if (checkOverlap(this.stick1, _this.puck)){
+                fx1.play();
+                //goalFrameCounter = 1;
+            }
+
+
+            if (_this.input.keyboard.isDown(Phaser.Keyboard.A)|| cursors.left.isDown){
+                this.body.rotateLeft(1200);
+            }
+            else{
+                this.body.rotateRight(1200);
+            }
+        }       
+    }
+    else if (this.shotcount >= 0)
+        this.shotcount -=3;
+
+/*
+
     else if (_this.input.keyboard.isDown(Phaser.Keyboard.B)){
 
         this.isDownV = false;
@@ -995,7 +1044,7 @@ else{
             //if (controlPlayer1){
         }
 
-    }
+    }*/
 
 
     /*
