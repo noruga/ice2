@@ -820,8 +820,8 @@ else{
     this.body.velocity.x *= 0.93;
     this.body.velocity.y *= 0.93;
 }
-    this.body.setZeroRotation();
-    //this.body.angularVelocity = 0;
+    //this.body.setZeroRotation();
+    this.body.angularVelocity = 0;
 
 
 /*
