@@ -102,7 +102,7 @@ FunkyMultiplayerGame.Game.prototype = {
         stickCollisionGroup = this.physics.p2.createCollisionGroup();
         puckCollisionGroup  = this.physics.p2.createCollisionGroup();
         //goalsensorGroup     = this.physics.p2.createCollisionGroup();
-        playerBodyGroup = game.physics.p2.createCollisionGroup();
+        playerBodyGroup = this.physics.p2.createCollisionGroup();
         homePoint = this.add.sprite(margX+112*sizer, margY+319, null);
         homePoint1  = this.add.sprite(margX+788*sizer, margY+281, null);
 
