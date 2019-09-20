@@ -93,8 +93,10 @@ FunkyMultiplayerGame.Game.prototype = {
 
 
 
-        var goalImage = this.add.sprite(41*sizer + margX, 244 + margY, 'goal');
-        var goalImage2 = this.add.sprite(820*sizer + margX, 244 + margY, 'goal1');
+        var goalImage = this.add.sprite(41*sizer + margX, 244 + margY, 'goalA');
+        var goalImage2 = this.add.sprite(820*sizer + margX, 244 + margY, 'goalB');
+        goalImage2.visible = false;
+        goalImage.visible = false;
 
         this.time.events.add(Phaser.Timer.SECOND * 150, finalScore, this);
         this.physics.p2.restitution = 0.1;
@@ -219,7 +221,7 @@ FunkyMultiplayerGame.Game.prototype = {
         // #############The Goals#################
         goal6 = this.add.sprite(margX+844*sizer, margY+297, 'goallong1');
         
-        goal3 = this.add.sprite(margX+56*sizer, margY+298, 'goallong1');
+        goal3 = this.add.sprite(margX+56*sizer, margY+297, 'goallong1');
 
         goal1 = this.add.sprite(margX+67*sizer, margY+247, 'goalshort');
         goal2 = this.add.sprite(margX+67*sizer, margY+350, 'goalshort');
@@ -227,13 +229,13 @@ FunkyMultiplayerGame.Game.prototype = {
         goal4 = this.add.sprite(margX+832*sizer, margY+247, 'goalshort');
         goal5 = this.add.sprite(margX+832*sizer, margY+350, 'goalshort');
 
-
+/*
         goal1.visible = false;
         goal2.visible = false;
         goal3.visible = false;
         goal4.visible = false;
         goal5.visible = false;
-        goal6.visible = false;
+        goal6.visible = false;*/
 
         goalsensor1         = this.add.sprite(margX+67*sizer, margY+254, 'goalsensor');
         goalsensor2         = this.add.sprite(margX+832*sizer, margY+254, 'goalsensor');
