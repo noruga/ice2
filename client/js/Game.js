@@ -95,8 +95,6 @@ FunkyMultiplayerGame.Game.prototype = {
 
         var goalImage = this.add.sprite(41*sizer + margX, 244 + margY, 'goalA');
         var goalImage2 = this.add.sprite(820*sizer + margX, 244 + margY, 'goalB');
-        goalImage2.visible = false;
-        goalImage.visible = false;
 
         this.time.events.add(Phaser.Timer.SECOND * 150, finalScore, this);
         this.physics.p2.restitution = 0.1;
@@ -229,13 +227,13 @@ FunkyMultiplayerGame.Game.prototype = {
         goal4 = this.add.sprite(margX+832*sizer, margY+247, 'goalshort');
         goal5 = this.add.sprite(margX+832*sizer, margY+350, 'goalshort');
 
-/*
+
         goal1.visible = false;
         goal2.visible = false;
         goal3.visible = false;
         goal4.visible = false;
         goal5.visible = false;
-        goal6.visible = false;*/
+        goal6.visible = false;
 
         goalsensor1         = this.add.sprite(margX+67*sizer, margY+254, 'goalsensor');
         goalsensor2         = this.add.sprite(margX+832*sizer, margY+254, 'goalsensor');
@@ -251,18 +249,18 @@ FunkyMultiplayerGame.Game.prototype = {
         this.physics.p2.enable([goal1, goal2, goal3, goal4, goal5, goal6]);
         goal6.body.angle = 180;
 
-        goal1.body.setCollisionGroup(puckCollisionGroup);
-        goal2.body.setCollisionGroup(puckCollisionGroup);
-        goal3.body.setCollisionGroup(puckCollisionGroup);
-        goal4.body.setCollisionGroup(puckCollisionGroup);
-        goal5.body.setCollisionGroup(puckCollisionGroup);
-        goal6.body.setCollisionGroup(puckCollisionGroup);
-        goal1.body.collides([puckCollisionGroup]);     //
-        goal2.body.collides([puckCollisionGroup]);
-        goal3.body.collides([puckCollisionGroup]);
-        goal4.body.collides([puckCollisionGroup]);
-        goal5.body.collides([puckCollisionGroup]);
-        goal6.body.collides([puckCollisionGroup]);
+        goal1.body.setCollisionGroup(puckCollisionGroup, playerBodyGroup);
+        goal2.body.setCollisionGroup(puckCollisionGroup, playerBodyGroup);
+        goal3.body.setCollisionGroup(puckCollisionGroup, playerBodyGroup);
+        goal4.body.setCollisionGroup(puckCollisionGroup, playerBodyGroup);
+        goal5.body.setCollisionGroup(puckCollisionGroup, playerBodyGroup);
+        goal6.body.setCollisionGroup(puckCollisionGroup, playerBodyGroup);
+        goal1.body.collides([puckCollisionGroup, playerBodyGroup]);     //
+        goal2.body.collides([puckCollisionGroup, playerBodyGroup]);
+        goal3.body.collides([puckCollisionGroup, playerBodyGroup]);
+        goal4.body.collides([puckCollisionGroup, playerBodyGroup]);
+        goal5.body.collides([puckCollisionGroup, playerBodyGroup]);
+        goal6.body.collides([puckCollisionGroup, playerBodyGroup]);
 
         this.physics.p2.enable([goal1, goal2, goal3, goal4, goal5, goal6]);
         goal1.body.static = true;
