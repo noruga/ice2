@@ -249,12 +249,12 @@ FunkyMultiplayerGame.Game.prototype = {
         this.physics.p2.enable([goal1, goal2, goal3, goal4, goal5, goal6]);
         goal6.body.angle = 180;
 
-        goal1.body.setCollisionGroup(puckCollisionGroup, playerBodyGroup);
-        goal2.body.setCollisionGroup(puckCollisionGroup, playerBodyGroup);
-        goal3.body.setCollisionGroup(puckCollisionGroup, playerBodyGroup);
-        goal4.body.setCollisionGroup(puckCollisionGroup, playerBodyGroup);
-        goal5.body.setCollisionGroup(puckCollisionGroup, playerBodyGroup);
-        goal6.body.setCollisionGroup(puckCollisionGroup, playerBodyGroup);
+        goal1.body.setCollisionGroup(puckCollisionGroup);
+        goal2.body.setCollisionGroup(puckCollisionGroup);
+        goal3.body.setCollisionGroup(puckCollisionGroup);
+        goal4.body.setCollisionGroup(puckCollisionGroup);
+        goal5.body.setCollisionGroup(puckCollisionGroup);
+        goal6.body.setCollisionGroup(puckCollisionGroup);
         goal1.body.collides([puckCollisionGroup, playerBodyGroup]);     //
         goal2.body.collides([puckCollisionGroup, playerBodyGroup]);
         goal3.body.collides([puckCollisionGroup, playerBodyGroup]);
