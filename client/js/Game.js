@@ -174,8 +174,8 @@ FunkyMultiplayerGame.Game.prototype = {
         //game.physics.enable(cornerRec, Phaser.Physics.ARCADE);
         cornerRec.body.static             = true;
         cornerRec.body.collideWorldBounds = false;
-        cornerRec.body.setCollisionGroup(puckCollisionGroup, playerBodyGroup);
-        cornerRec.body.collides([puckCollisionGroup]);
+        cornerRec.body.setCollisionGroup(puckCollisionGroup);
+        cornerRec.body.collides([puckCollisionGroup, playerBodyGroup]);
 
 
         var cornerRec1   = this.add.sprite(margX+874*sizer, margY+5, 'cornerRec');
@@ -185,8 +185,8 @@ FunkyMultiplayerGame.Game.prototype = {
         //game.physics.enable(cornerRec, Phaser.Physics.ARCADE);
         cornerRec1.body.static             = true;
         cornerRec1.body.collideWorldBounds = false;
-        cornerRec1.body.setCollisionGroup(puckCollisionGroup, playerBodyGroup);
-        cornerRec1.body.collides([puckCollisionGroup]);
+        cornerRec1.body.setCollisionGroup(puckCollisionGroup);
+        cornerRec1.body.collides([puckCollisionGroup, playerBodyGroup]);
 
         var cornerRec2   = this.add.sprite(margX+0, margY+25, 'cornerRec');
         cornerRec2.angle = -45;
@@ -195,8 +195,8 @@ FunkyMultiplayerGame.Game.prototype = {
         //game.physics.enable(cornerRec, Phaser.Physics.ARCADE);
         cornerRec2.body.static             = true;
         cornerRec2.body.collideWorldBounds = false;
-        cornerRec2.body.setCollisionGroup(puckCollisionGroup, playerBodyGroup);
-        cornerRec2.body.collides([puckCollisionGroup]);
+        cornerRec2.body.setCollisionGroup(puckCollisionGroup);
+        cornerRec2.body.collides([puckCollisionGroup, playerBodyGroup]);
 
         var cornerRec3   = this.add.sprite(margX+0, margY+595, 'cornerRec');
         cornerRec3.angle = 45;
@@ -205,8 +205,8 @@ FunkyMultiplayerGame.Game.prototype = {
         //game.physics.enable(cornerRec, Phaser.Physics.ARCADE);
         cornerRec3.body.static             = true;
         cornerRec3.body.collideWorldBounds = false;
-        cornerRec3.body.setCollisionGroup(puckCollisionGroup, playerBodyGroup);
-        cornerRec3.body.collides([puckCollisionGroup]);
+        cornerRec3.body.setCollisionGroup(puckCollisionGroup);
+        cornerRec3.body.collides([puckCollisionGroup, playerBodyGroup]);
 
         cornerRec.visible  = false;
         cornerRec1.visible = false;
@@ -937,10 +937,10 @@ else{
 
     if (_this.input.keyboard.isDown(Phaser.Keyboard.W) || cursors.up.isDown){
 
-        if (((this.body.velocity.x * this.body.velocity.x) + (this.body.velocity.y * this.body.velocity.y) > 60000) || (_this.input.keyboard.isDown(Phaser.Keyboard.V)))
+        /*if (((this.body.velocity.x * this.body.velocity.x) + (this.body.velocity.y * this.body.velocity.y) > 60000) || (_this.input.keyboard.isDown(Phaser.Keyboard.V)))
             this.body.thrust(1800);
-        else{
-            this.body.thrust(4200);
+        else{*/
+            this.body.thrust(2000);
             //slide.play();
         
         }
