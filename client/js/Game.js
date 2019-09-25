@@ -1141,7 +1141,7 @@ else{
     }
     //else
         //this.isClosePuck = false;
-}
+
 
 };
 
