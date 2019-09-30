@@ -1137,7 +1137,7 @@ else{
         else
             this.isClosePuck = false;
 
-        }
+        
     }
     //else
         //this.isClosePuck = false;
