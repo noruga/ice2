@@ -1090,7 +1090,7 @@ else{
         }
             
     }*/
-
+}
 
     if (this.goHome){
         this.goForw = false;
@@ -1137,11 +1137,11 @@ else{
         else
             this.isClosePuck = false;
 
-        
+        }
     }
     //else
         //this.isClosePuck = false;
-
+}
 
 };
 
