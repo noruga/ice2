@@ -937,10 +937,10 @@ else{
 
     if (_this.input.keyboard.isDown(Phaser.Keyboard.W) || cursors.up.isDown){
 
-        /*if (((this.body.velocity.x * this.body.velocity.x) + (this.body.velocity.y * this.body.velocity.y) > 60000) || (_this.input.keyboard.isDown(Phaser.Keyboard.V)))
+        if (((this.body.velocity.x * this.body.velocity.x) + (this.body.velocity.y * this.body.velocity.y) > 60000) || (_this.input.keyboard.isDown(Phaser.Keyboard.V)))
             this.body.thrust(1800);
-        else{*/
-            this.body.thrust(2000);
+        else{
+            this.body.thrust(2400);
             //slide.play();
         
         }
