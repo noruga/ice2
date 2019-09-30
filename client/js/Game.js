@@ -1090,7 +1090,7 @@ else{
         }
             
     }*/
-}
+
 
     if (this.goHome){
         this.goForw = false;
