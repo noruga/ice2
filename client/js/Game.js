@@ -47,6 +47,8 @@ var repeatTimer = 0;
 var n = 0;
 var cursors;
 var repeatText;
+var goalImage,
+    goalImage2;
 
 var accelerateRemote = true;
 /*
@@ -91,8 +93,8 @@ FunkyMultiplayerGame.Game.prototype = {
         this.physics.p2.setBounds(margX, margY, 1080, 600);
         rink = this.add.tileSprite(margX+0, margY+0, 1080, 600, 'starfield');
 
-        var goalImage = game.add.sprite(30*sizer + margX, 240 + margY, 'goal');
-        var goalImage2 = game.add.sprite(832*sizer + margX, 244 + margY, 'goal1');
+        goalImage = game.add.sprite(30*sizer + margX, 240 + margY, 'goal');
+        goalImage2 = game.add.sprite(832*sizer + margX, 244 + margY, 'goal1');
 /*
         var goalImage = this.add.sprite(41*sizer + margX, 244 + margY, 'goalA');
         var goalImage2 = this.add.sprite(820*sizer + margX, 244 + margY, 'goalB');*/
@@ -238,8 +240,8 @@ FunkyMultiplayerGame.Game.prototype = {
 
         goalsensor1         = this.add.sprite(margX+67*sizer, margY+254, 'goalsensor');
         goalsensor2         = this.add.sprite(margX+832*sizer, margY+254, 'goalsensor');
-        //goalsensor1.visible = false;
-        //goalsensor2.visible = false;
+        goalsensor1.visible = false;
+        goalsensor2.visible = false;
 
         goalarea1         = this.add.sprite(margX+81*sizer, margY+241, 'goalarea');
         goalarea2         = this.add.sprite(margX+774*sizer, margY+241, 'goalarea');
