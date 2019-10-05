@@ -51,6 +51,8 @@ var goalImage,
     goalImage2;
 
 var accelerateRemote = true;
+var tverrlegger1,
+    tverrlegger2;
 /*
 var left = false,
     right = false,
@@ -274,8 +276,8 @@ FunkyMultiplayerGame.Game.prototype = {
         goal6.body.static = true;
 
 
-        var tverrlegger1 = game.add.sprite(64*sizer +margX, 244 + margY, 'tverrlegger');
-        var tverrlegger2 = game.add.sprite(835*sizer + margX, 244 + margY, 'tverrlegger');
+        tverrlegger1 = game.add.sprite(64*sizer +margX, 244 + margY, 'tverrlegger');
+        tverrlegger2 = game.add.sprite(835*sizer + margX, 244 + margY, 'tverrlegger');
 
         this.physics.p2.updateBoundsCollisionGroup();
         this.game.stage.disableVisibilityChange = true;
