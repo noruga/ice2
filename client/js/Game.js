@@ -95,8 +95,8 @@ FunkyMultiplayerGame.Game.prototype = {
         this.physics.p2.setBounds(margX, margY, 1080, 600);
         rink = this.add.tileSprite(margX+0, margY+0, 1080, 600, 'starfield');
 
-        goalImage = this.add.sprite(30*sizer + margX, 240 + margY, 'goal');
-        goalImage2 = this.add.sprite(832*sizer + margX, 244 + margY, 'goal1');
+        goalImage = this.add.sprite(41*sizer + margX, 244 + margY, 'goal');
+        goalImage2 = this.add.sprite(820*sizer + margX, 244 + margY, 'goal1');
 /*
         var goalImage = this.add.sprite(41*sizer + margX, 244 + margY, 'goalA');
         var goalImage2 = this.add.sprite(820*sizer + margX, 244 + margY, 'goalB');*/
@@ -276,8 +276,8 @@ FunkyMultiplayerGame.Game.prototype = {
         goal6.body.static = true;
 
 
-        tverrlegger1 = this.add.sprite(64*sizer +margX, 244 + margY, 'tverrlegger');
-        tverrlegger2 = this.add.sprite(835*sizer + margX, 244 + margY, 'tverrlegger');
+        tverrlegger1 = this.add.sprite(75*sizer +margX, 244 + margY, 'tverrlegger');
+        tverrlegger2 = this.add.sprite(823*sizer + margX, 244 + margY, 'tverrlegger');
 
         this.physics.p2.updateBoundsCollisionGroup();
         this.game.stage.disableVisibilityChange = true;
