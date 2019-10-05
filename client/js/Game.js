@@ -203,7 +203,7 @@ FunkyMultiplayerGame.Game.prototype = {
         cornerRec2.body.setCollisionGroup(puckCollisionGroup);
         cornerRec2.body.collides([puckCollisionGroup, playerBodyGroup]);
 
-        var cornerRec3   = this.add.sprite(margX+0, margY+595, 'cornerRec');
+        var cornerRec3   = this.add.sprite(margX+0, margY+575, 'cornerRec');
         cornerRec3.angle = 45;
         this.physics.p2.enable(cornerRec3);
         //cornerRec.angle = -45;
