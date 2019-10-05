@@ -240,8 +240,8 @@ FunkyMultiplayerGame.Game.prototype = {
         goal5.visible = false;
         goal6.visible = false;
 
-        goalsensor1         = this.add.sprite(margX+72*sizer, margY+259, 'goalsensor');
-        goalsensor2         = this.add.sprite(margX+826*sizer, margY+259, 'goalsensor');
+        goalsensor1         = this.add.sprite(margX+68*sizer, margY+259, 'goalsensor');
+        goalsensor2         = this.add.sprite(margX+830*sizer, margY+259, 'goalsensor');
         goalsensor1.visible = false;
         goalsensor2.visible = false;
 
