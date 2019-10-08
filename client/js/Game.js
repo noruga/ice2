@@ -710,7 +710,7 @@ Player = function (game, x, y, img, host, hostStick) {
 
 
     game.physics.p2.enable(this);
-    this.body.setCircle(14);
+    this.body.setCircle(19);
     this.anchor.setTo(0.5, 0.5);
          this.body.collideWorldBounds = true;
     
@@ -763,8 +763,8 @@ Player = function (game, x, y, img, host, hostStick) {
     else
         this.stick1.body.rotation = this.body.rotation - Math.PI / 2.7;
 
-        var constraint  = _this.physics.p2.createLockConstraint(this, this.stick, [-30, 0], 0);
-    var constraint1 = _this.physics.p2.createLockConstraint(this, this.stick1, [30, 0], 0);
+        var constraint  = _this.physics.p2.createLockConstraint(this, this.stick, [-34, 0], 0);
+    var constraint1 = _this.physics.p2.createLockConstraint(this, this.stick1, [34, 0], 0);
   }
 
     game.add.existing(this);
