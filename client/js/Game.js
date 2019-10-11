@@ -741,27 +741,28 @@ Player = function (game, x, y, img, host, hostStick) {
     this.stick1.body.setCollisionGroup(stickCollisionGroup);
     this.stick1.body.collides([puckCollisionGroup, playerBodyGroup]);
 
-    var constraint  = _this.physics.p2.createLockConstraint(this, this.stick, [-30, 0], 0);
-    var constraint1 = _this.physics.p2.createLockConstraint(this, this.stick1, [30, 0], 0);
+    var constraint  = _this.physics.p2.createLockConstraint(this, this.stick, [-34, 0], 0);
+    var constraint1 = _this.physics.p2.createLockConstraint(this, this.stick1, [34, 0], 0);
   }
   
   else{
     this.stick1 = (game.add.sprite(margX+x - 30, margY+y, 'stick'));
     this.stick            = game.add.sprite(margX+x, margY+y, null);
     
-    _this.physics.p2.enable(this.stick1);
-    this.stick1.body.setRectangle(27, 20);
+    _this.physics.p2.enable(this.stick1, this.stick);
+    //this.stick.body.setRectangle(27, 20);
     //_this.physics.p2.enable(this.stick);
-    this.stick1.body.clearCollision(true);
+    this.stick.body.clearCollision(true);
     this.stick1.body.collideWorldBounds = false;
     this.stick1.body.setCollisionGroup(stickCollisionGroup);
     this.stick1.body.collides(puckCollisionGroup);
 
     //this.stick2.anchor.setTo(1.5, 0.5);
+    /*
     if (this.host)
         this.stick1.body.rotation = this.body.rotation + Math.PI / 2.7;
     else
-        this.stick1.body.rotation = this.body.rotation - Math.PI / 2.7;
+        this.stick1.body.rotation = this.body.rotation - Math.PI / 2.7;*/
 
         var constraint  = _this.physics.p2.createLockConstraint(this, this.stick, [-34, 0], 0);
     var constraint1 = _this.physics.p2.createLockConstraint(this, this.stick1, [34, 0], 0);
