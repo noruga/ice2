@@ -749,7 +749,7 @@ Player = function (game, x, y, img, host, hostStick) {
     this.stick1 = (game.add.sprite(margX+x - 30, margY+y, 'stick'));
     this.stick            = game.add.sprite(margX+x, margY+y, null);
     
-    _this.physics.p2.enable(this.stick1, this.stick);
+    _this.physics.p2.enable(this.stick1);
     //this.stick.body.setRectangle(27, 20);
     //_this.physics.p2.enable(this.stick);
     this.stick.body.clearCollision(true);
