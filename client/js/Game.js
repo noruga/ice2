@@ -330,7 +330,7 @@ FunkyMultiplayerGame.Game.prototype = {
                 scoreText2.text = (margX+600*sizer, margY+400, " ");      //Erases the 'GOAL!!!'
                 scoreText3.text = (margX+600*sizer, margY+400, " ");
                 gameTime += gameDuration - Math.floor(game.time.events.duration/1000) ;
-                this.time.events.resume()
+                this.game.time.events.resume()
                 _this.state.start("Game");
 
               //  scoreText3.text = (600, 400, " ");  
@@ -1253,7 +1253,7 @@ function updateScore1(puckD)
     scoreText3.text = (margX+700*sizer, margY+500, puckD + " km/h");
     }
     fx.play();
-    this.time.events.pause()
+    this.game.time.events.pause()
     //sound.play();
 }
 
@@ -1268,7 +1268,7 @@ function updateScore2(puckD)
         scoreText3.text = (margX+700*sizer, margY+500, puckD + " km/h");
     }
     fx.play();
-    this.time.events.pause()
+    this.game.time.events.pause()
 }
 
 function finalScore(){
