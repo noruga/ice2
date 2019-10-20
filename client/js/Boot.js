@@ -151,7 +151,7 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                 velX = _this.target.target_x - _this.target.body.x;
                 velY = _this.target.target_y - _this.target.body.y;
 
-                if (data[id].pushed){
+                if (data[id].pushed > 0){
                     _this.playerSprites[socket.id][data[id].pushedPlayer].velocity.x +=1400;
                 }
 /*
