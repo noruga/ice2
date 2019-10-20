@@ -98,10 +98,11 @@ socket.on('player_update', function(data){
     //console.log("receiving client data from", data[0].id);
 if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
 
+
         // The 'playerSprites' object exists.
         for(let i= 0; i<1; i+=1){
                     if(_this.playerSprites[data[i].id].host === data[i].host){
-                        otherID = data[i].id;
+
 
 
                             isHost = true;
@@ -214,7 +215,7 @@ function preparePlayersDataToSend() {
     dataToSend.push({id: socket.id, x: Math.round(_this.playerSprites[socket.id][0].x), y: Math.round(_this.playerSprites[socket.id][0].y), 
             angle: Math.round(_this.playerSprites[socket.id][0].body.rotation* 100) / 100, puckX: Math.round(_this.puck.x), puckY: Math.round(_this.puck.y),
             host: (_this.playerSprites[socket.id][0].withinPuck || _this.playerSprites[socket.id][1].withinPuck), 
-            pushedPlay: pushedPlayer, pushingPlay: pushingPlayer, //pushed: _sendPush,
+            pushedPlay: pushedPlayer, pushingPlay: pushingPlayer, pushed: _sendPush,
             x1: Math.round(_this.playerSprites[socket.id][1].x), y1: Math.round(_this.playerSprites[socket.id][1].y), 
             angle1: Math.round(_this.playerSprites[socket.id][1].body.rotation* 100) / 100});
 //console.log(_this.host)
@@ -244,14 +245,14 @@ socket.on('state_update', function (data) {
         // The 'playerSprites' object exists.
         for(let i= 0, len = data.length; i<2; i+=1){
 
-            if(socket.id != [data[i].id]){
-                otherID = data[i].id;
+            if(_this.playerSprites[data[i].id]){
           
 
             }
                 
             // No property was found for the player that this socket ID belongs to. Add a sprite for them.
             else {
+                otherID = data.id;
 
                 if (host){
                     host = false;
