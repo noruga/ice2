@@ -86,7 +86,7 @@ FunkyMultiplayerGame.Game.prototype = {
         this.username1 = " ";
         this.username2 = " ";
 
-        //this.sendPUsh = false;
+        this.sendPUsh = false;
         this.pushNumber = 0;
 
         //this.hostess = false;
@@ -1040,7 +1040,7 @@ else{
                 fx1.play();
                 //goalFrameCounter = 1;
             }
-            if (sendPush){
+            if (_this.sendPush){
                 if (this.shotcount > 7)
                     _this.pushNumber = 7;
                 else
