@@ -228,8 +228,8 @@ function preparePlayersDataToSend() {
             angle: Math.round(_this.playerSprites[socket.id][0].body.rotation* 100) / 100, puckX: Math.round(_this.puck.x), puckY: Math.round(_this.puck.y),
             host: (_this.playerSprites[socket.id][0].withinPuck || _this.playerSprites[socket.id][1].withinPuck),
             x1: Math.round(_this.playerSprites[socket.id][1].x), y1: Math.round(_this.playerSprites[socket.id][1].y),
-            angle1: Math.round(_this.playerSprites[socket.id][1].body.rotation* 100) / 100},
-            pushedPlayer: pushedPlayer, pushingPlayer: pushingPlayer, pushed: _sendPush);
+            angle1: Math.round(_this.playerSprites[socket.id][1].body.rotation* 100) / 100,
+            pushedPlayer: pushedPlayer, pushingPlayer: pushingPlayer, pushed: _sendPush});
 //console.log(_this.host)
     _this.playerSprites[socket.id][0].withinPuck = false;
     _this.playerSprites[socket.id][1].withinPuck = false;
