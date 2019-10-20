@@ -1160,6 +1160,7 @@ else{
             this.isClosePuck = false;
 
         }
+
         for (var p = 0; p < 2; p++){
             if (checkOverlap(_this.playerSprites[socket.id][p].stick1.body, this.body)){
                 _this.playerSprites[socket.id][p].isOverlapped = true;
@@ -1169,7 +1170,6 @@ else{
                 console.log("playerPushed")
             }
         }
-
     }
     //else
         //this.isClosePuck = false;
