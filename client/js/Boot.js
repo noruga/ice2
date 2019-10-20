@@ -150,6 +150,10 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                 _this.playerSprites[data[i].id][1].target_rotation  = data[i].angle1;
                 velX = _this.target.target_x - _this.target.body.x;
                 velY = _this.target.target_y - _this.target.body.y;
+
+                if (data[id].pushed){
+                    _this.playerSprites[socket.id][data[id].pushedPlayer].velocity.x +=1400;
+                }
 /*
                 _this.playerSprites[data[i].id][0].repeatX.push(data[i].x); // Update target, not actual position, so we can interpolate
                 _this.playerSprites[data[i].id][0].repeatY.push(data[i].y);
@@ -207,6 +211,15 @@ setInterval(function () {
 }, emitRate);
 
 function preparePlayersDataToSend() {
+    if (_this.playerSprites[socket.id][0].pushingPlayer)
+        _this.pushingPlayer = 0;
+    
+    else
+        _this.pushingPlayer = 1;
+    if (_this.playerSprites[otherID][0].pushedPlayer)
+        _this.pushedPlayer = 0;
+    else
+        _this.pushedPlayer = 1;
 
     var dataToSend = [];
    /* dataToSend.push({id: socket.id, left: left, right: right, down: down, up: up, brake: brake, shoot: shoot, go_home: go_home, 
@@ -221,6 +234,11 @@ function preparePlayersDataToSend() {
 //console.log(_this.host)
     _this.playerSprites[socket.id][0].withinPuck = false;
     _this.playerSprites[socket.id][1].withinPuck = false;
+    _this.playerSprites[otherID][0].pushedPlayer = false;
+    _this.playerSprites[otherID][1].pushedPlayer = false;
+    _this.playerSprites[socket.id][0].pushingPlayer = false;
+    _this.playerSprites[socket.id][1].pushingPlayer = false;
+
     return dataToSend;
 }
 
