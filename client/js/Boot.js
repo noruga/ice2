@@ -27,6 +27,7 @@ var oppRepeat2Angle = [];
 //var textPlayers;
 var pushingPlayer = 1;
 var pushedPlayer = 1;
+var otherID;
 
 
 var puckD;
@@ -100,7 +101,7 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
         // The 'playerSprites' object exists.
         for(let i= 0; i<1; i+=1){
                     if(_this.playerSprites[data[i].id].host === data[i].host){
-
+                        otherID = data[i].id;
 
 
                             isHost = true;
@@ -243,7 +244,8 @@ socket.on('state_update', function (data) {
         // The 'playerSprites' object exists.
         for(let i= 0, len = data.length; i<2; i+=1){
 
-            if(_this.playerSprites[data[i].id]){
+            if(socket.id != [data[i].id]){
+                otherID = data[i].id;
           
 
             }

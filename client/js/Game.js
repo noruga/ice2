@@ -57,7 +57,7 @@ var tverrlegger1,
 
 //var playerPushed;
 var sendPush = false;
-var pushNumber = 0;
+//var pushNumber = 0;
 /*
 var left = false,
     right = false,
@@ -85,6 +85,9 @@ FunkyMultiplayerGame.Game.prototype = {
         this.puck;
         this.username1 = " ";
         this.username2 = " ";
+
+        //this.sendPUsh = false;
+        this.pushNumber = 0;
 
         //this.hostess = false;
 /*
@@ -1038,10 +1041,10 @@ else{
                 //goalFrameCounter = 1;
             }
             if (sendPush){
-                if (shotcount > 7)
-                    pushNumber = 7;
+                if (this.shotcount > 7)
+                    _this.pushNumber = 7;
                 else
-                    pushNumber = shotcount;
+                    _this.pushNumber = this.shotcount;
             }
 
 
