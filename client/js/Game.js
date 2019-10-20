@@ -53,6 +53,10 @@ var goalImage,
 var accelerateRemote = true;
 var tverrlegger1,
     tverrlegger2;
+
+
+var playerPushed;
+var sendPush = false;
 /*
 var left = false,
     right = false,
@@ -1145,6 +1149,13 @@ else{
         else
             this.isClosePuck = false;
 
+        }
+        for (var p = 0; p < 2; p++){
+            if (checkOverlap(_this.playerSprites[socket.id][p].stick1.body), this.body ){
+                playerPushed = this;
+                sendPush = true;
+                console.log("hhjerkewkwe");
+            }
         }
     }
     //else
