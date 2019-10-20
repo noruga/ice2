@@ -1151,7 +1151,7 @@ else{
 
         }
         for (var p = 0; p < 2; p++){
-            if (checkOverlap(_this.playerSprites[socket.id][p].stick1.body), this.body ){
+            if (checkOverlap(_this.playerSprites[socket.id][p].stick1, this)){
                 playerPushed = this;
                 sendPush = true;
                 console.log("hhjerkewkwe");
