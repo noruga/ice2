@@ -96,6 +96,7 @@ var divisor = 3;
 
 socket.on('player_update', function(data){
     //console.log("receiving client data from", data[0].id);
+                    otherID = data.id;
 if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
 
 
@@ -211,6 +212,7 @@ setInterval(function () {
 }, emitRate);
 
 function preparePlayersDataToSend() {
+for (let t = 0; t++; t < 2)
     if (_this.playerSprites[socket.id][0].pushingPlayer)
         _this.pushingPlayer = 0;
     
@@ -264,13 +266,12 @@ socket.on('state_update', function (data) {
         for(let i= 0, len = data.length; i<2; i+=1){
 
             if(_this.playerSprites[data[i].id]){
-          
+                
 
             }
                 
             // No property was found for the player that this socket ID belongs to. Add a sprite for them.
             else {
-                otherID = data.id;
 
                 if (host){
                     host = false;
