@@ -24,6 +24,10 @@ var puckRepeatX = [];
 var puckRepeatY = [];
 var oppRepeat1Angle = [];
 var oppRepeat2Angle = [];
+var pushedPlayer;
+var pushingPlayer;
+
+var otherID;
 //var textPlayers;
 
 
@@ -40,10 +44,8 @@ socket.on('connect', function(){
 /*
 socket.on('who_connected', function(data){
     var y = 150;
-
     var keys = Object.keys(data);
     //var values = Object.values(players);
-
     keys.forEach(function (key) {
         textPlayers = _this.add.text(margX+550*sizer, y, data[key], { font: '34px Arial', fill: '#cc0000' });
         y += 100;
@@ -96,6 +98,7 @@ var divisor = 3;
 socket.on('player_update', function(data){
     //console.log("receiving client data from", data[0].id);
 if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
+    otherID = data[i].id
 
         // The 'playerSprites' object exists.
         for(let i= 0; i<1; i+=1){
@@ -149,14 +152,12 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                 velX = _this.target.target_x - _this.target.body.x;
                 velY = _this.target.target_y - _this.target.body.y;
 /*
-
                 _this.playerSprites[data[i].id][0].repeatX.push(data[i].x); // Update target, not actual position, so we can interpolate
                 _this.playerSprites[data[i].id][0].repeatY.push(data[i].y);
                 _this.playerSprites[data[i].id][0].repeatAngle.push(data[i].angle);
                 _this.playerSprites[data[i].id][1].repeatX.push(data[i].x1); // Update target, not actual position, so we can interpolate
                 _this.playerSprites[data[i].id][1].repeatY.push(data[i].y1);
                 _this.playerSprites[data[i].id][1].repeatAngle.push(data[i].angle1);
-
                 if (_this.playerSprites[data[i].id][0].repeatX.length > 100){
                     _this.playerSprites[data[i].id][0].repeatX.shift(); // Update target, not actual position, so we can interpolate
                     _this.playerSprites[data[i].id][0].repeatY.shift();
@@ -164,7 +165,6 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                     _this.playerSprites[data[i].id][1].repeatX.shift(); // Update target, not actual position, so we can interpolate
                     _this.playerSprites[data[i].id][1].repeatY.shift();
                     _this.playerSprites[data[i].id][1].repeatAngle.shift();
-
                 }*/
         }
     }
@@ -206,15 +206,28 @@ setInterval(function () {
 
 }, emitRate);
 
-function preparePlayersDataToSend() {  
+function preparePlayersDataToSend() {
+
+
+    if (_this.playerSprites[socket.id][0].pushes)
+        pushingPlayer = 0;
+    else
+        pushingPlayer = 1;
+
+    if (_this.playerSprites[otherID][0].playerPushed)
+        pushedPlayer = 0;
+    else
+        pushedPlayer = 1; 
     var dataToSend = [];
    /* dataToSend.push({id: socket.id, left: left, right: right, down: down, up: up, brake: brake, shoot: shoot, go_home: go_home, 
         controlPlayer0: _this.playerSprites[socket.id][0].controlPlayer, puckX: _this.puck.x, puckY: _this.puck.y, host: host});*/
 //console.log("JOHOOO ", Math.abs(_this.playerSprites[socket.id][0].x));
     dataToSend.push({id: socket.id, x: Math.round(_this.playerSprites[socket.id][0].x), y: Math.round(_this.playerSprites[socket.id][0].y), 
             angle: Math.round(_this.playerSprites[socket.id][0].body.rotation* 100) / 100, puckX: Math.round(_this.puck.x), puckY: Math.round(_this.puck.y),
-            host: (_this.playerSprites[socket.id][0].withinPuck || _this.playerSprites[socket.id][1].withinPuck),
-            x1: Math.round(_this.playerSprites[socket.id][1].x), y1: Math.round(_this.playerSprites[socket.id][1].y), angle1: Math.round(_this.playerSprites[socket.id][1].body.rotation* 100) / 100});
+            //host: (_this.playerSprites[socket.id][0].withinPuck || _this.playerSprites[socket.id][1].withinPuck),
+            x1: Math.round(_this.playerSprites[socket.id][1].x), y1: Math.round(_this.playerSprites[socket.id][1].y),
+            angle1: Math.round(_this.playerSprites[socket.id][1].body.rotation* 100) / 100},
+            pushedPlayer: pushedPlayer, pushingPlayer: pushingPlayer);
 //console.log(_this.host)
     _this.playerSprites[socket.id][0].withinPuck = false;
     _this.playerSprites[socket.id][1].withinPuck = false;

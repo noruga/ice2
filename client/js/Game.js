@@ -55,8 +55,9 @@ var tverrlegger1,
     tverrlegger2;
 
 
-var playerPushed;
+//var playerPushed;
 var sendPush = false;
+var pushNumber = 0;
 /*
 var left = false,
     right = false,
@@ -731,6 +732,8 @@ Player = function (game, x, y, img, host, hostStick) {
     this.target_y = 0;
     this.target_rotation;
     this.shotcount = 0;
+    this.playerPushed = false;
+    this.pushes = false;
     // ####This stick is invisible, without collision###############
   if (hostStick){  
     this.stick            = game.add.sprite(margX+x, margY+ y, null);
@@ -750,7 +753,7 @@ Player = function (game, x, y, img, host, hostStick) {
   }
   
   else{
-    this.stick1 = (game.add.sprite(margX+x - 30, margY+y, 'stick'));
+    this.stick1 = (game.add.sprite(margX+x - 34, margY+y, 'stick'));
     this.stick            = game.add.sprite(margX+x, margY+y, null);
     
     _this.physics.p2.enable(this.stick1);
@@ -767,7 +770,7 @@ Player = function (game, x, y, img, host, hostStick) {
     else
         this.stick1.body.rotation = this.body.rotation - Math.PI / 2.7;
 
-        var constraint  = _this.physics.p2.createLockConstraint(this, this.stick, [-34, 0], 0);
+    var constraint  = _this.physics.p2.createLockConstraint(this, this.stick, [-34, 0], 0);
     var constraint1 = _this.physics.p2.createLockConstraint(this, this.stick1, [34, 0], 0);
   }
 
@@ -849,9 +852,10 @@ else{
         }
         for (var p = 0; p < 2; p++){
             if (checkOverlap(_this.playerSprites[socket.id][p].stick1, this)){
-                playerPushed = this;
+                this.playerPushed = true;
+                _this.playerSprites[socket.id][p].pushes = true;
                 //sendPush = true;
-                console.log("hhjerkewkwe", playerPushed);
+                console.log("hhjerkewkwe", this.playerPushed);
             }
         }
     }
@@ -1032,6 +1036,12 @@ else{
             if (checkOverlap(this.stick1, _this.puck)){
                 fx1.play();
                 //goalFrameCounter = 1;
+            }
+            if (sendPush){
+                if (shotcount > 7)
+                    pushNumber = 7;
+                else
+                    pushNumber = shotcount;
             }
 
 
