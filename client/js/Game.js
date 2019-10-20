@@ -824,6 +824,38 @@ else{
     }
 
 
+
+    if (this.hostStick === false){
+        if (this.target_y != 0){
+            this.body.y += (this.target_y - this.body.y) / this.divisor;
+            this.body.x += (this.target_x - this.body.x) / this.divisor;
+        let angle = this.target_rotation;
+        let dir = (angle - this.body.rotation) / (Math.PI * 2);
+        //dir = Math.round(dir);
+        dir = dir * Math.PI * 2;
+        this.body.rotation += dir / this.divisor;
+        this.stick1.body.rotation += dir / this.divisor;
+        this.stick1.body.x += (this.target_x - this.stick1.body.x) / this.divisor - Math.cos(this.stick1.body.rotation) * (10);
+        this.stick1.body.y += (this.target_y - this.stick1.body.y) / this.divisor - Math.sin(this.stick1.body.rotation) * (10);
+        this.divisior--;
+        if (this.divisior === 0)
+            this.divisor = 3;
+        if ((this.body.x - _this.puck.body.x)*(this.body.x - _this.puck.body.x) + (this.body.y - _this.puck.body.x)*(this.body.y - _this.puck.body.y) < 15*15){
+            this.isClosePuck = true;
+        }
+        else
+            this.isClosePuck = false;
+
+        }
+        for (var p = 0; p < 2; p++){
+            if (checkOverlap(_this.playerSprites[socket.id][p].stick1, this)){
+                playerPushed = this;
+                //sendPush = true;
+                console.log("hhjerkewkwe", playerPushed);
+            }
+        }
+    }
+
 if(!this.controlPlayer){
     this.body.velocity.x *= 0.99;
     this.body.velocity.y *= 0.99;
@@ -1128,36 +1160,6 @@ else{
 
     }
     
-    if (this.hostStick === false){
-        if (this.target_y != 0){
-            this.body.y += (this.target_y - this.body.y) / this.divisor;
-            this.body.x += (this.target_x - this.body.x) / this.divisor;
-        let angle = this.target_rotation;
-        let dir = (angle - this.body.rotation) / (Math.PI * 2);
-        //dir = Math.round(dir);
-        dir = dir * Math.PI * 2;
-        this.body.rotation += dir / this.divisor;
-        this.stick1.body.rotation += dir / this.divisor;
-        this.stick1.body.x += (this.target_x - this.stick1.body.x) / this.divisor - Math.cos(this.stick1.body.rotation) * (10);
-        this.stick1.body.y += (this.target_y - this.stick1.body.y) / this.divisor - Math.sin(this.stick1.body.rotation) * (10);
-        this.divisior--;
-        if (this.divisior === 0)
-            this.divisor = 3;
-        if ((this.body.x - _this.puck.body.x)*(this.body.x - _this.puck.body.x) + (this.body.y - _this.puck.body.x)*(this.body.y - _this.puck.body.y) < 15*15){
-            this.isClosePuck = true;
-        }
-        else
-            this.isClosePuck = false;
-
-        }
-        for (var p = 0; p < 2; p++){
-            if (checkOverlap(_this.playerSprites[socket.id][p].stick1, this)){
-                playerPushed = this;
-                sendPush = true;
-                console.log("hhjerkewkwe");
-            }
-        }
-    }
     //else
         //this.isClosePuck = false;
 }
