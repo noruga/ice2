@@ -237,8 +237,7 @@ for (let t = 0; t++; t < 2)
 //console.log(_this.host)
     _this.playerSprites[socket.id][0].withinPuck = false;
     _this.playerSprites[socket.id][1].withinPuck = false;
-    _this.playerSprites[otherID][0].pushedPlayer = false;
-    _this.playerSprites[otherID][1].pushedPlayer = false;
+
     _this.playerSprites[socket.id][0].pushingPlayer = false;
     _this.playerSprites[socket.id][1].pushingPlayer = false;
 
