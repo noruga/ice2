@@ -53,13 +53,6 @@ var goalImage,
 var accelerateRemote = true;
 var tverrlegger1,
     tverrlegger2;
-
-var gameTime = 0;
-const gameDuration = 150;
-
-var playerPushed;
-var sendPush = false;
-
 /*
 var left = false,
     right = false,
@@ -141,7 +134,7 @@ FunkyMultiplayerGame.Game.prototype = {
 
         scoreText = _this.add.text(margX+423*sizer, 0, score1 + " : " + score2, { font: '34px Arial', fill: '#0066cc' });
         scoreText2 = _this.add.text(margX+200*sizer, margY+300, "" ,{ font: '100px Arial', fill: '#bbf' });
-        scoreText1 = _this.add.text(margX+1, 0, "Time : " + gameTime + this.game.time.events.duration/60, { font: '34px Arial', fill: '#0066cc' });
+        scoreText1 = _this.add.text(margX+1, 0, "Time : " + this.game.time.events.duration/60, { font: '34px Arial', fill: '#0066cc' });
         scoreText3 = _this.add.text(margX+400*sizer, margY+500, " " );
 
         repeatText = _this.add.text(margX+800*sizer, margY+500, " ", { font: '34px Arial', fill: '#0066cc' });
@@ -331,10 +324,7 @@ FunkyMultiplayerGame.Game.prototype = {
                 waitTwoSec = false;                     //the two secs are over
                 waitSecs = 0;
                 scoreText2.text = (margX+600*sizer, margY+400, " ");      //Erases the 'GOAL!!!'
-                scoreText3.text = (margX+600*sizer, margY+400, " ");
-                gameTime += gameDuration - Math.floor(this.game.time.events.duration/1000) ;
-                this.game.time.events.resume()
-                //_this.state.start("Game");
+                scoreText3.text = (margX+600*sizer, margY+400, " "); 
 
               //  scoreText3.text = (600, 400, " ");  
             }
@@ -1007,10 +997,6 @@ else{
                 fx1.play();
                 //goalFrameCounter = 1;
             }
-            if (checkOverlap(this.stick1, _this.puck)){
-                fx1.play();
-                //goalFrameCounter = 1;
-            }
 
 
             if (_this.input.keyboard.isDown(Phaser.Keyboard.A)|| cursors.left.isDown){
@@ -1160,16 +1146,6 @@ else{
             this.isClosePuck = false;
 
         }
-
-        for (var p = 0; p < 2; p++){
-            if (checkOverlap(_this.playerSprites[socket.id][p].stick1.body, this.body)){
-                _this.playerSprites[socket.id][p].isOverlapped = true;
-                playerPushed = this;
-                sendPush = true;
-                console.log(playerPushed)
-                console.log("playerPushed")
-            }
-        }
     }
     //else
         //this.isClosePuck = false;
@@ -1266,7 +1242,6 @@ function updateScore1(puckD)
     scoreText3.text = (margX+700*sizer, margY+500, puckD + " km/h");
     }
     fx.play();
-    this.game.time.events.pause()
     //sound.play();
 }
 
@@ -1281,7 +1256,6 @@ function updateScore2(puckD)
         scoreText3.text = (margX+700*sizer, margY+500, puckD + " km/h");
     }
     fx.play();
-    this.game.time.events.pause()
 }
 
 function finalScore(){
