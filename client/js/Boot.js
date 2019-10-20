@@ -95,8 +95,8 @@ var emitRate = 1000/180;
 var divisor = 3;
 
 socket.on('player_update', function(data){
+    otherID = data[i].id;
     //console.log("receiving client data from", data[0].id);
-    otherID = data[i].id
 if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
 
 
