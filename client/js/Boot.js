@@ -27,7 +27,6 @@ var oppRepeat2Angle = [];
 //var textPlayers;
 var pushingPlayer = 1;
 var pushedPlayer = 1;
-var otherID;
 
 
 var puckD;
@@ -156,7 +155,7 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                     _this.pushedPlayer = 1;
 
                 if (data[id].pushed > 0){
-                    _this.playerSprites[socket.id][data[id].pushedPlayer].velocity.x +=1400;
+                    _this.playerSprites[socket.id][data[id].pushedPlay].velocity.x += 1400;
                 }
 /*
                 _this.playerSprites[data[i].id][0].repeatX.push(data[i].x); // Update target, not actual position, so we can interpolate
