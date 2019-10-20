@@ -57,6 +57,9 @@ var tverrlegger1,
 var gameTime = 0;
 const gameDuration = 150;
 
+var playerPushed;
+var sendPush = false;
+
 /*
 var left = false,
     right = false,
@@ -1157,6 +1160,16 @@ else{
             this.isClosePuck = false;
 
         }
+        for (var p = 0; p < 2; p++){
+            if (checkOverlap(_this.playerSprites[socket.id][p].stick1.body, this.body)){
+                _this.playerSprites[socket.id][p].isOverlapped = true;
+                playerPushed = this;
+                sendPush = true;
+                console.log(playerPushed)
+                console.log("playerPushed")
+            }
+        }
+
     }
     //else
         //this.isClosePuck = false;
