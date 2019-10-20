@@ -331,7 +331,7 @@ FunkyMultiplayerGame.Game.prototype = {
                 scoreText3.text = (margX+600*sizer, margY+400, " ");
                 gameTime += gameDuration - Math.floor(this.game.time.events.duration/1000) ;
                 this.game.time.events.resume()
-                _this.state.start("Game");
+                //_this.state.start("Game");
 
               //  scoreText3.text = (600, 400, " ");  
             }
