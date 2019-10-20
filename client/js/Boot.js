@@ -96,7 +96,7 @@ var divisor = 3;
 
 socket.on('player_update', function(data){
     //console.log("receiving client data from", data[0].id);
-                    otherID = data.id;
+    otherID = data[i].id
 if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
 
 
