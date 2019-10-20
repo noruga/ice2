@@ -215,7 +215,7 @@ function preparePlayersDataToSend() {
     dataToSend.push({id: socket.id, x: Math.round(_this.playerSprites[socket.id][0].x), y: Math.round(_this.playerSprites[socket.id][0].y), 
             angle: Math.round(_this.playerSprites[socket.id][0].body.rotation* 100) / 100, puckX: Math.round(_this.puck.x), puckY: Math.round(_this.puck.y),
             host: (_this.playerSprites[socket.id][0].withinPuck || _this.playerSprites[socket.id][1].withinPuck), 
-            pushedPlay: _this.pushedPlayer, pushingPlay: _this.pushingPlayer, //pushed: _this.pushNumber,
+            pushedPlay: _this.pushedPlayer, pushingPlay: _this.pushingPlayer, pushed: _this.pushNumber,
             x1: Math.round(_this.playerSprites[socket.id][1].x), y1: Math.round(_this.playerSprites[socket.id][1].y), 
             angle1: Math.round(_this.playerSprites[socket.id][1].body.rotation* 100) / 100});
 //console.log(_this.host)

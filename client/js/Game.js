@@ -56,7 +56,7 @@ var tverrlegger1,
 
 
 //var playerPushed;
-var sendPush = false;
+//var sendPush = false;
 //var pushNumber = 0;
 /*
 var left = false,
@@ -285,7 +285,7 @@ FunkyMultiplayerGame.Game.prototype = {
 
 
         tverrlegger1 = this.add.sprite(75*sizer +margX, 244 + margY, 'tverrlegger');
-        tverrlegger2 = this.add.sprite(823*sizer + margX, 244 + margY, 'tverrlegger');
+        tverrlegger2 = this.add.sprite(803*sizer + margX, 244 + margY, 'tverrlegger');
 
         this.physics.p2.updateBoundsCollisionGroup();
         this.game.stage.disableVisibilityChange = true;
