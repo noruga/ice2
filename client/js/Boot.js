@@ -156,7 +156,7 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
 
                 if (data[i].pushed > 0){
                     console.log(data[i].pushed, "push number")
-                    _this.playerSprites[socket.id][0].velocity.x += 1400;
+                    _this.playerSprites[socket.id][0].body.velocity.x += 140;
                 }
 /*
                 _this.playerSprites[data[i].id][0].repeatX.push(data[i].x); // Update target, not actual position, so we can interpolate
@@ -242,7 +242,7 @@ for (let t = 0; t++; t < 2)
     _this.playerSprites[socket.id][1].pushingPlayer = false;
 
     //if (_this.pushNumber > 0)
-        console.log(Math.max(_this.playerSprites[socket.id][0].pushNumber, _this.playerSprites[socket.id][1].pushNumber), "jatatee")
+        //console.log(Math.max(_this.playerSprites[socket.id][0].pushNumber, _this.playerSprites[socket.id][1].pushNumber), "jatatee")
 
     return dataToSend;
 }
