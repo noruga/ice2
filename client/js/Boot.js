@@ -155,7 +155,8 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                     _this.pushedPlayer = 1;*/
 
                 if (data[i].pushed > 0){
-                    _this.playerSprites[socket.id][data[i].id].velocity.x += 1400;
+                    console.log(data[i].pushed, "push number")
+                    _this.playerSprites[socket.id].velocity.x += 1400;
                 }
 /*
                 _this.playerSprites[data[i].id][0].repeatX.push(data[i].x); // Update target, not actual position, so we can interpolate
