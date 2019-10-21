@@ -152,7 +152,8 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                 
                 
                 if (data[i].pushed !== 0){
-                    _this.playerSprites[socket.id][data[i].pushedPlay].body.velocity.x += Math.cos(_this.playerSprites[data[i].id][data[i].pushingPlayer].target_rotation) * 7 * data[i].pushed ;
+                    _this.playerSprites[socket.id][data[i].pushedPlay].body.velocity.x += Math.cos(_this.playerSprites[data[i].id][data[i].pushingPlay].target_rotation) * 7 * data[i].pushed ;
+                    _this.playerSprites[socket.id][data[i].pushedPlay].body.velocity.y += Math.sin(_this.playerSprites[data[i].id][data[i].pushingPlay].target_rotation) * 7 * data[i].pushed ;
                 }
 /*
                 _this.playerSprites[data[i].id][0].repeatX.push(data[i].x); // Update target, not actual position, so we can interpolate
