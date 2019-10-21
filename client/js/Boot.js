@@ -27,6 +27,7 @@ var oppRepeat2Angle = [];
 //var textPlayers;
 var pushingPlayer = 1;
 var pushedPlayer = 1;
+var pushed = 0;
 
 
 var puckD;
@@ -149,11 +150,12 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                 _this.playerSprites[data[i].id][1].target_rotation  = data[i].angle1;
                 velX = _this.target.target_x - _this.target.body.x;
                 velY = _this.target.target_y - _this.target.body.y;
+                pushed                                              = data[i].pushed
                 
-                
-                if (data[i].pushed !== 0){
-                    _this.playerSprites[socket.id][data[i].pushedPlay].body.velocity.x += Math.cos(_this.playerSprites[data[i].id][data[i].pushingPlay].target_rotation) * 7 * data[i].pushed ;
-                    _this.playerSprites[socket.id][data[i].pushedPlay].body.velocity.y += Math.sin(_this.playerSprites[data[i].id][data[i].pushingPlay].target_rotation) * 7 * data[i].pushed ;
+                if (pushed !== 0){
+                    _this.playerSprites[socket.id][data[i].pushedPlay].body.velocity.x += Math.cos(_this.playerSprites[data[i].id][data[i].pushingPlay].target_rotation) * 17 * data[i].pushed ;
+                    _this.playerSprites[socket.id][data[i].pushedPlay].body.velocity.y += Math.sin(_this.playerSprites[data[i].id][data[i].pushingPlay].target_rotation) * 17 * data[i].pushed ;
+                    pushed = 0;
                 }
 /*
                 _this.playerSprites[data[i].id][0].repeatX.push(data[i].x); // Update target, not actual position, so we can interpolate
