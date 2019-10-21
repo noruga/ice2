@@ -555,7 +555,7 @@ Puck = function(game, x, y, authorative){
     
     var bmd1 = game.add.bitmapData(15, 15, 'rgb(0,200,0)');
     
-    bmd1.circle(7, 7, 6, 0);
+    bmd1.circle(7, 7, 6.5, 0);
 
         Phaser.Sprite.call(this, game, margX+x, margY+y, bmd1);
 
@@ -563,8 +563,8 @@ Puck = function(game, x, y, authorative){
 
     game.physics.p2.enable(this);
     this.authorative = authorative;
-    this.body.setCircle(7);
-    this.body.mass = 0.00001;
+    //this.body.setCircle(7);
+    this.body.mass = 0.001;
     this.divisor = 3;
         //puck.visible = false;
         game.physics.enable(this, Phaser.Physics.ARCADE);
@@ -715,6 +715,8 @@ Player = function (game, x, y, img, host, hostStick) {
     this.repeatX = [];
     this.repeatY = [];
     this.repeatAngle = [];
+    //this.pushingPlayer = false;
+
 
 
 
@@ -738,8 +740,8 @@ Player = function (game, x, y, img, host, hostStick) {
     this.target_y = 0;
     this.target_rotation;
     this.shotcount = 0;
-    this.playerPushed = false;
-    this.pushes = false;
+    //this.playerPushed = false;
+    this.pushedPlayer = false;
     // ####This stick is invisible, without collision###############
   if (hostStick){  
     this.stick            = game.add.sprite(margX+x, margY+ y, null);
@@ -858,8 +860,8 @@ else{
         }
         for (var p = 0; p < 2; p++){
             if (checkOverlap(_this.playerSprites[socket.id][p].stick1, this)){
-                this.playerPushed = true;
-                _this.playerSprites[socket.id][p].pushes = true;
+                this.pushedPlayer = true;
+                //_this.playerSprites[socket.id][p].pushes = true;
                 sendPush = true;
                 //console.log("hhjerkewkwe", this.playerPushed);
             }

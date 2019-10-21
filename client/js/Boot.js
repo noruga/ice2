@@ -150,13 +150,9 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                 velX = _this.target.target_x - _this.target.body.x;
                 velY = _this.target.target_y - _this.target.body.y;
                 
-                if (_this.playerSprites[data[i].id][0].pushedPlayer)
-                    _this.pushedPlayer = 0;
-                else
-                    _this.pushedPlayer = 1;
-
-                if (data[i].pushed > 0){
-                    _this.playerSprites[socket.id][data[i].pushedPlay].velocity.x += 1400;
+                
+                if (data[i].pushed !== 0){
+                    _this.playerSprites[socket.id][data[i].pushedPlay].body.velocity.x += Math.cos(_this.playerSprites[data[i].id][data[i].pushingPlayer].target_rotation) * 7 * data[i].pushed ;
                 }
 /*
                 _this.playerSprites[data[i].id][0].repeatX.push(data[i].x); // Update target, not actual position, so we can interpolate
