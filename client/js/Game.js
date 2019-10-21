@@ -51,7 +51,7 @@ var goalImage,
     goalImage2;
 
 var accelerateRemote = true;
-var tverrlegger1,
+/*var tverrlegger1,
     tverrlegger2;
 
 
@@ -86,8 +86,11 @@ FunkyMultiplayerGame.Game.prototype = {
         this.username1 = " ";
         this.username2 = " ";
 
-        this.sendPUsh = false;
-        this.pushNumber = 0;
+        this.sendPush;
+        this.pushNumber;
+
+        this.tverrlegger1;
+        this.tverrlegger2;
 
         //this.hostess = false;
 /*
@@ -284,8 +287,7 @@ FunkyMultiplayerGame.Game.prototype = {
         goal6.body.static = true;
 
 
-        tverrlegger1 = this.add.sprite(75*sizer +margX, 244 + margY, 'tverrlegger');
-        tverrlegger2 = this.add.sprite(803*sizer + margX, 244 + margY, 'tverrlegger');
+
 
         this.physics.p2.updateBoundsCollisionGroup();
         this.game.stage.disableVisibilityChange = true;
