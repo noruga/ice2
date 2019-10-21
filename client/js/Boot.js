@@ -241,8 +241,8 @@ for (let t = 0; t++; t < 2)
     _this.playerSprites[socket.id][0].pushingPlayer = false;
     _this.playerSprites[socket.id][1].pushingPlayer = false;
 
-    if (_this.pushNumber > 0)
-        console.log(_this.pushNumber, "jatatee")
+    //if (_this.pushNumber > 0)
+        console.log(Math.max(_this.playerSprites[socket.id][0].pushNumber, _this.playerSprites[socket.id][1].pushNumber), "jatatee")
 
     return dataToSend;
 }

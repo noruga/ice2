@@ -1070,7 +1070,7 @@ else{
         }       
     }
     else if (this.shotcount >= 0)
-        this.shotcount -=3;
+        this.shotcount -=1;
 
 /*
 
