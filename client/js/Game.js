@@ -87,7 +87,6 @@ FunkyMultiplayerGame.Game.prototype = {
         this.username1 = " ";
         this.username2 = " ";
 
-        this.pushNumber;
 
         this.tverrlegger1;
         this.tverrlegger2;
@@ -730,6 +729,8 @@ Player = function (game, x, y, img, host, hostStick) {
      this.hostess = host;
      this.m_count = 0;
      this.hostStick = hostStick;
+
+    this.pushNumber = 0;
 
     this.controlPlayer    = true;
     this.accelerateRemote = false;
