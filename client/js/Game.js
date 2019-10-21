@@ -49,7 +49,7 @@ var cursors;
 var repeatText;
 var goalImage,
     goalImage2;
-
+var sendPush = false;
 var accelerateRemote = true;
 var pushNumber = 0;
 /*var tverrlegger1,
@@ -87,7 +87,6 @@ FunkyMultiplayerGame.Game.prototype = {
         this.username1 = " ";
         this.username2 = " ";
 
-        this.sendPush;
         this.pushNumber;
 
         this.tverrlegger1;
@@ -861,7 +860,7 @@ else{
                 this.playerPushed = true;
                 _this.playerSprites[socket.id][p].pushes = true;
                 sendPush = true;
-                console.log("hhjerkewkwe", this.playerPushed);
+                //console.log("hhjerkewkwe", this.playerPushed);
             }
         }
     }
@@ -1043,7 +1042,8 @@ else{
                 fx1.play();
                 //goalFrameCounter = 1;
             }
-            if (_this.sendPush){
+            if (sendPush){
+                sendPush = false;
                 if (this.shotcount > 7)
                     this.pushNumber = 7;
                 else
