@@ -25,7 +25,6 @@ var puckRepeatY = [];
 var oppRepeat1Angle = [];
 var oppRepeat2Angle = [];
 var pushedPlayer = 1;
-var pushingPlayer = 1;
 //var textPlayers;
 /*var pushingPlayer = 1;
 var pushedPlayer = 1;
@@ -154,11 +153,11 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                 /*if (_this.playerSprites[data[i].id][0].pushedPlay)
                     _this.pushedPlayer = 0;
                 else
-    /*                _this.pushedPlayer = 1;*/
-/*    if (data[i].pushed > 0){
+                    _this.pushedPlayer = 1;*/
+
+                if (data[i].pushed > 0){
                     console.log(data[i].pushed, "push number")
-                    _this.playerSprites[socket.id][pushedPlay].body.velocity.x += Math.cos(_this.playerSprites[data[i].id][data[i].pushingPlay].target_rotation) * data[i].pushed*10;
-                    _this.playerSprites[socket.id][pushedPlay].body.velocity.y += Math.sin(_this.playerSprites[data[i].id][data[i].pushingPlay].target_rotation) * data[i].pushed*10;
+                    _this.playerSprites[socket.id][0].body.velocity.x += 140;
                 }
 /*
                 _this.playerSprites[data[i].id][0].repeatX.push(data[i].x); // Update target, not actual position, so we can interpolate
@@ -216,7 +215,7 @@ setInterval(function () {
 
 }, emitRate);
 
-function preparePlayersDataToSend() {/*
+function preparePlayersDataToSend() {
     for (var id in _this.playerSprites) {
         if (id !== socket.id){
             if (_this.playerSprites[id][0].pushedPlayer)
@@ -226,12 +225,9 @@ function preparePlayersDataToSend() {/*
         }
         else{
             if (_this.playerSprites[id][0].pushingPlayer) 
-                pushingPlayer = 0;
-            else
-                pushingPlayer = 1;
         }
     }
-*/
+
     var dataToSend = [];
    /* dataToSend.push({id: socket.id, left: left, right: right, down: down, up: up, brake: brake, shoot: shoot, go_home: go_home, 
         controlPlayer0: _this.playerSprites[socket.id][0].controlPlayer, puckX: _this.puck.x, puckY: _this.puck.y, host: host});*/
