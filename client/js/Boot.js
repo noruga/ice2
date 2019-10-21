@@ -24,8 +24,10 @@ var puckRepeatX = [];
 var puckRepeatY = [];
 var oppRepeat1Angle = [];
 var oppRepeat2Angle = [];
-//var textPlayers;
+var pushedPlayer = 1;
 var pushingPlayer = 1;
+//var textPlayers;
+/*var pushingPlayer = 1;
 var pushedPlayer = 1;
 
 
@@ -156,7 +158,8 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
 
                 if (data[i].pushed > 0){
                     console.log(data[i].pushed, "push number")
-                    _this.playerSprites[socket.id][0].body.velocity.x += 140;
+                    _this.playerSprites[socket.id][pushedPlay].body.velocity.x += Math.cos(_this.playerSprites[data[i].id][data[i].pushingPlay].target_rotation) * data[i].pushed*10;
+                    _this.playerSprites[socket.id][pushedPlay].body.velocity.y += Math.sin(_this.playerSprites[data[i].id][data[i].pushingPlay].target_rotation) * data[i].pushed*10;
                 }
 /*
                 _this.playerSprites[data[i].id][0].repeatX.push(data[i].x); // Update target, not actual position, so we can interpolate
@@ -215,13 +218,20 @@ setInterval(function () {
 }, emitRate);
 
 function preparePlayersDataToSend() {
-for (let t = 0; t++; t < 2)
-    if (_this.playerSprites[socket.id][0].pushingPlayer)
-        _this.pushingPlayer = 0;
-    
-    else
-        _this.pushingPlayer = 1;
-
+    for (var id in _this.playerSprites) {
+        if (id !== socket.id){
+            if (_this.playerSprites[id][0].pushedPlayer)
+                pushedPlayer = 0;
+            else
+                pushedPlayer = 1;
+        }
+        else{
+            if (_this.playerSprites[id][0].pushingPlayer) 
+                pushingPlayer = 0;
+            else
+                pushingPlayer = 1;
+        }
+    }
 
     var dataToSend = [];
    /* dataToSend.push({id: socket.id, left: left, right: right, down: down, up: up, brake: brake, shoot: shoot, go_home: go_home, 
@@ -230,7 +240,7 @@ for (let t = 0; t++; t < 2)
     dataToSend.push({id: socket.id, x: Math.round(_this.playerSprites[socket.id][0].x), y: Math.round(_this.playerSprites[socket.id][0].y), 
             angle: Math.round(_this.playerSprites[socket.id][0].body.rotation* 100) / 100, puckX: Math.round(_this.puck.x), puckY: Math.round(_this.puck.y),
             host: (_this.playerSprites[socket.id][0].withinPuck || _this.playerSprites[socket.id][1].withinPuck), 
-            pushedPlay: _this.pushedPlayer, pushingPlay: _this.pushingPlayer,
+            pushedPlay: pushedPlayer, pushingPlay: pushingPlayer,
             pushed: Math.max(_this.playerSprites[socket.id][0].pushNumber, _this.playerSprites[socket.id][1].pushNumber),
             x1: Math.round(_this.playerSprites[socket.id][1].x), y1: Math.round(_this.playerSprites[socket.id][1].y), 
             angle1: Math.round(_this.playerSprites[socket.id][1].body.rotation* 100) / 100});
@@ -282,6 +292,7 @@ socket.on('state_update', function (data) {
                     _this.playerSprites[data[i].id] = {};
                     _this.playerSprites[data[i].id][0] =  new Player(_this, 150*sizer, 300, 'ball1m', true, (data[i].id === this.id));//myXor(_this.host, data[i].host));
                     _this.playerSprites[data[i].id][1] =  new Player(_this, 350*sizer, 300, 'ball1m', true, (data[i].id === this.id));
+                    _this.playerSprites[data[i].id][0].playerNumber = 0;
                     //_this.playerSprites[data[i].id].host = true;
 
                     _this.playerSprites[data[i].id][0].controlPlayer = false;
@@ -307,6 +318,7 @@ socket.on('state_update', function (data) {
                     //_this.playerSprites[data[i].id].puckY = 300;
                     _this.playerSprites[data[i].id][0] =  new Player(_this, 750*sizer, 300, 'ball', false, (data[i].id === this.id));
                     _this.playerSprites[data[i].id][1] =  new Player(_this, 550*sizer, 300, 'ball', false, (data[i].id === this.id));
+                    _this.playerSprites[data[i].id][0].playerNumber = 0;
                     //_this.playerSprites[data[i].id][0].host = data[i].id === this.id;
                     //_this.playerSprites[data[i].id][1].host = data[i].id === this.id;
 
