@@ -860,7 +860,7 @@ else{
             if (checkOverlap(_this.playerSprites[socket.id][p].stick1, this)){
                 this.playerPushed = true;
                 _this.playerSprites[socket.id][p].pushes = true;
-                //sendPush = true;
+                sendPush = true;
                 console.log("hhjerkewkwe", this.playerPushed);
             }
         }
@@ -1045,9 +1045,9 @@ else{
             }
             if (_this.sendPush){
                 if (this.shotcount > 7)
-                    pushNumber = 7;
+                    this.pushNumber = 7;
                 else
-                    pushNumber = this.shotcount;
+                    this.pushNumber = this.shotcount;
             }
 
 
