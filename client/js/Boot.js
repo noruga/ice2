@@ -240,6 +240,9 @@ for (let t = 0; t++; t < 2)
     _this.playerSprites[socket.id][0].pushingPlayer = false;
     _this.playerSprites[socket.id][1].pushingPlayer = false;
 
+    if (_this.pushNumber > 0)
+        console.log(_this.pushNumber, "jatatee")
+
     return dataToSend;
 }
 
@@ -313,6 +316,8 @@ socket.on('state_update', function (data) {
                     var nameText2 = _this.add.text(margX+550*sizer, 0, _this.playerSprites[data[i].id].username, { font: '34px Arial', fill: '#cc0000' });
                     _this.tverrlegger1 = this.add.sprite(75*sizer +margX, 244 + margY, 'tverrlegger');
                     _this.tverrlegger2 = this.add.sprite(823*sizer + margX, 244 + margY, 'tverrlegger');
+                    //_this.pushNumber = 0;
+                    //_this.sendPush = false;
                 }
             }
            // console.log(data[i].list[0])

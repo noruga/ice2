@@ -51,6 +51,7 @@ var goalImage,
     goalImage2;
 
 var accelerateRemote = true;
+var pushNumber = 0;
 /*var tverrlegger1,
     tverrlegger2;
 
@@ -1044,9 +1045,9 @@ else{
             }
             if (_this.sendPush){
                 if (this.shotcount > 7)
-                    _this.pushNumber = 7;
+                    pushNumber = 7;
                 else
-                    _this.pushNumber = this.shotcount;
+                    pushNumber = this.shotcount;
             }
 
 
