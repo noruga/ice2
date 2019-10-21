@@ -149,14 +149,13 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                 _this.playerSprites[data[i].id][1].target_rotation  = data[i].angle1;
                 velX = _this.target.target_x - _this.target.body.x;
                 velY = _this.target.target_y - _this.target.body.y;
-                /*if (_this.playerSprites[data[i].id][0].pushedPlay)
+                if (_this.playerSprites[data[i].id][0].pushedPlayer)
                     _this.pushedPlayer = 0;
                 else
-                    _this.pushedPlayer = 1;*/
+                    _this.pushedPlayer = 1;
 
                 if (data[i].pushed > 0){
-                    console.log(data[i].pushed, "push number")
-                    _this.playerSprites[socket.id][0].body.velocity.x += 14;
+                    _this.playerSprites[socket.id][data[i].pushedPlay].velocity.x += 1400;
                 }
 /*
                 _this.playerSprites[data[i].id][0].repeatX.push(data[i].x); // Update target, not actual position, so we can interpolate
@@ -215,12 +214,20 @@ setInterval(function () {
 }, emitRate);
 
 function preparePlayersDataToSend() {
-for (let t = 0; t++; t < 2)
-    if (_this.playerSprites[socket.id][0].pushingPlayer)
-        _this.pushingPlayer = 0;
-    
-    else
-        _this.pushingPlayer = 1;
+    for (var id in _this.playerSprites) {
+        if (id !== socket.id){
+            if (_this.playerSprites[id][1].pushedPlayer)
+                pushedPlayer = 1;
+            else
+                pushedPlayer = 0;
+        }
+        else{
+            if (_this.playerSprites[id][1].pushingPlayer)
+                pushingPlayer = 1;
+            else
+                pushingPlayer = 0;
+        }
+    }
 
 
     var dataToSend = [];
@@ -230,8 +237,7 @@ for (let t = 0; t++; t < 2)
     dataToSend.push({id: socket.id, x: Math.round(_this.playerSprites[socket.id][0].x), y: Math.round(_this.playerSprites[socket.id][0].y), 
             angle: Math.round(_this.playerSprites[socket.id][0].body.rotation* 100) / 100, puckX: Math.round(_this.puck.x), puckY: Math.round(_this.puck.y),
             host: (_this.playerSprites[socket.id][0].withinPuck || _this.playerSprites[socket.id][1].withinPuck), 
-            pushedPlay: _this.pushedPlayer, pushingPlay: _this.pushingPlayer,
-            pushed: Math.max(_this.playerSprites[socket.id][0].pushNumber, _this.playerSprites[socket.id][1].pushNumber),
+            pushedPlay: pushedPlayer, pushingPlay: pushingPlayer, pushed: _this.pushNumber,
             x1: Math.round(_this.playerSprites[socket.id][1].x), y1: Math.round(_this.playerSprites[socket.id][1].y), 
             angle1: Math.round(_this.playerSprites[socket.id][1].body.rotation* 100) / 100});
 //console.log(_this.host)
@@ -240,9 +246,6 @@ for (let t = 0; t++; t < 2)
 
     _this.playerSprites[socket.id][0].pushingPlayer = false;
     _this.playerSprites[socket.id][1].pushingPlayer = false;
-
-    //if (_this.pushNumber > 0)
-        //console.log(Math.max(_this.playerSprites[socket.id][0].pushNumber, _this.playerSprites[socket.id][1].pushNumber), "jatatee")
 
     return dataToSend;
 }
@@ -316,9 +319,7 @@ socket.on('state_update', function (data) {
                     _this.playerSprites[data[i].id].username = data[i].username;
                     var nameText2 = _this.add.text(margX+550*sizer, 0, _this.playerSprites[data[i].id].username, { font: '34px Arial', fill: '#cc0000' });
                     _this.tverrlegger1 = this.add.sprite(75*sizer +margX, 244 + margY, 'tverrlegger');
-                    _this.tverrlegger2 = this.add.sprite(823*sizer + margX, 244 + margY, 'tverrlegger');
-                    //_this.pushNumber = 0;
-                    //_this.sendPush = false;
+                    _this.tverrlegger2 = this.add.sprite(803*sizer + margX, 244 + margY, 'tverrlegger');
                 }
             }
            // console.log(data[i].list[0])
