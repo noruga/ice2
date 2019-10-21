@@ -52,8 +52,6 @@ var goalImage,
 var sendPush = false;
 var accelerateRemote = true;
 var pushNumber = 0;
-
-
 /*var tverrlegger1,
     tverrlegger2;
 
@@ -565,8 +563,8 @@ Puck = function(game, x, y, authorative){
 
     game.physics.p2.enable(this);
     this.authorative = authorative;
-    this.body.setCircle(8);
-    this.body.mass = 0.001;
+    this.body.setCircle(7);
+    this.body.mass = 0.00001;
     this.divisor = 3;
         //puck.visible = false;
         game.physics.enable(this, Phaser.Physics.ARCADE);
@@ -733,7 +731,6 @@ Player = function (game, x, y, img, host, hostStick) {
      this.hostStick = hostStick;
 
     this.pushNumber = 0;
-    this.playerNumber = 1;
 
     this.controlPlayer    = true;
     this.accelerateRemote = false;
@@ -1022,7 +1019,7 @@ else{
         if (distanceSq(_this.puck, this.stick1) < (23*23)){
             for (var id in _this.playerSprites) {
                 if (id !== socket.id){
-                   if (!(checkOverlap(_this.playerSprites[id][0], _this.puck) || checkOverlap(_this.playerSprites[id][1], _this.puck)))
+                   if (!(checkOverlap(_this.playerSprites[id][0], _this.puck) || checkOverlap(_this.playerSprites[id][0], _this.puck)))
                         moveToObject(_this.puck, this.stick1, 100);
                     //else
                     //    this.isDownV = false;
@@ -1050,14 +1047,14 @@ else{
 
             if (_this.input.keyboard.isDown(Phaser.Keyboard.A)|| cursors.left.isDown){
                 this.body.rotateLeft(1200);
-
+/*
                 if (sendPush){
                     sendPush = false;
                     if (this.shotcount > 7)
                         this.pushNumber = -7;
                     else
                         this.pushNumber = this.shotcount * (-1);
-                }
+                }*/
             }
             else{
                 this.body.rotateRight(1200);
