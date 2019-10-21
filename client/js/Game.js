@@ -865,6 +865,8 @@ else{
                 sendPush = true;
                 //console.log("hhjerkewkwe", this.playerPushed);
             }
+            else
+                this.pushedPlayer = false;
         }
     }
 
