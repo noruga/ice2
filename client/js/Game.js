@@ -1047,14 +1047,14 @@ else{
 
             if (_this.input.keyboard.isDown(Phaser.Keyboard.A)|| cursors.left.isDown){
                 this.body.rotateLeft(1200);
-/*
+
                 if (sendPush){
                     sendPush = false;
                     if (this.shotcount > 7)
                         this.pushNumber = -7;
                     else
                         this.pushNumber = this.shotcount * (-1);
-                }*/
+                }
             }
             else{
                 this.body.rotateRight(1200);
