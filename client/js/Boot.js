@@ -153,8 +153,8 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                 pushed                                              = data[i].pushed
                 
                 if (pushed !== 0){
-                    _this.playerSprites[socket.id][data[i].pushedPlay].body.velocity.x += Math.cos(_this.playerSprites[data[i].id][data[i].pushingPlay].target_rotation) * 17 * data[i].pushed ;
-                    _this.playerSprites[socket.id][data[i].pushedPlay].body.velocity.y += Math.sin(_this.playerSprites[data[i].id][data[i].pushingPlay].target_rotation) * 17 * data[i].pushed ;
+                    _this.playerSprites[socket.id][data[i].pushedPlay].body.velocity.x += Math.cos(_this.playerSprites[data[i].id][data[i].pushingPlay].target_rotation) * 100 * data[i].pushed ;
+                    _this.playerSprites[socket.id][data[i].pushedPlay].body.velocity.y += Math.sin(_this.playerSprites[data[i].id][data[i].pushingPlay].target_rotation) * 100 * data[i].pushed ;
                     pushed = 0;
                 }
 /*
@@ -245,12 +245,9 @@ function preparePlayersDataToSend() {
             x1: Math.round(_this.playerSprites[socket.id][1].x), y1: Math.round(_this.playerSprites[socket.id][1].y), 
             angle1: Math.round(_this.playerSprites[socket.id][1].body.rotation* 100) / 100});
 //console.log(_this.host)
-    _this.playerSprites[socket.id][0].withinPuck = false;
-    _this.playerSprites[socket.id][1].withinPuck = false;
 
-    _this.playerSprites[socket.id][0].pushingPlayer = false;
-    _this.playerSprites[socket.id][1].pushingPlayer = false;
-
+    _this.playerSprites[socket.id][pushingPlayer].pushNumber = 0;
+    
     return dataToSend;
 }
 
