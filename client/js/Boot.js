@@ -149,6 +149,7 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                 _this.playerSprites[data[i].id][1].target_rotation  = data[i].angle1;
                 velX = _this.target.target_x - _this.target.body.x;
                 velY = _this.target.target_y - _this.target.body.y;
+                
                 if (_this.playerSprites[data[i].id][0].pushedPlayer)
                     _this.pushedPlayer = 0;
                 else
@@ -216,14 +217,17 @@ setInterval(function () {
 function preparePlayersDataToSend() {
     for (var id in _this.playerSprites) {
         if (id !== socket.id){
-            if (_this.playerSprites[id][1].pushedPlayer)
+            if (_this.playerSprites[id][1].pushedPlayer){
                 pushedPlayer = 1;
+                _this.playerSprites[id][1].pushedPlayer = false;
+            }
             else
                 pushedPlayer = 0;
         }
         else{
-            if (_this.playerSprites[id][1].pushingPlayer)
+            if (_this.playerSprites[id][1].pushNumber > 0){
                 pushingPlayer = 1;
+            }
             else
                 pushingPlayer = 0;
         }
@@ -237,7 +241,8 @@ function preparePlayersDataToSend() {
     dataToSend.push({id: socket.id, x: Math.round(_this.playerSprites[socket.id][0].x), y: Math.round(_this.playerSprites[socket.id][0].y), 
             angle: Math.round(_this.playerSprites[socket.id][0].body.rotation* 100) / 100, puckX: Math.round(_this.puck.x), puckY: Math.round(_this.puck.y),
             host: (_this.playerSprites[socket.id][0].withinPuck || _this.playerSprites[socket.id][1].withinPuck), 
-            pushedPlay: pushedPlayer, pushingPlay: pushingPlayer, pushed: _this.pushNumber,
+            pushedPlay: pushedPlayer, pushingPlay: pushingPlayer,
+            pushed: _this.playerSprites[socket.id][pushingPlayer].pushNumber,
             x1: Math.round(_this.playerSprites[socket.id][1].x), y1: Math.round(_this.playerSprites[socket.id][1].y), 
             angle1: Math.round(_this.playerSprites[socket.id][1].body.rotation* 100) / 100});
 //console.log(_this.host)
