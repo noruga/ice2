@@ -731,6 +731,7 @@ Player = function (game, x, y, img, host, hostStick) {
      this.hostess = host;
      this.m_count = 0;
      this.hostStick = hostStick;
+    this.unconcious = 0;
 
     this.pushNumber = 0;
 
@@ -823,6 +824,8 @@ if (playRepeat){
     n = 0;
   }
 }
+else if (this.unconcious > 0)
+    this.unconcious++;
 else{
     this.repeatX.push(Math.round(this.body.x));
     this.repeatY.push(Math.round(this.body.y));
