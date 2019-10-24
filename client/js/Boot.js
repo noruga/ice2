@@ -158,8 +158,8 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
 
                 }
                 else if (pushed < 0){
-                    _this.playerSprites[socket.id][data[i].pushedPlay].body.velocity.x += Math.cos(_this.playerSprites[data[i].id][data[i].pushingPlay].target_rotation + 180) * 100 * data[i].pushed ;
-                    _this.playerSprites[socket.id][data[i].pushedPlay].body.velocity.y += Math.sin(_this.playerSprites[data[i].id][data[i].pushingPlay].target_rotation + 180) * 100 * data[i].pushed ;
+                    _this.playerSprites[socket.id][data[i].pushedPlay].body.velocity.x += Math.cos(_this.playerSprites[data[i].id][data[i].pushingPlay].target_rotation + 180) * 20 * data[i].pushed ;
+                    _this.playerSprites[socket.id][data[i].pushedPlay].body.velocity.y += Math.sin(_this.playerSprites[data[i].id][data[i].pushingPlay].target_rotation + 180) * 20 * data[i].pushed ;
                 }
                 _this.playerSprites[socket.id][data[i].pushedPlay].unconcious = Math.abs(pushed);
                 pushed = 0;
