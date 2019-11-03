@@ -409,7 +409,7 @@ FunkyMultiplayerGame.Game.prototype = {
                         if (_this.playerSprites[socket.id][j].controlPlayer === true){
                             if (keyName === 'left' || keyName === 'left1'){
                                 //left = true;
-                                _this.playerSprites[socket.id][j].isDownA = true;
+                                _this.playerSprites[socket.id][j].body.rotateLeft(125);;
                             }
                             if (keyName === 'right' || keyName === 'right1'){
                                 _this.playerSprites[socket.id][j].isDownD = true;
@@ -553,9 +553,9 @@ Puck = function(game, x, y, authorative){
 
 
     
-    var bmd1 = game.add.bitmapData(15, 15, 'rgb(0,200,0)');
+    var bmd1 = game.add.bitmapData(18, 18, 'rgb(0,200,0)');
     
-    bmd1.circle(7, 7, 6.5, 0);
+    bmd1.circle(8, 8, 8, 0);
 
         Phaser.Sprite.call(this, game, margX+x, margY+y, bmd1);
 
@@ -564,7 +564,7 @@ Puck = function(game, x, y, authorative){
     game.physics.p2.enable(this);
     this.authorative = authorative;
     //this.body.setCircle(7);
-    this.body.mass = 0.001;
+    this.body.mass = 0.005;
     this.divisor = 3;
         //puck.visible = false;
         game.physics.enable(this, Phaser.Physics.ARCADE);
@@ -987,7 +987,7 @@ else{
 
     if (this.controlPlayer == true && this.hostStick == true){
     if (_this.input.keyboard.isDown(Phaser.Keyboard.A) || cursors.left.isDown){
-        this.body.rotateLeft(125);
+        //this.body.rotateLeft(125);
     }
     if (_this.input.keyboard.isDown(Phaser.Keyboard.D)|| cursors.right.isDown){
         this.body.rotateRight(125);
