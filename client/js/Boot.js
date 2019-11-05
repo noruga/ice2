@@ -329,8 +329,8 @@ socket.on('state_update', function (data) {
                     _this.playerSprites[data[i].id][1].body.rotation = - Math.PI  / 2.7;
                     _this.playerSprites[data[i].id].username = data[i].username;
                     var nameText2 = _this.add.text(margX+550*sizer, 0, _this.playerSprites[data[i].id].username, { font: '34px Arial', fill: '#cc0000' });
-                    _this.tverrlegger1 = this.add.sprite(75*sizer +margX, 244 + margY, 'tverrlegger');
-                    _this.tverrlegger2 = this.add.sprite(803*sizer + margX, 244 + margY, 'tverrlegger');
+                    _this.tverrlegger1 = _this.add.sprite(75*sizer +margX, 244 + margY, 'tverrlegger');
+                    _this.tverrlegger2 = _this.add.sprite(703*sizer + margX, 244 + margY, 'tverrlegger');
                 }
             }
            // console.log(data[i].list[0])
