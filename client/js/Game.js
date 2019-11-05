@@ -861,8 +861,8 @@ else{
             this.isClosePuck = false;
 
         }
-        for (var p = 0; p < 2; p++){
-            if (checkOverlap(_this.playerSprites[socket.id][p].stick1, this)){
+        
+            if (checkOverlap(_this.playerSprites[socket.id][0].stick1, this) || checkOverlap(_this.playerSprites[socket.id][1].stick1, this)){
                 this.pushedPlayer = true;
                 //_this.playerSprites[socket.id][p].pushes = true;
                 sendPush = true;
@@ -870,7 +870,7 @@ else{
             }
             else
                 this.pushedPlayer = false;
-        }
+        
     }
 
 if(!this.controlPlayer){
