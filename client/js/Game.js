@@ -1079,7 +1079,7 @@ else{
                 }
             }
             else{
-                this.body.rotateRight(1200);
+                this.body.rotateRight(1200);/*
                 for (var id in _this.playerSprites) {
                     if (id !== socket.id){
                         if (checkOverlap(_this.playerSprites[id][0], this.stick1)){
@@ -1102,7 +1102,7 @@ else{
                         else 
                             _this.playerSprites[id][1].pushedPlayer = false;
                     }
-                }
+                }*/
             }
         }       
     }
