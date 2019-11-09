@@ -1041,7 +1041,7 @@ else{
         if (game.physics.arcade.distanceBetween(puck, this.stick1) < 20) {
                 moveToObject(puck, this.stick1, 30);
         }*/
-    }
+    
     else if (_this.input.keyboard.isDown(Phaser.Keyboard.B)){
         if (this.shotcount < 18)
             this.shotcount++;
@@ -1051,7 +1051,7 @@ else{
                 //goalFrameCounter = 1;
             }
             this.body.rotateRight(1200);
-/*
+
             if (_this.input.keyboard.isDown(Phaser.Keyboard.A)|| cursors.left.isDown){
                 this.body.rotateLeft(1200);
                 for (var id in _this.playerSprites) {
@@ -1103,7 +1103,7 @@ else{
                             _this.playerSprites[id][1].pushedPlayer = false;
                     }
                 }
-            }*/
+            }
         }       
     }
     else if (this.shotcount >= 0)
