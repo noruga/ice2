@@ -236,7 +236,7 @@ function preparePlayersDataToSend() {
 
         }
         else{
-            if (_this.playerSprites[id][1].pushNumber > 0){
+            if (_this.playerSprites[id][1].pushNumber !== 0){
                 pushingPlayer = 1;
             }
             else
@@ -332,7 +332,7 @@ socket.on('state_update', function (data) {
                     _this.playerSprites[data[i].id].username = data[i].username;
                     var nameText2 = _this.add.text(margX+550*sizer, 0, _this.playerSprites[data[i].id].username, { font: '34px Arial', fill: '#cc0000' });
                     _this.tverrlegger1 = _this.add.sprite(75*sizer +margX, 244 + margY, 'tverrlegger');
-                    _this.tverrlegger2 = _this.add.sprite(833*sizer + margX, 244 + margY, 'tverrlegger');
+                    _this.tverrlegger2 = _this.add.sprite(823*sizer + margX, 244 + margY, 'tverrlegger');
                 }
             }
            // console.log(data[i].list[0])
