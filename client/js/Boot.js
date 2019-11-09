@@ -143,14 +143,15 @@ if((_this.playerSprites !== undefined)  || (_this.playerSprites !== null)){
                 pushed                                              = data[i].pushed
                 
                 if (pushed > 0){
-                    _this.playerSprites[socket.id][data[i].pushedPlay].body.velocity.x += Math.cos(_this.playerSprites[data[i].id][data[i].pushingPlay].target_rotation) * 100 * data[i].pushed ;
-                    _this.playerSprites[socket.id][data[i].pushedPlay].body.velocity.y += Math.sin(_this.playerSprites[data[i].id][data[i].pushingPlay].target_rotation) * 100 * data[i].pushed ;
+                    _this.playerSprites[socket.id][data[i].pushedPlay].body.velocity.x += Math.cos(_this.playerSprites[data[i].id][data[i].pushingPlay].target_rotation) * 60 * data[i].pushed ;
+                    _this.playerSprites[socket.id][data[i].pushedPlay].body.velocity.y += Math.sin(_this.playerSprites[data[i].id][data[i].pushingPlay].target_rotation) * 60 * data[i].pushed ;
                     pushed = 0;
 
                 }
                 else if (pushed < 0){
-                    _this.playerSprites[socket.id][data[i].pushedPlay].body.velocity.x += Math.cos(_this.playerSprites[data[i].id][data[i].pushingPlay].target_rotation + 180) * 100 * data[i].pushed ;
-                    _this.playerSprites[socket.id][data[i].pushedPlay].body.velocity.y += Math.sin(_this.playerSprites[data[i].id][data[i].pushingPlay].target_rotation + 180) * 100 * data[i].pushed ;
+                    _this.playerSprites[socket.id][data[i].pushedPlay].body.velocity.x += Math.cos(_this.playerSprites[data[i].id][data[i].pushingPlay].target_rotation + 180) * 60 * data[i].pushed ;
+                    _this.playerSprites[socket.id][data[i].pushedPlay].body.velocity.y += Math.sin(_this.playerSprites[data[i].id][data[i].pushingPlay].target_rotation + 180) * 60 * data[i].pushed ;
+                    pushed = 0;
                 }
 
                 _this.playerSprites[socket.id][data[i].pushedPlay].unconcious = Math.abs(pushed);
