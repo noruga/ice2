@@ -250,8 +250,8 @@ FunkyMultiplayerGame.Game.prototype = {
         goal5.visible = false;
         goal6.visible = false;
 
-        goalsensor1         = this.add.sprite(margX+68*sizer, margY+259, 'goalsensor');
-        goalsensor2         = this.add.sprite(margX+830*sizer, margY+259, 'goalsensor');
+        goalsensor1         = this.add.sprite(margX+53*sizer, margY+259, 'goalsensor');
+        goalsensor2         = this.add.sprite(margX+846*sizer, margY+259, 'goalsensor');
         goalsensor1.visible = false;
         goalsensor2.visible = false;
 
@@ -861,7 +861,7 @@ else{
             this.isClosePuck = false;
 
         }
-        
+        /*
             if (checkOverlap(_this.playerSprites[socket.id][0].stick1, this) || checkOverlap(_this.playerSprites[socket.id][1].stick1, this)){
                 this.pushedPlayer = true;
                 //_this.playerSprites[socket.id][p].pushes = true;
@@ -870,7 +870,7 @@ else{
             }
             else
                 this.pushedPlayer = false;
-        
+        */
     }
 
 if(!this.controlPlayer){
@@ -1024,13 +1024,13 @@ else{
          this.body.velocity.x *= 0.85;
         this.body.velocity.y *= 0.85;
         if (distanceSq(_this.puck, this.stick1) < (23*23)){
-            for (var id in _this.playerSprites) {
-                if (id !== socket.id){
-                   if (!(checkOverlap(_this.playerSprites[id][0], _this.puck) || checkOverlap(_this.playerSprites[id][0], _this.puck)))
+            //for (var id in _this.playerSprites) {
+                //if (id !== socket.id){
+                   //if (!(checkOverlap(_this.playerSprites[id][0], _this.puck) || checkOverlap(_this.playerSprites[id][0], _this.puck)))
                         moveToObject(_this.puck, this.stick1, 100);
                     //else
                     //    this.isDownV = false;
-                }
+                //}
             }
             //moveToObject(_this.puck, this.stick1, 100);
         }
@@ -1054,25 +1054,54 @@ else{
 
             if (_this.input.keyboard.isDown(Phaser.Keyboard.A)|| cursors.left.isDown){
                 this.body.rotateLeft(1200);
-
-                if (sendPush){
-                    sendPush = false;
-                    if (this.shotcount > 7)
-                        this.pushNumber = -7;
-                    else
-                        this.pushNumber = this.shotcount * (-1);
+                for (var id in _this.playerSprites) {
+                    if (id !== socket.id){
+                        if (checkOverlap(_this.playerSprites[id][0], this.stick1)){
+                            _this.playerSprites[id][0].pushedPlayer = true;
+                            if (this.shotcount > 7)
+                                this.pushNumber = -7;
+                            else
+                                this.pushNumber = this.shotcount *(-1);
+                        }
+                        else 
+                            _this.playerSprites[id][0].pushedPlayer = false;
+                        
+                        if (checkOverlap(_this.playerSprites[id][1], this.stick1)){
+                            _this.playerSprites[id][1].pushedPlayer = true;
+                            if (this.shotcount > 7)
+                                this.pushNumber = -7;
+                            else
+                                this.pushNumber = this.shotcount *(-1);
+                        }
+                        else 
+                            _this.playerSprites[id][1].pushedPlayer = false;
+                    }
                 }
             }
             else{
                 this.body.rotateRight(1200);
-                if (sendPush){
-
-                    sendPush = false;
-                    if (this.shotcount > 7)
-                        this.pushNumber = 7;
-                    else
-                        this.pushNumber = this.shotcount;
-                    //console.log(this.pushNumber, "pushNumber")
+                for (var id in _this.playerSprites) {
+                    if (id !== socket.id){
+                        if (checkOverlap(_this.playerSprites[id][0], this.stick1)){
+                            _this.playerSprites[id][0].pushedPlayer = true;
+                            if (this.shotcount > 7)
+                                this.pushNumber = 7;
+                            else
+                                this.pushNumber = this.shotcount;
+                        }
+                        else 
+                            _this.playerSprites[id][0].pushedPlayer = false;
+                        
+                        if (checkOverlap(_this.playerSprites[id][1], this.stick1)){
+                            _this.playerSprites[id][1].pushedPlayer = true;
+                            if (this.shotcount > 7)
+                                this.pushNumber = 7;
+                            else
+                                this.pushNumber = this.shotcount;
+                        }
+                        else 
+                            _this.playerSprites[id][1].pushedPlayer = false;
+                    }
                 }
             }
         }       
